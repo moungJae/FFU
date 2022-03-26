@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="170sp"
+        android:layout_height="160sp"
+        android:src="@drawable/cloud2"
+        app:layout_constraintBottom_toBottomOf="@id/applicationName"
+        app:layout_constraintStart_toStartOf="@id/applicationName"
+        app:layout_constraintEnd_toEndOf="@id/applicationName"
+        app:layout_constraintTop_toTopOf="@id/applicationName"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="60dp" />
+
+    <TextView
+        android:id="@+id/applicationName"
+        android:layout_width="99sp"
+        android:layout_height="50sp"
+        android:layout_marginTop="135sp"
+        android:fontFamily="@font/permanent"
+        android:text="FFU"
+        android:textColor="@color/main_text_color"
+        android:textSize="43sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/appFullName"
+        android:text="Friends For U"
+        app:layout_constraintTop_toBottomOf="@id/applicationName"
+        app:layout_constraintStart_toStartOf="@id/applicationName"
+        app:layout_constraintEnd_toEndOf="@id/applicationName"/>
+
+    <TextView
+        android:id="@+id/loginTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="250dp"
+        android:text="LOGIN"
+        android:textColor="#5FB0F1"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/main_editID"
+            android:layout_width="270sp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/box_id"
+            android:ems="10"
+            android:hint=" ID"
+            android:inputType="textPersonName"
+            android:text=""
+            android:textColor="@color/black"
+            android:textColorHint="#8E8D8D"
+            app:layout_constraintBottom_toTopOf="@id/main_editPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/main_editPassword"
+            android:layout_width="270sp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/box_id"
+            android:ems="10"
+            android:hint=" Password"
+            android:text=""
+            android:textColor="@color/black"
+            android:textColorHint="#8E8D8D"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/main_editID" />
+
+
+
+        <Button
+            android:id="@+id/main_startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="40sp"
+            android:layout_marginTop="20sp"
+            android:background="@drawable/box_button"
+            android:text="Sign in"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/main_editPassword"
+            app:layout_constraintStart_toStartOf="@id/main_editPassword"
+            app:layout_constraintTop_toBottomOf="@id/main_editPassword" />
+
+        <ImageButton
+            android:id="@+id/main_kakaoLogin"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/kakao_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_startButton"/>
+
+        <ImageButton
+            android:id="@+id/main_googleLogin"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/google_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/main_kakaoLogin"/>
+
+
+
+        <Button
+            android:id="@+id/main_joinButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00FF0000"
+            android:text="Join"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/main_searchButton"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/main_searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00FF0000"
+            android:text="search password"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/main_joinButton" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
