@@ -41,7 +41,7 @@
 1. 각자 구현한 화면을 적절하게 합치는 작업 진행
 #### Before
     
-    ![me_login](https://user-images.githubusercontent.com/81675254/160249466-a861e05f-0bf0-4817-a678-669d9817f890.png)
+![me_login](https://user-images.githubusercontent.com/81675254/160249466-a861e05f-0bf0-4817-a678-669d9817f890.png)
 
 #### After
   
