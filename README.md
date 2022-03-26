@@ -1,4 +1,4 @@
-# FFU
+# FFU (Friends For yoU)
 ------------
 
 ### 3/7
@@ -56,9 +56,22 @@
 <h2><p align="center"> After </p></h2>
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/81675254/160249466-a861e05f-0bf0-4817-a678-669d9817f890.png" height="500px" width="250px">
-<img src="https://user-images.githubusercontent.com/81675254/160249523-49c72ca6-e770-4f15-a97a-c0bf1c6320e7.png" height="500px" width="250px">
-<img src="https://user-images.githubusercontent.com/81675254/160249522-06750c85-e379-4639-ba0d-a92d4021a382.png" height="500px" width="250px">
+<img src="https://user-images.githubusercontent.com/81675254/160249937-da78a082-02ae-4cf2-8fd9-feea0eb92109.png" height="500px" width="250px">
+<img src="https://user-images.githubusercontent.com/81675254/160249935-9f9f60da-8ab9-489d-a23c-e2559da1302f.png" height="500px" width="250px">
+<img src="https://user-images.githubusercontent.com/81675254/160249936-acde1100-2c90-412d-8818-1862f63c44fd.png" height="500px" width="250px">
 </p>
-  
-2. color, id, layout 명을 적절하게 수정
+
+2. color, id, layout 명을 적절하게 수정하는 작업 진행
+------------
+
+### 3/27 ~ 4/1
+#### RelativeLayout 변경 작업 : 김용현
++ 이전에 구현한 xml 파일들을 적절하게 RelativeLayout 으로 변경
+
+#### Database 설계 및 구현 : 조명재, 박승규
++ 회원가입에 필요한 Database 를 설계하며 구현
+
+#### xml 및 kotlin 구현 : 윤영인
++ Main 화면을 구현
+------------
+
