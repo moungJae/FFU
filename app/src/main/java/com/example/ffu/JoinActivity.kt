@@ -1,7 +1,8 @@
-package com.example.test1
+package com.example.ffu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
@@ -19,8 +20,8 @@ class JoinActivity : AppCompatActivity() {
         }
 
         joinCompleteButton.setOnClickListener {
-            val intent2 = Intent(this, HomeActivity::class.java)
-            startActivity(intent2)
+            val intent = Intent(this, CheckPhoneNumActivity::class.java)
+            startActivity(intent)
         }
     }
 }
