@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_id.xml" value="0.172" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/checkpn.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/home.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/join.xml" value="0.264" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/main.xml" value="0.1" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_button.xml" value="0.1" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_id.xml" value="0.1" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/font/font.xml" value="0.25" />
@@ -15,7 +20,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

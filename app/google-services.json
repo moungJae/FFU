@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "165428474037",
+    "firebase_url": "https://friends-for-u-5f03a-default-rtdb.firebaseio.com",
+    "project_id": "friends-for-u-5f03a",
+    "storage_bucket": "friends-for-u-5f03a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165428474037:android:00ea88d9e55cb59bb48efc",
+        "android_client_info": {
+          "package_name": "com.example.ffu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165428474037-la7p87j26de6q1sjtqoqb7a0cjpemd2f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcwYMLnCqM6e-xJ3-Q63WNjcHokYFue4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165428474037-la7p87j26de6q1sjtqoqb7a0cjpemd2f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
