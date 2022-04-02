@@ -183,7 +183,18 @@
         app:layout_constraintLeft_toRightOf="@id/join_editMonth"
         app:layout_constraintTop_toBottomOf="@id/guideline11" />
 
-
+    <TextView
+        android:id="@+id/join_textViewGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gender"
+        android:textColor="@color/main_text_color"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/guideline12"
+        app:layout_constraintBottom_toBottomOf="@id/guideline13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline10" />
     <RadioGroup
         android:id="@+id/join_genderRadio"
         android:layout_width="wrap_content"
@@ -191,7 +202,7 @@
 
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/guideline13"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/join_textViewGender"
         app:layout_constraintTop_toBottomOf="@id/guideline12">
 
         <RadioButton
