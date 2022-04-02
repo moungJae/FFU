@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+
+    <TextView
+        android:id="@+id/editTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="프로필 편집"
+        android:textColor="@color/main_text_color"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="550dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/profilesetting_saveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextView">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/profilesetting_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="닉네임: "
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/profilesetting_inputnickname"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="닉네임을 입력하세요"
+                android:inputType="text"
+                android:textSize="13sp"
+
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/profilesetting_ageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="나이:   "
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/profilesetting_inputage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:hint="나이를 입력하세요"
+                android:inputType="number"
+                android:textSize="13sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/profilesetting_jobText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="직업:   "
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/profilesetting_inputjob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:hint="직업을 입력하세요"
+                android:inputType="text"
+                android:textSize="13sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/profilesetting_introduceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="소개글: "
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"
+
+                />
+
+            <EditText
+                android:id="@+id/profilesetting_inputIntroduce"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="친구들에게 나를 소개하세요!"
+                android:textSize="13sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/profilesetting_smokeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="흡연: "
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/profilesetting_smokechbox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비흡연"
+                android:textSize="13sp"/>
+
+            <CheckBox
+                android:id="@+id/profilesetting_smokechbox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="흡연"
+                android:textSize="13sp"/>
+
+            <CheckBox
+                android:id="@+id/profilesetting_smokechbox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가끔"
+                android:textSize="13sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/profilesetting_drinkText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="음주: "
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/profilesetting_drinkchbox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="안함"
+                android:textSize="13sp"/>
+
+            <CheckBox
+                android:id="@+id/profilesetting_drinkchbox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자주"
+                android:textSize="13sp"/>
+
+            <CheckBox
+                android:id="@+id/profilesetting_drinkchbox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가끔"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/profilesetting_mbtiButton"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/box_id"
+            android:text="MBTI "
+            android:textColor="@color/main_text_color"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/profilesetting_personalButton"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/box_id"
+            android:text="성격"
+            android:textColor="@color/main_text_color"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/profilesetting_religionButton"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/box_id"
+            android:text="종교 "
+            android:textColor="@color/main_text_color"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/profilesetting_hobbyButton"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/box_id"
+            android:text="취미"
+            android:textColor="@color/main_text_color"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+
+        <Button
+            android:id="@+id/profilesetting_imageAddButton"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/box_id"
+            android:text="프로필 사진 변경"
+            android:textColor="@color/main_text_color"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/profilesetting_saveButton"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/box_button"
+        android:text="저장"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

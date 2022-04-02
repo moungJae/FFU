@@ -3,215 +3,323 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="10sp">
+
 
     <Button
         android:id="@+id/join_backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#00FF0000"
-        android:text="Back"
+        android:text="@string/BACK"
         android:textColor="@color/main_text_color"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/guideline1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/join_textJoin"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
-        android:text="JOIN"
+        android:layout_height="wrap_content"
+        android:text="@string/JOIN"
         android:textColor="#5FB0F1"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline2"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline1" />
+
+    <TextView
+        android:id="@+id/join_textViewName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textColor="@color/main_text_color"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/guideline2" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/join_editName"
+        android:layout_width="270sp"
+        android:layout_height="45sp"
+        android:hint="@string/name"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textColorHint="#8E8D8D"
+        app:layout_constraintBottom_toBottomOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline3" />
+
+    <TextView
+        android:id="@+id/join_textViewID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        android:textColor="@color/main_text_color"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/guideline5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline4" />
+
+    <EditText
+        android:id="@+id/join_editEmail"
+        android:layout_width="270sp"
+        android:layout_height="45sp"
+        android:hint="@string/EMAIL"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textColorHint="#8E8D8D"
+        app:layout_constraintBottom_toBottomOf="@id/guideline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline5" />
+
+    <TextView
+        android:id="@+id/join_textViewPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pwd"
+        android:textColor="@color/main_text_color"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/guideline7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline6" />
+
+    <EditText
+        android:id="@+id/join_editPW"
+        android:layout_width="220sp"
+        android:layout_height="wrap_content"
+
+        android:hint="@string/pwd"
+        android:inputType="textPassword"
+        android:text=""
+        android:textColorHint="#8E8D8D"
+        app:layout_constraintBottom_toBottomOf="@id/guideline8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline7" />
+
+    <TextView
+        android:id="@+id/join_textCheckPW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/check_pwd"
+        android:textColor="@color/main_text_color"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/guideline9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline8" />
+
+
+    <EditText
+        android:id="@+id/join_editCheckPW"
+        android:layout_width="200sp"
+        android:layout_height="45sp"
+        android:hint="@string/check_pwd"
+        android:inputType="textPassword"
+        android:text=""
+        android:textColorHint="#8E8D8D"
+        app:layout_constraintBottom_toBottomOf="@id/guideline10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline9" />
+
+    <TextView
+        android:id="@+id/join_textViewBirth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/birth"
+        android:textColor="@color/main_text_color"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/guideline11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline10" />
+
+
+    <EditText
+        android:id="@+id/join_editYear"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/YYYY"
+        android:inputType="number"
+        android:textColorHint="#8E8D8D"
+        app:layout_constraintBottom_toBottomOf="@id/guideline12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline11" />
+
+    <EditText
+        android:id="@+id/join_editMonth"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:hint="@string/MM"
+        android:inputType="number"
+        android:textColorHint="#8E8D8D"
+        app:layout_constraintBottom_toBottomOf="@id/guideline12"
+        app:layout_constraintLeft_toRightOf="@id/join_editYear"
+        app:layout_constraintTop_toBottomOf="@id/guideline11" />
+
+
+    <EditText
+        android:id="@+id/join_editDate"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:hint="@string/DD"
+        android:inputType="number"
+        android:textColorHint="#8E8D8D"
+        app:layout_constraintBottom_toBottomOf="@id/guideline12"
+        app:layout_constraintLeft_toRightOf="@id/join_editMonth"
+        app:layout_constraintTop_toBottomOf="@id/guideline11" />
+
+    <TextView
+        android:id="@+id/join_textViewGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gender"
+        android:textColor="@color/main_text_color"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/guideline12"
+        app:layout_constraintBottom_toBottomOf="@id/guideline13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline10" />
+    <RadioGroup
+        android:id="@+id/join_genderRadio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/guideline13"
+        app:layout_constraintLeft_toRightOf="@id/join_textViewGender"
+        app:layout_constraintTop_toBottomOf="@id/guideline12">
+
+        <RadioButton
+            android:id="@+id/join_male"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/male" />
+
+        <RadioButton
+            android:id="@+id/join_female"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/female" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/join_joinButton"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="120dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="40dp"
-        android:orientation="vertical">
-        <!--이름 없애도 되지 않을까요?-->
-
-        <TextView
-            android:id="@+id/join_textViewEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:text="이메일"
-            android:textColor="@color/main_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+        android:layout_height="40sp"
+        android:layout_gravity="center"
+        android:background="@drawable/box_button"
+        android:text="@string/join"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline13" />
 
 
-        <EditText
-            android:id="@+id/join_editEmail"
-            android:layout_width="200sp"
-            android:layout_height="45sp"
-            android:layout_marginTop="5sp"
-            android:hint="Email"
-            android:inputType="textPersonName"
-            android:text=""
-            android:textColorHint="#8E8D8D" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.06" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.16" />
 
-        <!--        전화번호 넣어주세요. -->
-        <TextView
-            android:id="@+id/join_textViewPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:text="비밀번호"
-            android:textColor="@color/main_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.19" />
 
-        <EditText
-            android:id="@+id/join_editPW"
-            android:layout_width="200sp"
-            android:layout_height="48dp"
-            android:layout_marginTop="5sp"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.26" />
 
-            android:hint="비밀번호"
-            android:inputType="textPassword"
-            android:text=""
-            android:textColorHint="#8E8D8D" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.32" />
 
-        <TextView
-            android:id="@+id/join_textCheckPW"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:text="비밀번호 확인"
-            android:textColor="@color/main_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.39" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
 
-            <EditText
-                android:id="@+id/join_editCheckPW"
-                android:layout_width="200sp"
-                android:layout_height="45sp"
-                android:layout_marginTop="5sp"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.52" />
 
-                android:hint="비밀번호 확인"
-                android:inputType="textPassword"
-                android:text=""
-                android:textColorHint="#8E8D8D" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.58" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
 
-        </LinearLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.71" />
 
-        <TextView
-            android:id="@+id/join_textViewBirth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20sp"
-            android:text="생년월일"
-            android:textColor="@color/main_text_color"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.77" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5sp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/join_editYear"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-
-                android:hint="YYYY"
-                android:inputType="number"
-                android:textColorHint="#8E8D8D" />
-
-            <EditText
-                android:id="@+id/join_editMonth"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-
-                android:hint="MM"
-                android:inputType="number"
-                android:textColorHint="#8E8D8D" />
-
-            <EditText
-                android:id="@+id/join_editDate"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-
-                android:hint="DD"
-                android:inputType="number"
-                android:textColorHint="#8E8D8D" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
-            android:orientation="horizontal">
-
-            <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="성별"
-                android:textColor="@color/main_text_color"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:id="@+id/join_genderRadio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/join_male"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="남성" />
-
-                <RadioButton
-                    android:id="@+id/join_female"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="여성" />
-            </RadioGroup>
-        </LinearLayout>
-
-
-        <Button
-            android:id="@+id/join_joinButton"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-
-            android:background="@drawable/box_button"
-            android:text="회원가입"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-
-    </LinearLayout>
-
-
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.83" />
 </androidx.constraintlayout.widget.ConstraintLayout>
