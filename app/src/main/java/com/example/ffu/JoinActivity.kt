@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -63,11 +62,11 @@ class JoinActivity : AppCompatActivity() {
         joinButton.setOnClickListener {
             var validationBool: Boolean = true
             var genderCheck: Int = 0 // 1 : 남자, 2 : 여자
-            var email: String = findViewById<EditText>(R.id.join_editEmail).text.toString()
-            var passwd: String = findViewById<EditText>(R.id.join_editPW).text.toString()
-            var checkPW: String = findViewById<EditText>(R.id.join_editCheckPW).text.toString()
-            var birth: String = getBirth()
             var gender: String = ""
+            val email: String = findViewById<EditText>(R.id.join_editEmail).text.toString()
+            val passwd: String = findViewById<EditText>(R.id.join_editPW).text.toString()
+            val checkPW: String = findViewById<EditText>(R.id.join_editCheckPW).text.toString()
+            val birth: String = getBirth()
 
             // 0. email 형식 체크
             if (!checkEmail()) { //틀린 경우
@@ -165,32 +164,23 @@ class JoinActivity : AppCompatActivity() {
         val editEmail = findViewById<EditText>(R.id.join_editEmail)
 
         editEmail.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                // text가 변경된 후 호출
-                // s에는 변경 후의 문자열이 담겨 있다.
-            }
+            override fun afterTextChanged(s: Editable?) {}
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // text가 변경되기 전 호출
-                // s에는 변경 전 문자열이 담겨 있다ㄴㄴㄴㄴs
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // text가 바뀔 때마다 호출된다.
-                // 우린 이 함수를 사용한다.
                 checkEmail()
             }
         })
     }
 
     fun checkEmail(): Boolean {
+        val email = findViewById<EditText>(R.id.join_editEmail).text.toString().trim() //공백제거
+        val p = Pattern.matches(emailValidation, email) // 이메일 패턴이 유효한지
+
         emailValidation =
             "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-        var email = findViewById<EditText>(R.id.join_editEmail).text.toString().trim() //공백제거
-        val p = Pattern.matches(emailValidation, email) // 서로 패턴이 맞닝?
-
         if (p) {
-            //이메일 형태가 정상일 경우
             findViewById<EditText>(R.id.join_editEmail).setTextColor(R.color.black.toInt())
             return true
         } else {
@@ -199,4 +189,3 @@ class JoinActivity : AppCompatActivity() {
         }
     }
 }
-

@@ -83,7 +83,6 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
-
         </LinearLayout>
 
         <TextView
@@ -122,9 +121,7 @@
                 android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
-
         </LinearLayout>
-
 
     </LinearLayout>
 
