@@ -1,143 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:layout_margin="10sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <Button
-        android:id="@+id/checkpn_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#00FF0000"
-        android:text="Back"
-        android:textColor="#3F51B5"
-        android:textSize="18sp"
+        android:id="@+id/checkpn_back"
+        android:text="@string/BACK"
+        android:textColor="@color/main_text_color"
         android:textStyle="bold"
+        android:textSize="18sp"
+        android:background="#00FF0000"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/guideline1"
+        />
 
     <TextView
         android:id="@+id/textJoin1"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
-        android:text="JOIN"
+        android:layout_height="wrap_content"
+        android:text="@string/JOIN"
         android:textColor="#5FB0F1"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:layout_constraintBottom_toTopOf="@id/guideline2"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="300dp"
-        android:orientation="vertical">
+    <TextView
+        android:id="@+id/textCheckMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/identity_verification"
+        android:textColor="#000000"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="10sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline2"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"/>
 
-        <TextView
-            android:id="@+id/textCheckMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="35sp"
-            android:text="본인 인증"
-            android:textColor="#000000"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/textPhoneNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/phone_num"
+        android:textColor="#3F51B5"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"/>
 
-        <TextView
-            android:id="@+id/textPhoneNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="휴대폰번호"
-            android:textColor="#3F51B5"
-            android:textSize="15sp"
-            android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5sp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/checkpn_editPhone"
-                android:layout_width="220sp"
-                android:layout_height="45sp"
-                android:layout_marginTop="5sp"
-                android:hint="휴대폰번호를 입력해주세요."
-                android:inputType="number"
-                android:text=""
-                android:textColorHint="#8E8D8D" />
-
-            <Button
-                android:id="@+id/checkpn_checkButton"
-                android:layout_width="wrap_content"
-                android:layout_height="40sp"
-                android:layout_marginLeft="25sp"
-                android:background="#3F51B5"
-                android:text="인증번호 전송"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15sp"
-            android:text="인증번호"
-            android:textColor="#3F51B5"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5sp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/checkpn_editMsg"
-                android:layout_width="220sp"
-                android:layout_height="45sp"
-                android:layout_marginTop="5sp"
-                android:hint="인증번호를 입력해주세요."
-                android:inputType="number"
-                android:text=""
-                android:textColorHint="#8E8D8D" />
-
-            <Button
-                android:id="@+id/checkpn_checkMsg"
-                android:layout_width="50sp"
-                android:layout_height="30sp"
-                android:layout_marginLeft="45sp"
-                android:background="#3F51B5"
-                android:text="확인"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    <EditText
+        android:id="@+id/checkpn_editPhone"
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/phone_num"
+        android:inputType="number"
+        android:text=""
+        android:textColorHint="#8E8D8D"
+        app:layout_constraintBottom_toTopOf="@id/guideline5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline4" />
 
     <Button
-        android:id="@+id/checkpn_nextButton"
+        android:id="@+id/checkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:background="#3F51B5"
+        android:text="@string/send_certification_num"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginLeft="10sp"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/checkpn_editPhone"
+        app:layout_constraintTop_toBottomOf="@id/guideline4"
+        app:layout_constraintBottom_toTopOf="@id/guideline5" />
+
+    <TextView
+        android:id="@+id/textMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/certification_num"
+        android:textColor="#3F51B5"
+        android:textSize="15sp"
+        android:textStyle="bold"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintBottom_toTopOf="@id/guideline6"/>
+
+    <EditText
+        android:id="@+id/editMsg"
+        android:layout_width="220sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5sp"
+        android:hint="@string/send_certification_num"
+        android:inputType="number"
+        android:text=""
+        android:textColorHint="#8E8D8D"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline6"
+        app:layout_constraintBottom_toTopOf="@id/guideline7"/>
+
+    <Button
+        android:layout_width="65sp"
+        android:layout_height="45sp"
+        android:id="@+id/checkMsg"
+        android:text="@string/confirm"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginLeft="10sp"
+        android:background="#3F51B5"
+        app:layout_constraintLeft_toRightOf="@id/editMsg"
+        app:layout_constraintTop_toBottomOf="@id/guideline6"
+        app:layout_constraintBottom_toTopOf="@id/guideline7"/>
+
+    <Button
         android:layout_width="300sp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="100sp"
-        android:background="@drawable/box_button"
-        android:text="Next"
+        android:id="@+id/checkpn_nextButton"
+        android:text="@string/NEXT"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:background="@drawable/box_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginBottom="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.07" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.24" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.36" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.43" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.57" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
