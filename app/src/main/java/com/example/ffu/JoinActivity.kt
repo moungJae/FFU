@@ -175,11 +175,11 @@ class JoinActivity : AppCompatActivity() {
     }
 
     fun checkEmail(): Boolean {
+        emailValidation =
+            "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
         val email = findViewById<EditText>(R.id.join_editEmail).text.toString().trim() //공백제거
         val p = Pattern.matches(emailValidation, email) // 이메일 패턴이 유효한지
 
-        emailValidation =
-            "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
         if (p) {
             findViewById<EditText>(R.id.join_editEmail).setTextColor(R.color.black.toInt())
             return true
