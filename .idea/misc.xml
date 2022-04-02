@@ -23,7 +23,12 @@
         <entry key="app/src/main/res/layout/home.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layout/join.xml" value="0.5221847534179688" />
         <entry key="app/src/main/res/layout/main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/mbti.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/personality.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/profile.xml" value="0.2641509433962264" />
+        <entry key="app/src/main/res/layout/profilesetting.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/religion.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/root.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/menu/menu_chatting.xml" value="0.1" />
       </map>
     </option>
