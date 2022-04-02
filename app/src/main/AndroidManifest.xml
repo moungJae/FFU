@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FFU">
         <activity
-            android:name=".MainActivity"
+            android:name=".RootActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +21,7 @@
         <activity android:name=".JoinActivity"/>
         <activity android:name=".CheckPhoneNumActivity"/>
         <activity android:name=".HomeActivity"/>
+        <activity android:name=".MainActivity"/>
     </application>
 
 </manifest>
