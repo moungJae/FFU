@@ -63,6 +63,7 @@ class JoinActivity : AppCompatActivity() {
             var validationBool: Boolean = true
             var genderCheck: Int = 0 // 1 : 남자, 2 : 여자
             var gender: String = ""
+            val name: String = findViewById<EditText>(R.id.join_editName).text.toString()
             val email: String = findViewById<EditText>(R.id.join_editEmail).text.toString()
             val passwd: String = findViewById<EditText>(R.id.join_editPW).text.toString()
             val checkPW: String = findViewById<EditText>(R.id.join_editCheckPW).text.toString()
@@ -72,6 +73,10 @@ class JoinActivity : AppCompatActivity() {
             if (!checkEmail()) { //틀린 경우
                 Toast.makeText(applicationContext, "이메일 형식에 맞게 입력하세요!", Toast.LENGTH_LONG).show()
             } else { //맞는 경우
+                // 0. 이름 입력했는지 체크
+                if (name.equals("")){
+                    validationBool = false
+                }
                 // 1. email 중복 check
                 for (otherEmail in emailVector) {
                     if (otherEmail.equals(email)) {
@@ -103,7 +108,7 @@ class JoinActivity : AppCompatActivity() {
                     auth.createUserWithEmailAndPassword(email, passwd)
                         .addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
-                                signUpUser(email, passwd, birth, gender, tel)
+                                signUpUser(email, passwd, birth, gender, name, tel)
                                 finish()
                             } else {
                                 Toast.makeText(this, "이메일을 제대로 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -116,7 +121,7 @@ class JoinActivity : AppCompatActivity() {
         }
     }
 
-    fun signUpUser(email: String, passwd: String, birth: String, gender: String, tel: String) {
+    fun signUpUser(email: String, passwd: String, birth: String, gender: String, name: String, tel: String) {
         val user = mutableMapOf<String, Any>()
         val userName = email.split("@")[0]
 
@@ -125,6 +130,7 @@ class JoinActivity : AppCompatActivity() {
         user["passwd"] = passwd
         user["birth"] = birth
         user["gender"] = gender
+        user["name"] = name
         user["tel"] = tel
         userDB.updateChildren(user)
     }
@@ -175,11 +181,11 @@ class JoinActivity : AppCompatActivity() {
     }
 
     fun checkEmail(): Boolean {
+        emailValidation =
+            "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
         val email = findViewById<EditText>(R.id.join_editEmail).text.toString().trim() //공백제거
         val p = Pattern.matches(emailValidation, email) // 이메일 패턴이 유효한지
 
-        emailValidation =
-            "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
         if (p) {
             findViewById<EditText>(R.id.join_editEmail).setTextColor(R.color.black.toInt())
             return true
@@ -187,5 +193,9 @@ class JoinActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.join_editEmail).setTextColor(-65536)
             return false
         }
+
+
+
+
     }
 }
