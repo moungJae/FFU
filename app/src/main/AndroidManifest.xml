@@ -25,18 +25,10 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ProfileSettingActivity" />
-        <activity
-            android:name=".MbtiActivity"
-            android:noHistory="true" />
-        <activity
-            android:name=".PersonalActivity"
-            android:noHistory="true" />
-        <activity
-            android:name=".HobbyActivity"
-            android:noHistory="true" />
-        <activity
-            android:name=".ReligionActivity"
-            android:noHistory="true" />
+        <activity android:name=".MbtiActivity" />
+        <activity android:name=".PersonalActivity" />
+        <activity android:name=".HobbyActivity" />
+        <activity android:name=".ReligionActivity" />
     </application>
 
 </manifest>

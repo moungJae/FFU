@@ -3,21 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/home_bottom_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/button_color"
-        app:itemIconTint="@color/icon_color"
-        app:itemTextColor="#323131"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_main" />
+
+
 
     <ImageView
         android:id="@+id/profileimageView"
@@ -181,6 +169,78 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
-    -->
+
+    <!--Navigation Button-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:orientation="horizontal"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/profile_home"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@menu/menu_main"
+            android:background="@color/button_color"
+            android:gravity="center"
+            android:text="main"
+            android:textSize="10sp"
+            android:paddingTop="6sp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintWidth_percent="0.25">
+        </Button>
+        <Button
+            android:id="@+id/profile_recommend"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@menu/menu_recommend"
+            android:gravity="center"
+            android:text="recommend"
+            android:textSize="10sp"
+            android:background="@color/button_color"
+            android:paddingTop="6sp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/profile_home"
+            app:layout_constraintWidth_percent="0.25">
+        </Button>
+        <Button
+            android:id="@+id/profile_chatting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@menu/menu_chatting"
+            android:gravity="center"
+            android:text="chatting"
+            android:textSize="10sp"
+            android:background="@color/button_color"
+            android:paddingTop="6sp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/profile_recommend"
+            app:layout_constraintWidth_percent="0.25">
+        </Button>
+        <Button
+            android:id="@+id/profile_profile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableTop="@menu/menu_profile"
+            android:gravity="center"
+            android:text="profile"
+            android:textSize="10sp"
+            android:paddingTop="6sp"
+            android:background="@color/button_color"
+
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/profile_chatting"
+            app:layout_constraintWidth_percent="0.25">
+        </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
