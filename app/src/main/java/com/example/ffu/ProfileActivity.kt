@@ -10,11 +10,11 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile)
 
-        val home = findViewById<Button>(R.id.profile_home)
+        val recommend = findViewById<Button>(R.id.home_recommend)
         val editprofile_button = findViewById<Button>(R.id.profile_profileedit_button)
 
 
-        home.setOnClickListener {
+        recommend.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }

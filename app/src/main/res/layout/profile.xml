@@ -180,13 +180,13 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
-            android:id="@+id/profile_home"
+            android:id="@+id/home_recommend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableTop="@menu/menu_main"
+            android:drawableTop="@menu/menu_recommend"
             android:background="@color/button_color"
             android:gravity="center"
-            android:text="main"
+            android:text="recommend"
             android:textSize="10sp"
             android:paddingTop="6sp"
 
@@ -195,22 +195,22 @@
             app:layout_constraintWidth_percent="0.25">
         </Button>
         <Button
-            android:id="@+id/profile_recommend"
+            android:id="@+id/home_matching"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableTop="@menu/menu_recommend"
+            android:drawableTop="@menu/menu_matching"
             android:gravity="center"
-            android:text="recommend"
+            android:text="matching"
             android:textSize="10sp"
             android:background="@color/button_color"
             android:paddingTop="6sp"
 
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/profile_home"
+            app:layout_constraintLeft_toRightOf="@id/home_recommend"
             app:layout_constraintWidth_percent="0.25">
         </Button>
         <Button
-            android:id="@+id/profile_chatting"
+            android:id="@+id/home_chatting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawableTop="@menu/menu_chatting"
@@ -221,11 +221,11 @@
             android:paddingTop="6sp"
 
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/profile_recommend"
+            app:layout_constraintLeft_toRightOf="@id/home_matching"
             app:layout_constraintWidth_percent="0.25">
         </Button>
         <Button
-            android:id="@+id/profile_profile"
+            android:id="@+id/home_profile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawableTop="@menu/menu_profile"
@@ -237,9 +237,10 @@
 
 
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/profile_chatting"
+            app:layout_constraintLeft_toRightOf="@id/home_chatting"
             app:layout_constraintWidth_percent="0.25">
         </Button>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -14,7 +14,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         val personality = findViewById<Button>(R.id.profilesetting_personalButton)
         val hobby = findViewById<Button>(R.id.profilesetting_hobbyButton)
         val religion = findViewById<Button>(R.id.profilesetting_religionButton)
-        val exitButton = findViewById<Button>(R.id.profilesetting_saveButton)
+        val saveButton = findViewById<Button>(R.id.profilesetting_saveButton)
 
         mbtiButton.setOnClickListener {
             val intent1 = Intent(this, MbtiActivity::class.java)
@@ -37,9 +37,7 @@ class ProfileSettingActivity : AppCompatActivity() {
             finish()
         }
 
-        exitButton.setOnClickListener {
-            val intent5 = Intent(this, ProfileActivity::class.java)
-            startActivity(intent5)
+        saveButton.setOnClickListener {
             finish()
         }
 

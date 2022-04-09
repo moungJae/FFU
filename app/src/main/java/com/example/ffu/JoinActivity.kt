@@ -22,8 +22,8 @@ class JoinActivity : AppCompatActivity() {
     private lateinit var userDB: DatabaseReference
     private lateinit var emailVector: Vector<String>
     private lateinit var tel: String
-    private lateinit var auth: FirebaseAuth
     private lateinit var emailValidation: String
+    private var auth : FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +44,7 @@ class JoinActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             val intent = Intent(this, CheckPhoneNumActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
@@ -105,10 +106,10 @@ class JoinActivity : AppCompatActivity() {
                 }
                 // 4. 전부 유효한지 아닌지 체크
                 if (validationBool) {
-                    auth.createUserWithEmailAndPassword(email, passwd)
-                        .addOnCompleteListener(this) { task ->
+                    auth?.createUserWithEmailAndPassword(email, passwd)
+                        ?.addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
-                                signUpUser(email, passwd, birth, gender, name, tel)
+                                //signUpUser(email, passwd, birth, gender, name, tel)
                                 finish()
                             } else {
                                 Toast.makeText(this, "이메일을 제대로 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -123,9 +124,9 @@ class JoinActivity : AppCompatActivity() {
 
     fun signUpUser(email: String, passwd: String, birth: String, gender: String, name: String, tel: String) {
         val user = mutableMapOf<String, Any>()
-        val userName = email.split("@")[0]
+        val emailFrontName = email.split('@')[0]
 
-        userDB = Firebase.database.reference.child("users").child(userName)
+        userDB = Firebase.database.reference.child("users").child(emailFrontName)
         user["email"] = email
         user["passwd"] = passwd
         user["birth"] = birth
@@ -193,9 +194,5 @@ class JoinActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.join_editEmail).setTextColor(-65536)
             return false
         }
-
-
-
-
     }
 }
