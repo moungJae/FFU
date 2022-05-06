@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -23,14 +25,9 @@
         </activity>
         <activity android:name=".CheckPhoneNumActivity" />
         <activity android:name=".JoinActivity" />
-
         <activity android:name=".HomeActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ProfileSettingActivity" />
-        <activity android:name=".MbtiActivity" />
-        <activity android:name=".PersonalActivity" />
-        <activity android:name=".HobbyActivity" />
-        <activity android:name=".ReligionActivity" />
     </application>
 
 </manifest>

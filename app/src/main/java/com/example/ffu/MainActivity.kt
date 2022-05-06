@@ -21,16 +21,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
 
-        val signUpButton = findViewById<Button>(R.id.main_signUpButton)
-        val startButton = findViewById<Button>(R.id.main_startButton)
-
         auth = Firebase.auth
 
         moveHomePage(auth?.currentUser)
+        signUp()
+        loginStart()
+    }
+
+    private fun signUp() {
+        val signUpButton = findViewById<Button>(R.id.main_signUpButton)
 
         signUpButton.setOnClickListener {
             startActivity(Intent(this, CheckPhoneNumActivity::class.java))
         }
+    }
+
+    private fun loginStart() {
+        val startButton = findViewById<Button>(R.id.main_startButton)
 
         startButton.setOnClickListener {
             val email = findViewById<EditText>(R.id.main_editEmail).text.toString()
@@ -49,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun moveHomePage(user: FirebaseUser?){
+    private fun moveHomePage(user: FirebaseUser?){
         if (user != null) {
             startActivity(Intent(this, HomeActivity::class.java))
         }

@@ -12,12 +12,19 @@ class CheckPhoneNumActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.checkpn)
 
+        goBack()
+        startJoin()
+    }
+
+    private fun goBack() {
         val backButton = findViewById<Button>(R.id.checkpn_back)
 
         backButton.setOnClickListener {
             finish()
         }
+    }
 
+    private fun startJoin() {
         val nextButton = findViewById<Button>(R.id.checkpn_nextButton)
 
         nextButton.setOnClickListener {
