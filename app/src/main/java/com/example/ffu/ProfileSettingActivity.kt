@@ -168,7 +168,8 @@ class ProfileSettingActivity : AppCompatActivity() {
                     imagesRef.putFile(uri).addOnSuccessListener {
                         Toast.makeText(this, "사진 등록을 성공했습니다.", Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener {
-                        Toast.makeText(this, "사진 등록을 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "사진 등록을 실패했습니 " +
+                                ".", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

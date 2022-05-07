@@ -1,77 +1,113 @@
 # FFU (Friends For U)
+
+<img src="https://user-images.githubusercontent.com/81675254/167162362-d65d5c1f-546f-489d-9c72-5fa32487acf6.png" height="400px" width="500px">
+
 ------------
 
-### 3/7 
-> 3/7 에 팀원을 구성했으며 총 4명으로 구성됩니다.
->
-> 팀장 : 조명재(moungJae)
-> 
-> 팀원 : 박승규(seunggyu-park), 김용현(YongHyunKing), 윤영인(YounginYoon)
+## 팀원 소개
+|이름|역할|
+|------|---|
+|조명재|프로젝트 관리, DB 구축, 애니메이션 2D 변환|
+|박승규|DB 구축, 지도 API 처리 및 매핑 구현|
+|김용현|UI/UX, 채팅 서버 구축|
+|윤영인|UI/UX, 애니메이션 2D 변환|
+
 ------------
 
-### 3/11 (15:00 ~ 16:30)
-> 3/11 에 구글밋으로 주제를 정했습니다.
->
-> 주제 : 인공지능을 활용한 친구 추천 어플
->
-> 위치기반을 활용하여 친구를 추천하도록 하는 어플을 만드는 것이 주 목적입니다.
+### 3/11 
+
++ 프로젝트 주제 결정
+
++ 주제 : 코로나 바이러스로 인해 대면 활동이 어려워진 사람들을 위한 친구 추천 APP
+
++ 프로젝트 설명 : 사용자의 정보(취미, 관심사, 성격, 나이, 활동 지역, ...)와 현재 위치를 기준으로 추천한다.
+
++ 핵심은 실제 사진을 애니메이션처럼 변환한 사진을 프로필로 설정하는 것이다.
+
++ 실제 사진이 아닌 애니메이션 사진으로 정함으로써 사용자의 익명성이 보장되며, 사진 도용에 대한 우려가 없다.
+
 ------------
 
-### 3/19 (16:00 ~ 19:00)
-1. 팀명 정하기 
-    + 팀명은 "ASSA" 로 정했습니다.
+### 3/19 
+1. 프로젝트의 문제점, 해결방안
+    + 사진 도용 문제 해결방안에 대한 논의
 
-2. 프로젝트명 정하기
-    + 프로젝트명은 "FFU(Friends For U)" 으로 정했습니다.
+2. 개발환경 결정
+    + Android App 개발 환경 -> Android Studio
+    + 데이터 베이스 -> Firebase
+    + 애니메이션화 -> Tensor Flow
 
-3. 깃헙 사용법 익히기
-    + 팀원들끼리 모여서 git 명령어에 대해서 공부하고 직접 실행해보는 시간을 가졌습니다.
+3. Github 생성
+    + https://github.com/moungJae/FFU
+
+4. 로그인 UI
+    + 각자 로그인 UI 구현
 ------------
 
-### 3/20 ~ 3/25 
-#### version 정리 : 김용현
-+ 앞으로 진행할 프로젝트를 여러 version 으로 나눠서 ppt 에 정리 
+### 3/26 
+1. 로그인 UI 구현 리뷰
+    + 각자 로그인 UI 구현한 것을 수정
 
-#### xml 및 kotlin 구현 : 조명재, 박승규, 윤영인
-+ 로그인 화면, 회원가입 화면, 메인 화면을 구현
-+ 큰 틀을 만드는 데 중점을 뒀으며 화면 구성 및 버튼 클릭 시 이동하도록 구현
+2. 개발 순서, 방법
+    + UI 만드는 Tool로 화면을 구성하고 구현할 지 회의
+    
+3. 사용자 데이터베이스
+    + 회원 가입 후 어떻게 Firebase 에 업로드할지 회의
 ------------
 
-### 3/26 (13:00 ~ 18:00)
-1. 각자 구현한 화면을 적절하게 합치는 작업 진행
-<h2><p align="center"> Before </p></h2>
+### 4/2
+1. Firebase에 회원 등록 구현
+    
+2. Login 코드 리뷰 
 
-<p align="center">
-<img src="https://user-images.githubusercontent.com/81675254/160249466-a861e05f-0bf0-4817-a678-669d9817f890.png" height="500px" width="250px">
-<img src="https://user-images.githubusercontent.com/81675254/160249523-49c72ca6-e770-4f15-a97a-c0bf1c6320e7.png" height="500px" width="250px">
-<img src="https://user-images.githubusercontent.com/81675254/160249522-06750c85-e379-4639-ba0d-a92d4021a382.png" height="500px" width="250px">
-</p>
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/81675254/160249524-226a4afa-be6a-4954-a7d7-9e54f2d30f63.png" height="500px" width="250px">
-<img src="https://user-images.githubusercontent.com/81675254/160249525-cdcc78e4-1eb9-4dd5-b1b3-990efcda0aa0.png" height="500px" width="250px">
-<img src="https://user-images.githubusercontent.com/81675254/160249526-10286525-483e-4ff5-890a-c5bae018483f.png" height="500px" width="250px">    
-</p>
-
-<h2><p align="center"> After </p></h2>
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/81675254/160249937-da78a082-02ae-4cf2-8fd9-feea0eb92109.png" height="500px" width="250px">
-<img src="https://user-images.githubusercontent.com/81675254/160249935-9f9f60da-8ab9-489d-a23c-e2559da1302f.png" height="500px" width="250px">
-<img src="https://user-images.githubusercontent.com/81675254/160249936-acde1100-2c90-412d-8818-1862f63c44fd.png" height="500px" width="250px">
-</p>
-
-2. color, id, layout 명을 적절하게 수정하는 작업 진행
+3. 사용지 프로필 편집
+    + 프로필 편집할 때 필요한 요소가 어떤 것이 있는지 회의
 ------------
 
-### 3/27 ~ 4/1
-#### RelativeLayout 변경 작업 : 김용현
-+ 이전에 구현한 xml 파일들을 적절하게 RelativeLayout 으로 변경
+### 4/9
+1. 기능 추가 논의
+    + 사용자와 사용자를 매칭하는 것을 어떤 기준으로 하면 좋을지 회의
 
-#### Database 설계 및 구현 : 조명재, 박승규
-+ 회원가입에 필요한 Database 를 설계하며 구현
-
-#### xml 및 kotlin 구현 : 윤영인
-+ Main 화면을 구현
+2. 매칭 시나리오 구성
+    1. 지도에서 사용자가 클릭하면 사용자가 설정한 거리(최소 5km)내의 사용자와 일정한 기준으로 매칭  
+    2. 매칭하여 사용자가 요청을 보내면 요청받은 사용자가 수락하면 대화방 자동으로 생성
 ------------
 
+### 4/10
+1. recommend, matching 사진 변경
+
+2. 회원가입 후 로그인하지 않고 종료 후 다시 접속 시 자동으로 회원가입한 이메일, 비밀번호로 로그인 되는 오류 수정
+------------
+
+### 5/4
+1. 애니메이션 사진 변환 확인
+    + 애니메이션 변환 과정 확인
+    + 주변에 빛이 많을 경우 변환된 사진이 약간 뭉개지는 문제 확인
+
+2. 데이터베이스 JSON 구조 설계
+    + 회원정보, 위치, 프로필, 채팅 등을 구조화
+
+3. 추천 방법 결정
+    + 머신 러닝을 활용하기 보다 반경 내의 모든 사용자를 추출하여 각 사용자가 원하는 대로 분류하는 기능 추가
+
+4. 사용자 요청, 수락 기능
+    + 사용자가 상대방으로부터 요청을 받거나 상대방에게 요청을 할 때 필요한 뷰 구조 논의
+
+5. 사용자 추천 기능
+    + 지도 API를 활용하여 사용자 추천을 어떻게 할지 논의
+------------
+
+### 5/6
+1. 프로필 세팅 과정에서 mbti, 성격, 종교, 취미 버튼을 누르면 다이얼로그로 선택한 data를 가져오도록 수정
+    + MbitActivity.kt, PersonalActivity.kt, ReligionActivity.kt, HobbyActivity.kt 제거
+    + mbti.xml, personality.xml, religion.xml, hobby.xml 제거
+
+2. 회원가입 시 Realtime Database 에서 users, profile 내에 name 대신에 uid로 교체
+
+3. 프로필 세팅 과정에서 나이 입력하는 부분 제거
+    + 회원 가입시 year-month-day 입력하는 부분에서 (현재 year) - (사용자 year) + 1 을 나이로 지정
+
+4. 프로필 화면에서 현재 로그인 한 정보를 Realtime Database 에서 이름, 소개글 등을 가져와서 동적으로 변경되도록 수정
+
+5. 프로필 사진 변경 버튼을 누르면 갤러리에 사진을 가져와서 이를 Firebase Storage 에 photo/user_uid/real.jpg 로 저장
+------------
