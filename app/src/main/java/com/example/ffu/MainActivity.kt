@@ -3,14 +3,12 @@ package com.example.ffu
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -22,10 +20,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main)
 
         auth = Firebase.auth
-
         moveHomePage(auth?.currentUser)
         signUp()
         loginStart()
+
     }
 
     private fun signUp() {
@@ -58,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun moveHomePage(user: FirebaseUser?){
         if (user != null) {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, BackgroundActivity::class.java))
         }
     }
 }
