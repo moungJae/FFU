@@ -1,4 +1,8 @@
 package com.example.ffu.chatting
 
-class ArticleModel {
-}
+data class ArticleModel (
+    val sellerId: String,
+    val title: String,
+    val createdAt: Long,
+    val price: String,
+    val imageUrl: String)
