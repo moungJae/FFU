@@ -4,10 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_id.xml" value="0.172" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_add_photo.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/checkpn.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/hobby.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/home.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/join.xml" value="0.264" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/imgtest.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/join.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/main.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/mbti.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/root.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/menu/bottom_menu.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_button.xml" value="0.1" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_id.xml" value="0.1" />
