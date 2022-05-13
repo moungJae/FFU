@@ -25,9 +25,11 @@
         </activity>
         <activity android:name=".CheckPhoneNumActivity" />
         <activity android:name=".JoinActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".ProfileSettingActivity" />
+        <!---
+        <activity android:name=".recommend.RecommendFragment" />
+        <activity android:name=".profile.ProfileActivity" />-->
+        <activity android:name=".BackgroundActivity"/>
+        <activity android:name=".profile.ProfileSettingActivity" />
     </application>
 
 </manifest>

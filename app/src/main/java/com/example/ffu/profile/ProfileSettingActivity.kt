@@ -1,44 +1,62 @@
-package com.example.ffu
+package com.example.ffu.profile
 
-import android.Manifest
 import android.app.Activity
-import android.content.ContentValues
+import android.app.job.JobInfo
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.provider.MediaStore
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Toast
+import android.os.*
+import android.util.Log
+import android.view.View
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.google.android.gms.tasks.OnFailureListener
+import com.example.ffu.CheckPhoneNumActivity
+import com.example.ffu.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import java.io.IOException
-import java.util.logging.Logger
+import java.io.*
+import java.net.Socket
+import java.text.SimpleDateFormat
 
 class ProfileSettingActivity : AppCompatActivity() {
 
-    private var auth : FirebaseAuth? = null
-    private var storage: FirebaseStorage ?= null
-    private var selectedMBTI: String ?= null
-    private var selectedReligion: String ?= null
-    private val selectedPersonality = ArrayList<String>()
-    private val selectedHobby = ArrayList<String>()
+    private lateinit var userDB: DatabaseReference
+    private lateinit var auth : FirebaseAuth
+    private lateinit var storage: FirebaseStorage
+
+    private val ip = "59.9.212.155"
+    private val port = 30000
+    private lateinit var socket: Socket
+    private lateinit var dos: DataOutputStream
+
+    private val personalities = ArrayList<String>()
+    private val hobbies = ArrayList<String>()
+    private var mbti: String = ""
+    private var religion: String = ""
+
+    private lateinit var nickname : String
+    private lateinit var job : String
+    private lateinit var introMe : String
+    private lateinit var smoke : String
+    private lateinit var drinking : String
+    private var photoCheck : Boolean = false
+
+    private lateinit var progressBar : ProgressBar
+    private lateinit var handler : Handler
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +65,13 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         auth = Firebase.auth
         storage = FirebaseStorage.getInstance()
+
+        progressBar = findViewById<ProgressBar>(R.id.profilesetting_progressBar)
+        handler = object : Handler(Looper.getMainLooper()) {
+            override fun handleMessage(msg: Message) {
+                progressBar.visibility = View.INVISIBLE
+            }
+        }
 
         setMbti()
         setPersonality()
@@ -67,19 +92,17 @@ class ProfileSettingActivity : AppCompatActivity() {
             val builder = AlertDialog.Builder(this)
                 .setTitle("자신의 MBTI를 하나 선택해주세요")
                 .setSingleChoiceItems(items, -1) { dialog, which ->
-                    selectedMBTI = items[which]
+                    mbti = items[which]
                 }
-                .setPositiveButton("선택") {dialog, which ->
-                    Toast.makeText(this, "${selectedMBTI}가 선택되었습니다.", Toast.LENGTH_SHORT).show()
-                }
+                .setPositiveButton("선택") {dialog, which -> }
                 .show()
         }
     }
 
     private fun setPersonality() {
-        val personality = findViewById<Button>(R.id.profilesetting_personalButton)
+        val personalityButton = findViewById<Button>(R.id.profilesetting_personalButton)
 
-        personality.setOnClickListener {
+        personalityButton.setOnClickListener {
             val items = arrayOf("활발한", "조용한", "엉뚱한", "진지한",
                 "자유로운", "즉흥적인", "꼼꼼한", "감성적인", "성실한",
                 "논리적인", "침착한", "자신감이 넘치는", "애교가 넘치는")
@@ -94,36 +117,33 @@ class ProfileSettingActivity : AppCompatActivity() {
                     }
                 }.setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
                     for(j in selectedItemIndex) {
-                        selectedPersonality.add(items[j])
+                        personalities.add(items[j])
                     }
-                    Toast.makeText(this, "${selectedPersonality}가 선택되었습니다.", Toast.LENGTH_SHORT)
                 }
                 .show()
         }
     }
 
     private fun setReligion() {
-        val religion = findViewById<Button>(R.id.profilesetting_religionButton)
+        val religionButton = findViewById<Button>(R.id.profilesetting_religionButton)
 
-        religion.setOnClickListener {
+        religionButton.setOnClickListener {
             val items = arrayOf("무교", "기독교", "불교", "천주교",
                 "이슬람교", "힌두교", "개신교", "기타")
             val builder = AlertDialog.Builder(this)
                 .setTitle("자신의 종교를 하나 선택해주세요")
                 .setSingleChoiceItems(items, -1) { dialog, which ->
-                    selectedReligion = items[which]
+                    religion = items[which]
                 }
-                .setPositiveButton("선택") {dialog, which ->
-                    Toast.makeText(this, "${selectedReligion}가 선택되었습니다.", Toast.LENGTH_SHORT).show()
-                }
+                .setPositiveButton("선택") {dialog, which -> }
                 .show()
         }
     }
 
     private fun setHobby() {
-        val hobby = findViewById<Button>(R.id.profilesetting_hobbyButton)
+        val hobbyButton = findViewById<Button>(R.id.profilesetting_hobbyButton)
 
-        hobby.setOnClickListener {
+        hobbyButton.setOnClickListener {
             val items = arrayOf("영화보기", "독서하기", "맛집탐방", "운동하기",
                 "캠핑하기", "운동하기", "카페가기", "등산하기", "춤추기",
                 "여행하기","쇼핑하기","산책하기","수다떨기","잠자기",
@@ -140,12 +160,33 @@ class ProfileSettingActivity : AppCompatActivity() {
                     }
                 }.setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
                     for(j in selectedItemIndex) {
-                        selectedHobby.add(items[j])
+                        hobbies.add(items[j])
                     }
-                    Toast.makeText(this, "${selectedHobby}가 선택되었습니다.", Toast.LENGTH_SHORT)
                 }
                 .show()
         }
+    }
+
+    private fun characterization() {
+        val thread : Thread = object : Thread() {
+            override fun run() {
+                // connection request to Server
+                try {
+                    socket = Socket(ip, port)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                // Write Buffer
+                try {
+                    dos = DataOutputStream(socket!!.getOutputStream())
+                    dos.writeUTF(auth?.uid.toString())
+                    Log.d("check", auth.uid.toString())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        thread.start()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -166,10 +207,11 @@ class ProfileSettingActivity : AppCompatActivity() {
                     // 이미지 회전하기
                     val newBitmap = getRotatedBitmap(bitmap, orientation)
                     imagesRef.putFile(uri).addOnSuccessListener {
+                        characterization()
+                        photoCheck = true
                         Toast.makeText(this, "사진 등록을 성공했습니다.", Toast.LENGTH_SHORT).show()
                     }.addOnFailureListener {
-                        Toast.makeText(this, "사진 등록을 실패했습니 " +
-                                ".", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "사진 등록을 실패했습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -215,11 +257,106 @@ class ProfileSettingActivity : AppCompatActivity() {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, m, true)
     }
 
+    private fun checkInformation() : Boolean {
+        val smokeGroup = findViewById<RadioGroup>(R.id.profilesetting_smoke_radioGroup)
+        val drinkingGroup = findViewById<RadioGroup>(R.id.profilesetting_drink_radioGroup)
+
+        nickname = findViewById<EditText>(R.id.profilesetting_inputnickname).text.toString()
+        job = findViewById<EditText>(R.id.profilesetting_inputjob).text.toString()
+        introMe = findViewById<EditText>(R.id.profilesetting_inputIntroduce).text.toString()
+
+        smoke = when (smokeGroup.checkedRadioButtonId) {
+            R.id.profilesetting_smoke_radioButton1 -> "비흡연"
+            R.id.profilesetting_smoke_radioButton2 -> "흡연"
+            R.id.profilesetting_smoke_radioButton3 -> "가끔"
+            else -> ""
+        }
+        drinking = when (drinkingGroup.checkedRadioButtonId) {
+            R.id.profilesetting_drink_radioButton1 -> "안함"
+            R.id.profilesetting_drink_radioButton2 -> "자주"
+            R.id.profilesetting_drink_radioButton3 -> "가끔"
+            else -> ""
+        }
+
+        if (nickname.isEmpty() || job.isEmpty() || introMe.isEmpty() || smoke.isEmpty()
+            || drinking.isEmpty() || mbti.isEmpty() || religion.isEmpty()
+            || personalities.size == 0 || hobbies.size == 0)
+            return false
+        return true
+    }
+
+    private fun insertProfileInformation() {
+        val profile = mutableMapOf<String, Any>()
+        var personality : String =  ""
+        var hobby : String = ""
+
+        for (data in personalities) {
+            personality += data
+            if (!data.equals(personalities.last())) {
+                personality += "/"
+            }
+        }
+        for (data in hobbies) {
+            hobby += data
+            if (!data.equals(hobbies.last())) {
+                hobby += "/"
+            }
+        }
+
+        userDB = Firebase.database.reference.child("profile").child(auth?.uid.toString())
+        profile["nickname"] = nickname
+        profile["job"] = job
+        profile["introMe"] = introMe
+        profile["smoke"] = smoke
+        profile["drinking"] = drinking
+        profile["mbti"] = mbti
+        profile["religion"] = religion
+        profile["personality"] = personality
+        profile["hobby"] = hobby
+        userDB.updateChildren(profile)
+    }
+
     private fun saveProfile() {
         val saveButton = findViewById<Button>(R.id.profilesetting_saveButton)
+        var insertCheck : Boolean = false
+        var i = 0
 
         saveButton.setOnClickListener {
-            finish()
+            if (checkInformation()) {
+                progressBar.visibility = View.VISIBLE
+                insertProfileInformation()
+                Thread (Runnable {
+                    while (i < 30) {
+                        userDB = Firebase.database.getReference("profile").child(auth?.uid.toString())
+                        userDB.addValueEventListener(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                for (ds in snapshot.children) {
+                                    if (ds.key.toString().equals("photo")) {
+                                        Log.d("photo => ", ds.value.toString() + i.toString())
+                                    }
+                                    if (ds.key.toString().equals("photo") && ds.value.toString().equals("true")) {
+                                        insertCheck = true
+                                    }
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {}
+                        })
+                        Thread.sleep(1000)
+                        if (insertCheck)
+                            break
+                        i++
+                    }
+                    if (insertCheck) {
+                        finish()
+                    }
+                    else {
+                        handler.handleMessage(Message())
+                    }
+                }).start()
+            }
+            else {
+                Toast.makeText(this, "정보를 완벽하게 입력해주세요!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

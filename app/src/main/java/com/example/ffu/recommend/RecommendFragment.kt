@@ -1,37 +1,27 @@
 package com.example.ffu.recommend
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import com.example.ffu.profile.ProfileActivity
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.example.ffu.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 
-class HomeActivity : AppCompatActivity() {
+class RecommendFragment : Fragment(R.layout.fragment_recommend) {
 
     private var auth : FirebaseAuth? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_home)
-
-        val profile = findViewById<Button>(R.id.home_profile)
-        val checkProfile = findViewById<Button>(R.id.home_checkprofile)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val button = view.findViewById<Button>(R.id.fragment_home_checkprofile)
 
         auth = Firebase.auth
-
-        checkProfile.setOnClickListener{
-            auth?.signOut()
-            finish()
-        }
-
-        profile.setOnClickListener {
-            val intent10 = Intent(this, ProfileActivity::class.java)
-            startActivity(intent10)
+        button.setOnClickListener {
+             auth?.signOut()
         }
     }
 }
