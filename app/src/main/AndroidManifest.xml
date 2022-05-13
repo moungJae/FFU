@@ -4,6 +4,12 @@
     <!--    갤러리 접근 권한을 얻기 위해 요청 코드 추가-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FFU">
         <activity
-            android:name=".RootActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,23 +28,11 @@
         </activity>
         <activity android:name=".CheckPhoneNumActivity" />
         <activity android:name=".JoinActivity" />
-
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".ProfileSettingActivity" />
-        <activity
-            android:name=".MbtiActivity"
-            android:noHistory="true" />
-        <activity
-            android:name=".PersonalActivity"
-            android:noHistory="true" />
-        <activity
-            android:name=".HobbyActivity"
-            android:noHistory="true" />
-        <activity
-            android:name=".ReligionActivity"
-            android:noHistory="true" />
+        <!---
+        <activity android:name=".recommend.RecommendFragment" />
+        <activity android:name=".profile.ProfileActivity" />-->
+        <activity android:name=".BackgroundActivity"/>
+        <activity android:name=".profile.ProfileSettingActivity" />
     </application>
 
 </manifest>

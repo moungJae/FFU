@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -22,8 +23,8 @@ class JoinActivity : AppCompatActivity() {
     private lateinit var userDB: DatabaseReference
     private lateinit var emailVector: Vector<String>
     private lateinit var tel: String
-    private lateinit var auth: FirebaseAuth
     private lateinit var emailValidation: String
+    private var auth : FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +45,11 @@ class JoinActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             val intent = Intent(this, CheckPhoneNumActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
-    fun getBirth() : String {
+    private fun getBirth() : String {
         val editYear = findViewById<EditText>(R.id.join_editYear)
         val editMonth = findViewById<EditText>(R.id.join_editMonth)
         val editDate = findViewById<EditText>(R.id.join_editDate)
@@ -105,10 +107,11 @@ class JoinActivity : AppCompatActivity() {
                 }
                 // 4. 전부 유효한지 아닌지 체크
                 if (validationBool) {
-                    auth.createUserWithEmailAndPassword(email, passwd)
-                        .addOnCompleteListener(this) { task ->
+                    auth?.createUserWithEmailAndPassword(email, passwd)
+                        ?.addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
                                 signUpUser(email, passwd, birth, gender, name, tel)
+                                profileSet(name, birth)
                                 finish()
                             } else {
                                 Toast.makeText(this, "이메일을 제대로 입력해주세요.", Toast.LENGTH_SHORT).show()
@@ -121,21 +124,47 @@ class JoinActivity : AppCompatActivity() {
         }
     }
 
-    fun signUpUser(email: String, passwd: String, birth: String, gender: String, name: String, tel: String) {
-        val user = mutableMapOf<String, Any>()
-        val userName = email.split("@")[0]
+    private fun profileSet(name : String, birth : String) {
+        val profile = mutableMapOf<String, Any>()
+        val currentTime = System.currentTimeMillis()
+        val age = SimpleDateFormat("yyyy-MM-dd-hh-mm")
+            .format(currentTime).split("-")[0].toInt() -
+                birth.split("-")[0].toInt() + 1
 
-        userDB = Firebase.database.reference.child("users").child(userName)
-        user["email"] = email
-        user["passwd"] = passwd
-        user["birth"] = birth
-        user["gender"] = gender
-        user["name"] = name
-        user["tel"] = tel
-        userDB.updateChildren(user)
+        userDB = Firebase.database.reference.child("profile").child(auth?.uid.toString())
+        profile["nickname"] = name
+        profile["age"] = age.toString()
+        profile["job"] = ""
+        profile["introMe"] = "자신을 소개하세요"
+        profile["smoke"] = ""
+        profile["drinking"] = ""
+        profile["mbti"] = ""
+        profile["personality"] = ""
+        profile["religion"] = ""
+        profile["hobby"] = ""
+        profile["photo"] = ""
+        userDB.updateChildren(profile)
     }
 
-    fun setUserEmail(userValueDB: DatabaseReference) {
+    private fun signUpUser(email: String, passwd: String, birth: String, gender: String, name: String, tel: String) {
+        val user = mutableMapOf<String, Any>()
+
+        auth?.signInWithEmailAndPassword(email, passwd)
+            ?.addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    userDB = Firebase.database.reference.child("users").child(auth?.uid.toString())
+                    user["email"] = email
+                    user["passwd"] = passwd
+                    user["birth"] = birth
+                    user["gender"] = gender
+                    user["name"] = name
+                    user["tel"] = tel
+                    userDB.updateChildren(user)
+                }
+            }
+    }
+
+    private fun setUserEmail(userValueDB: DatabaseReference) {
         userValueDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (ds in snapshot.children) {
@@ -149,7 +178,7 @@ class JoinActivity : AppCompatActivity() {
         })
     }
 
-    fun setUserEmails() {
+    private fun setUserEmails() {
         var userValueDB: DatabaseReference
 
         emailVector = Vector<String>()
@@ -166,7 +195,7 @@ class JoinActivity : AppCompatActivity() {
         })
     }
 
-    fun initCheckEmail() {
+    private fun initCheckEmail() {
         val editEmail = findViewById<EditText>(R.id.join_editEmail)
 
         editEmail.addTextChangedListener(object : TextWatcher {
@@ -180,7 +209,7 @@ class JoinActivity : AppCompatActivity() {
         })
     }
 
-    fun checkEmail(): Boolean {
+    private fun checkEmail(): Boolean {
         emailValidation =
             "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
         val email = findViewById<EditText>(R.id.join_editEmail).text.toString().trim() //공백제거
@@ -193,9 +222,5 @@ class JoinActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.join_editEmail).setTextColor(-65536)
             return false
         }
-
-
-
-
     }
 }

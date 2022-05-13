@@ -1,7 +1,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:width="20sp"
+        android:width="30sp"
         android:height="20sp"
-        android:drawable="@drawable/main"
-        android:title="main" />
+        android:drawable="@drawable/matching"
+        android:title="matching" />
 </layer-list>

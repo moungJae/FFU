@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/profileimageView"
+        android:layout_width="150sp"
+        android:layout_height="120sp"
+        android:src="@drawable/ffu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <Button
+            android:id="@+id/settingButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right"
+            android:background="@drawable/settingicon"
+            android:backgroundTint="@color/home_settingtIcon_color" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="80dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/box_id">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:id="@+id/profile_profileTextView"
+                android:textColor="@color/black"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="15sp"/>
+
+            <ImageView
+                android:id="@+id/profile_profileimage"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/profileimage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_profileTextView"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp"
+                android:id="@+id/profile_nickname_text"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/profile_profileimage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_profileTextView"
+                android:textColor="@color/black"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/profile_introduce"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/profile_profileimage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_nickname_text"
+                android:layout_marginTop="40dp"/>
+
+
+            <Button
+                android:layout_width="180dp"
+                android:layout_height="30dp"
+                android:id="@+id/profile_profileedit_button"
+                android:background="@drawable/box_id"
+                android:layout_gravity="bottom"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="5sp"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintStart_toEndOf="@id/profile_profileimage"
+                android:text="프로필 편집"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

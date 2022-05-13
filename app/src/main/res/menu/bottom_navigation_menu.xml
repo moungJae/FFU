@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/recommend"
+        android:icon="@drawable/menu_recommend"
+        android:title="추천"
+        />
+    <item
+        android:id="@+id/matching"
+        android:icon="@drawable/menu_matching"
+        android:title="매칭"
+        />
+    <item
+        android:id="@+id/chatting"
+        android:icon="@drawable/menu_chatting"
+        android:title="채팅"
+        />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/menu_profile"
+        android:title="프로필"
+        />
+
+</menu>
