@@ -44,6 +44,8 @@ class ProfileSettingActivity : AppCompatActivity() {
     private lateinit var socket: Socket
     private lateinit var dos: DataOutputStream
 
+    private var personalitiesAdd = false
+    private var hobbiesAdd = false
     private val personalities = ArrayList<String>()
     private val hobbies = ArrayList<String>()
     private var mbti: String = ""
@@ -110,14 +112,18 @@ class ProfileSettingActivity : AppCompatActivity() {
                         "personality" -> {
                             val personalityList = ds.value.toString().split("/")
                             for (personality in personalityList) {
-                                personalities.add(personality)
+                                if (!personalitiesAdd)
+                                    personalities.add(personality)
                             }
+                            personalitiesAdd = true
                         }
                         "hobby" -> {
                             val hobbyList = ds.value.toString().split("/")
                             for (hobby in hobbyList) {
-                                hobbies.add(hobby)
+                                if (!hobbiesAdd)
+                                    hobbies.add(hobby)
                             }
+                            hobbiesAdd = true
                         }
                     }
                 }
@@ -178,7 +184,6 @@ class ProfileSettingActivity : AppCompatActivity() {
                     i++
                 }
             }
-            personalities.clear()
             val builder = AlertDialog.Builder(this)
                 .setTitle("자신의 성격을 여러개 선택해주세요")
                 .setMultiChoiceItems(items, checkedItems){ dialogInterface: DialogInterface, i: Int, b: Boolean ->
@@ -190,6 +195,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                         selectedItemIndex.remove(i)
                     }
                 }.setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
+                    personalities.clear()
                     for(j in selectedItemIndex) {
                         personalities.add(items[j])
                     }
@@ -229,7 +235,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         hobbyButton.setOnClickListener {
             val items = arrayOf("영화보기", "독서하기", "맛집탐방", "운동하기",
-                "캠핑하기", "운동하기", "카페가기", "등산하기", "춤추기",
+                "캠핑하기", "코딩하기", "카페가기", "등산하기", "춤추기",
                 "여행하기","쇼핑하기","산책하기","수다떨기","잠자기",
                 "바둑하기", "수영하기", "악기연주", "그림그리기",
                 "글쓰기", "노래하기", "요리하기", "게임하기")
@@ -250,7 +256,6 @@ class ProfileSettingActivity : AppCompatActivity() {
                     i++
                 }
             }
-            hobbies.clear()
             val builder = AlertDialog.Builder(this)
                 .setTitle("자신의 취미를 여러개 선택해주세요")
                 .setMultiChoiceItems(items, checkedItems){ dialogInterface: DialogInterface, i: Int, b: Boolean ->
@@ -262,6 +267,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                         selectedItemIndex.remove(i)
                     }
                 }.setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
+                    hobbies.clear()
                     for(j in selectedItemIndex) {
                         hobbies.add(items[j])
                     }

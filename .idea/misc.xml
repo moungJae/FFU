@@ -42,7 +42,6 @@
         <entry key="app/src/main/res/drawable-v24/ic_baseline_person_24.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable-v24/selector_menu_color.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1065" />
-        <entry key="app/src/main/res/layout/activity_chatroom.xml" value="0.1" />
         <entry key="app/src/main/res/layout/background.xml" value="0.2726449275362319" />
         <entry key="app/src/main/res/layout/checkpn.xml" value="0.25611419677734376" />
         <entry key="app/src/main/res/layout/fragment_chatting.xml" value="0.1" />
@@ -50,8 +49,7 @@
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/ic_baseline_chat_bubble_24.xml" value="0.286231884057971" />
-        <entry key="app/src/main/res/layout/item_article.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_chat.xml" value="0.1265625" />
+        <entry key="app/src/main/res/layout/item_article.xml" value="0.1634963768115942" />
         <entry key="app/src/main/res/layout/join.xml" value="0.20316314697265625" />
         <entry key="app/src/main/res/layout/main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/mbti.xml" value="0.15520833333333334" />

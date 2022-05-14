@@ -41,7 +41,6 @@
         <activity android:name=".profile.ProfileActivity" />-->
         <activity android:name=".BackgroundActivity"/>
         <activity android:name=".profile.ProfileSettingActivity" />
-        <activity android:name=".chatdetail.ChatRoomActivity"/>
     </application>
 
 </manifest>

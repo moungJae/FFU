@@ -8,19 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.ffu.R
-import com.google.android.gms.location.*
 import com.naver.maps.map.*
 import com.naver.maps.geometry.*
 import com.naver.maps.map.overlay.*
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
-import java.util.jar.*
-import android.location.*
-import android.text.style.BackgroundColorSpan
-import com.google.type.LatLng
-import com.naver.maps.map.style.layers.CircleLayer
-
 
 class RecommendFragment : Fragment(), OnMapReadyCallback {
 
