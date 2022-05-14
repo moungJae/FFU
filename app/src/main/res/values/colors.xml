@@ -13,4 +13,10 @@
     <color name="main_text_color">#3F51B5</color>
     <color name="home_settingtIcon_color">#AAAAAA</color>
     <color name="orange">#ffaa00</color>
+
+    <!-- seunggyu -->
+    <color name = "yellow_ffd464">#ffd464</color>
+    <color name = "black_2d2d2d">#2d2d2d</color>
+    <color name = "btn_rec">#9fd6fd</color>
+
 </resources>

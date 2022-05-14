@@ -13,6 +13,10 @@ dependencyResolutionManagement {
         jcenter()
         maven { url 'https://jitpack.io' } //추가
         mavenCentral()
+        maven {
+            // naver map API
+            url 'https://naver.jfrog.io/artifactory/maven/'
+        }
     }
 }
 rootProject.name = "FFU"
