@@ -12,4 +12,5 @@
     <color name="icon_color">#FFFFFF</color>
     <color name="main_text_color">#3F51B5</color>
     <color name="home_settingtIcon_color">#AAAAAA</color>
+    <color name="orange">#ffaa00</color>
 </resources>
