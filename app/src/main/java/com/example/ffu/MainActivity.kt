@@ -26,6 +26,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
 
+        setting()
+        moveHomePage(auth?.currentUser)
+        signUp()
+        loginStart()
+    }
+
+    private fun setting() {
         auth = Firebase.auth
         progressBar = findViewById<ProgressBar>(R.id.main_progressBar)
         handler = object : Handler(Looper.getMainLooper()) {
@@ -34,9 +41,6 @@ class MainActivity : AppCompatActivity() {
                 moveHomePage(auth?.currentUser)
             }
         }
-        moveHomePage(auth?.currentUser)
-        signUp()
-        loginStart()
     }
 
     private fun signUp() {

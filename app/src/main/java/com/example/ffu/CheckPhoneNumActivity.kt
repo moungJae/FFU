@@ -13,6 +13,8 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -20,6 +22,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.net.Authenticator
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -29,13 +32,54 @@ class CheckPhoneNumActivity : AppCompatActivity() {
     private lateinit var auth : FirebaseAuth
     private lateinit var progressBar : ProgressBar
     private lateinit var handler : Handler
+
     private lateinit var emailInfo: String
     private lateinit var passwdInfo: String
+    private lateinit var authNum: String // 문자로 온 인증번호
+    private var tel: String = ""
+
+    private val etPhoneNum = MutableLiveData<String>("")
+    private val etAuthNum = MutableLiveData<String>("")
+    private val _requestAuth = SingleLiveEvent<Boolean>()
+    private val _authState = MutableLiveData<Boolean>()
+    private val _resultAuthUser = MutableLiveData<Boolean>()
+
+    val requestAuth: LiveData<Boolean> get() = _requestAuth
+    val authState: LiveData<Boolean> get() = _authState
+    val resultAuthUser: LiveData<Boolean> get() = _resultAuthUser
+
+    fun requestAuth() {
+        _requestAuth.value = !etPhoneNum.value.isNullOrBlank()
+    }
+
+    fun updateAuthState(boolean: Boolean) {
+        _authState.value = boolean
+        tel = etPhoneNum.value.toString()
+    }
+
+    fun authUser() {
+        if (this::authNum.isInitialized && authNum == etAuthNum.value.toString()) {
+            updateUserTel()
+        } else {
+            _resultAuthUser.value = false
+        }
+    }
+
+    private fun updateUserTel() {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.checkpn)
 
+        setting()
+        goHome()
+        requestVerification()
+        checkVerification()
+    }
+
+    private fun setting() {
         emailInfo = intent.getStringExtra("email").toString()
         passwdInfo = intent.getStringExtra("passwd").toString()
         auth = Firebase.auth
@@ -47,9 +91,6 @@ class CheckPhoneNumActivity : AppCompatActivity() {
                 finish()
             }
         }
-        goHome()
-        requestVerification()
-        checkVerification()
     }
 
     private fun goHome() {
@@ -75,6 +116,11 @@ class CheckPhoneNumActivity : AppCompatActivity() {
     }
 
     private fun checkVerification() {
+        val checkButton = findViewById<Button>(R.id.checkpn_checkMsg)
+        val checkEditText = findViewById<EditText>(R.id.checkpn_editMsg)
 
+        checkButton.setOnClickListener {
+
+        }
     }
 }

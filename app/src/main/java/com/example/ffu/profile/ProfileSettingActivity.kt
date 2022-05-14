@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.protobuf.Internal
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
@@ -63,9 +64,20 @@ class ProfileSettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profilesetting)
 
+        initializeInformation()
+        setMbti()
+        setPersonality()
+        setHobby()
+        setReligion()
+        setPhoto()
+        saveProfile()
+    }
+
+    private fun initializeInformation() {
+        val profile = mutableMapOf<String, Any>()
+
         auth = Firebase.auth
         storage = FirebaseStorage.getInstance()
-
         progressBar = findViewById<ProgressBar>(R.id.profilesetting_progressBar)
         handler = object : Handler(Looper.getMainLooper()) {
             override fun handleMessage(msg: Message) {
@@ -73,12 +85,45 @@ class ProfileSettingActivity : AppCompatActivity() {
             }
         }
 
-        setMbti()
-        setPersonality()
-        setHobby()
-        setReligion()
-        setPhoto()
-        saveProfile()
+        userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
+        profile["photo"] = "false"
+        userDB.updateChildren(profile)
+        userDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (ds in snapshot.children) {
+                    when (ds.key.toString()) {
+                        "nickname" -> findViewById<EditText>(R.id.profilesetting_inputnickname).setText(ds.value.toString())
+                        "job" -> findViewById<EditText>(R.id.profilesetting_inputjob).setText(ds.value.toString())
+                        "introMe" -> findViewById<EditText>(R.id.profilesetting_inputIntroduce).setText(ds.value.toString())
+                        "smoke" -> when(ds.value.toString()) {
+                            "비흡연" -> findViewById<RadioButton>(R.id.profilesetting_smoke_radioButton1).isChecked = true
+                            "흡연" -> findViewById<RadioButton>(R.id.profilesetting_smoke_radioButton2).isChecked = true
+                            "가끔" -> findViewById<RadioButton>(R.id.profilesetting_smoke_radioButton3).isChecked = true
+                        }
+                        "drinking" -> when(ds.value.toString()) {
+                            "안함" -> findViewById<RadioButton>(R.id.profilesetting_drink_radioButton1).isChecked = true
+                            "자주" -> findViewById<RadioButton>(R.id.profilesetting_drink_radioButton2).isChecked = true
+                            "가끔" -> findViewById<RadioButton>(R.id.profilesetting_drink_radioButton3).isChecked = true
+                        }
+                        "mbti" -> mbti = ds.value.toString()
+                        "religion" -> religion = ds.value.toString()
+                        "personality" -> {
+                            val personalityList = ds.value.toString().split("/")
+                            for (personality in personalityList) {
+                                personalities.add(personality)
+                            }
+                        }
+                        "hobby" -> {
+                            val hobbyList = ds.value.toString().split("/")
+                            for (hobby in hobbyList) {
+                                hobbies.add(hobby)
+                            }
+                        }
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 
     private fun setMbti() {
@@ -89,9 +134,20 @@ class ProfileSettingActivity : AppCompatActivity() {
                 "ENTP", "ENFP", "ESFP", "ESTP",
                 "INTP", "INFP", "ISFP", "ISTP",
                 "ISTJ", "ISFJ", "INFJ", "INTJ")
+            var checkedItem = -1
+            var i = 0
+
+            for (item in items) {
+                if (mbti.equals(item)) {
+                   checkedItem = i
+                   break
+                }
+                i++
+            }
+
             val builder = AlertDialog.Builder(this)
                 .setTitle("자신의 MBTI를 하나 선택해주세요")
-                .setSingleChoiceItems(items, -1) { dialog, which ->
+                .setSingleChoiceItems(items, checkedItem) { dialog, which ->
                     mbti = items[which]
                 }
                 .setPositiveButton("선택") {dialog, which -> }
@@ -106,13 +162,31 @@ class ProfileSettingActivity : AppCompatActivity() {
             val items = arrayOf("활발한", "조용한", "엉뚱한", "진지한",
                 "자유로운", "즉흥적인", "꼼꼼한", "감성적인", "성실한",
                 "논리적인", "침착한", "자신감이 넘치는", "애교가 넘치는")
+            val checkedItems = booleanArrayOf(false, false, false, false,
+                false, false, false, false, false,
+                false, false, false, false)
             val selectedItemIndex = ArrayList<Int>()
+
+            for (personality in personalities) {
+                var i = 0
+                for (item in items) {
+                    if (personality.equals(item)) {
+                        checkedItems[i] = true
+                        selectedItemIndex.add(i)
+                        break
+                    }
+                    i++
+                }
+            }
+            personalities.clear()
             val builder = AlertDialog.Builder(this)
                 .setTitle("자신의 성격을 여러개 선택해주세요")
-                .setMultiChoiceItems(items, null){ dialogInterface: DialogInterface, i: Int, b: Boolean ->
+                .setMultiChoiceItems(items, checkedItems){ dialogInterface: DialogInterface, i: Int, b: Boolean ->
                     if(b){
+                        checkedItems[i] = true
                         selectedItemIndex.add(i)
                     } else if(selectedItemIndex.contains(i)){
+                        checkedItems[i] = false
                         selectedItemIndex.remove(i)
                     }
                 }.setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
@@ -130,9 +204,19 @@ class ProfileSettingActivity : AppCompatActivity() {
         religionButton.setOnClickListener {
             val items = arrayOf("무교", "기독교", "불교", "천주교",
                 "이슬람교", "힌두교", "개신교", "기타")
+            var checkedItem = -1
+            var i = 0
+
+            for (item in items) {
+                if (religion.equals(item)) {
+                    checkedItem = i
+                    break
+                }
+                i++
+            }
             val builder = AlertDialog.Builder(this)
                 .setTitle("자신의 종교를 하나 선택해주세요")
-                .setSingleChoiceItems(items, -1) { dialog, which ->
+                .setSingleChoiceItems(items, checkedItem) { dialog, which ->
                     religion = items[which]
                 }
                 .setPositiveButton("선택") {dialog, which -> }
@@ -149,13 +233,32 @@ class ProfileSettingActivity : AppCompatActivity() {
                 "여행하기","쇼핑하기","산책하기","수다떨기","잠자기",
                 "바둑하기", "수영하기", "악기연주", "그림그리기",
                 "글쓰기", "노래하기", "요리하기", "게임하기")
+            val checkedItems = booleanArrayOf(false, false, false, false, false,
+                false, false, false, false, false, false,
+                false, false, false, false, false, false,
+                false, false, false, false, false)
             val selectedItemIndex = ArrayList<Int>()
+
+            for (hobby in hobbies) {
+                var i = 0
+                for (item in items) {
+                    if (hobby.equals(item)) {
+                        checkedItems[i] = true
+                        selectedItemIndex.add(i)
+                        break
+                    }
+                    i++
+                }
+            }
+            hobbies.clear()
             val builder = AlertDialog.Builder(this)
                 .setTitle("자신의 취미를 여러개 선택해주세요")
-                .setMultiChoiceItems(items, null){ dialogInterface: DialogInterface, i: Int, b: Boolean ->
+                .setMultiChoiceItems(items, checkedItems){ dialogInterface: DialogInterface, i: Int, b: Boolean ->
                     if(b){
+                        checkedItems[i] = true
                         selectedItemIndex.add(i)
-                    } else if(selectedItemIndex.contains(i)){
+                    } else if(selectedItemIndex.contains(i)) {
+                        checkedItems[i] = false
                         selectedItemIndex.remove(i)
                     }
                 }.setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
@@ -180,7 +283,6 @@ class ProfileSettingActivity : AppCompatActivity() {
                 try {
                     dos = DataOutputStream(socket!!.getOutputStream())
                     dos.writeUTF(auth?.uid.toString())
-                    Log.d("check", auth.uid.toString())
                 } catch (e: IOException) {
                     e.printStackTrace()
                 }
@@ -280,7 +382,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         if (nickname.isEmpty() || job.isEmpty() || introMe.isEmpty() || smoke.isEmpty()
             || drinking.isEmpty() || mbti.isEmpty() || religion.isEmpty()
-            || personalities.size == 0 || hobbies.size == 0)
+            || personalities.size == 0 || hobbies.size == 0 || !photoCheck)
             return false
         return true
     }
@@ -331,9 +433,6 @@ class ProfileSettingActivity : AppCompatActivity() {
                         userDB.addValueEventListener(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 for (ds in snapshot.children) {
-                                    if (ds.key.toString().equals("photo")) {
-                                        Log.d("photo => ", ds.value.toString() + i.toString())
-                                    }
                                     if (ds.key.toString().equals("photo") && ds.value.toString().equals("true")) {
                                         insertCheck = true
                                     }

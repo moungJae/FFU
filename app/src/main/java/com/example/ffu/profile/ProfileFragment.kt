@@ -15,21 +15,25 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
     private lateinit var userDB: DatabaseReference
-    private var auth : FirebaseAuth? = null
+    private lateinit var auth : FirebaseAuth
+    private lateinit var storage: FirebaseStorage
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         auth = Firebase.auth
+        storage = FirebaseStorage.getInstance()
+
         setProfile(view)
         editProfile(view)
     }
 
     private fun setProfile(view: View) {
-        var userValueDB: DatabaseReference
         val introMe = view.findViewById<TextView>(R.id.profile_introduce)
         val nickname = view.findViewById<TextView>(R.id.profile_nickname_text)
 

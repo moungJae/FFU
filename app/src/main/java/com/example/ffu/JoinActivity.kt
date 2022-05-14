@@ -37,6 +37,14 @@ class JoinActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.join)
 
+        setting()
+        setUserEmails()
+        goHome()
+        initJoin()
+        initCheckEmail()
+    }
+
+    private fun setting() {
         auth = Firebase.auth
         progressBar = findViewById<ProgressBar>(R.id.join_progressBar)
         handler = object : Handler(Looper.getMainLooper()) {
@@ -49,10 +57,6 @@ class JoinActivity : AppCompatActivity() {
                 finish()
             }
         }
-        setUserEmails()
-        goHome()
-        initJoin()
-        initCheckEmail()
     }
 
     private fun goHome() {
