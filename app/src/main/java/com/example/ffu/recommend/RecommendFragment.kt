@@ -34,7 +34,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        
         // map 생성
         var rootview = inflater.inflate(R.layout.fragment_recommend, container, false)
 
