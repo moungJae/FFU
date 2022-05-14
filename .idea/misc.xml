@@ -5,9 +5,12 @@
       <map>
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_id.xml" value="0.172" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/rect_round_ffd464_radius_8.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/rect_round_white_radius_30.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_add_photo.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/checkpn.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_recommend.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/hobby.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/home.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/imgtest.xml" value="0.1" />
@@ -16,55 +19,29 @@
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/mbti.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/root.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/menu/bottom_menu.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.18" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.18" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_button.xml" value="0.1" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_id.xml" value="0.1" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/font/font.xml" value="0.25" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_main.xml" value="0.22146739130434784" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_photo.xml" value="0.2" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/checkpn.xml" value="0.264" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/hobby.xml" value="0.24682971014492755" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/home.xml" value="0.264" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/item_photo.xml" value="0.264" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/home.xml" value="0.1" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/join.xml" value="0.25" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/main.xml" value="0.264" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/mbti.xml" value="0.24682971014492755" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/personality.xml" value="0.24682971014492755" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/profile.xml" value="0.264" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/profilesetting.xml" value="0.264" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/religion.xml" value="0.2536231884057971" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/root.xml" value="0.3477508650519031" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/menu/bottom_menu.xml" value="0.1" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/menu/menu_chatting.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/menu/menu_main.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/menu/menu_profile.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/menu/menu_recommend.xml" value="0.25364583333333335" />
         <entry key="app/src/main/res/drawable-v24/box_button.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable-v24/ic_baseline_home_24.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable-v24/ic_baseline_person_24.xml" value="0.2075" />
-        <entry key="app/src/main/res/drawable-v24/selector_menu_color.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1065" />
-        <entry key="app/src/main/res/layout/background.xml" value="0.2726449275362319" />
         <entry key="app/src/main/res/layout/checkpn.xml" value="0.25611419677734376" />
-        <entry key="app/src/main/res/layout/fragment_chatting.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.14583333333333334" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/home.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/ic_baseline_chat_bubble_24.xml" value="0.286231884057971" />
-        <entry key="app/src/main/res/layout/item_article.xml" value="0.1634963768115942" />
-        <entry key="app/src/main/res/layout/join.xml" value="0.20316314697265625" />
-        <entry key="app/src/main/res/layout/main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/home.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layout/join.xml" value="0.5221847534179688" />
+        <entry key="app/src/main/res/layout/main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/mbti.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/personality.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/profile.xml" value="0.2641509433962264" />
-        <entry key="app/src/main/res/layout/profilesetting.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/profilesetting.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/religion.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/root.xml" value="0.15520833333333334" />
-        <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_chatting.xml" value="0.1" />
-        <entry key="app/src/main/res/menu/menu_main.xml" value="0.18888888888888888" />
-        <entry key="app/src/main/res/menu/menu_matching.xml" value="0.2953125" />
-        <entry key="app/src/main/res/menu/menu_profile.xml" value="0.18888888888888888" />
-        <entry key="app/src/main/res/menu/menu_recommend.xml" value="0.18888888888888888" />
       </map>
     </option>
   </component>
