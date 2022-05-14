@@ -5,12 +5,16 @@
       <map>
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_id.xml" value="0.172" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_add_photo.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/rect_round_ffd464_radius_8.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/rect_round_white_radius_30.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_add_photo.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/checkpn.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_recommend.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/hobby.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/hobby.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/home.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/imgtest.xml" value="0.1" />
@@ -41,7 +45,12 @@
         <entry key="app/src/main/res/layout/profilesetting.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/religion.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/root.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_chatting.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/menu_main.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/menu/menu_matching.xml" value="0.2953125" />
+        <entry key="app/src/main/res/menu/menu_profile.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/menu/menu_recommend.xml" value="0.18888888888888888" />
       </map>
     </option>
   </component>
