@@ -5,88 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--    <fragment-->
+    <!--        android:id="@+id/mapView"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:name="com.naver.maps.map.MapFragment"/>-->
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="확인용"
-        android:id="@+id/fragment_home_checkprofile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        />
-
-    <!--
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.naver.maps.map.MapView
+        android:id="@+id/mapView"
+        android:name="com.naver.maps.map.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="50sp"
-        android:orientation="horizontal"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="match_parent" />
 
-        <Button
-            android:id="@+id/home_recommend"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableTop="@menu/menu_recommend"
-            android:background="@color/button_color"
-            android:gravity="center"
-            android:text="recommend"
-            android:textSize="10sp"
-            android:paddingTop="6sp"
+    <TextView
+        android:layout_width="188dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/rect_round_white_radius_30"
+        android:gravity="center"
+        android:text="@string/text_move_map_set_location"
+        android:textColor="@color/black_2d2d2d"
+        android:textSize="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintWidth_percent="0.25">
-        </Button>
-        <Button
-            android:id="@+id/home_matching"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableTop="@menu/menu_matching"
-            android:gravity="center"
-            android:text="matching"
-            android:textSize="10sp"
-            android:background="@color/button_color"
-            android:paddingTop="6sp"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/home_recommend"
-            app:layout_constraintWidth_percent="0.25">
-        </Button>
-        <Button
-            android:id="@+id/home_chatting"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableTop="@menu/menu_chatting"
-            android:gravity="center"
-            android:text="chatting"
-            android:textSize="10sp"
-            android:background="@color/button_color"
-            android:paddingTop="6sp"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/home_matching"
-            app:layout_constraintWidth_percent="0.25">
-        </Button>
-        <Button
-            android:id="@+id/home_profile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawableTop="@menu/menu_profile"
-            android:gravity="center"
-            android:text="profile"
-            android:textSize="10sp"
-            android:paddingTop="6sp"
-            android:background="@color/button_color"
-
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/home_chatting"
-            app:layout_constraintWidth_percent="0.25">
-        </Button>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <!--<androidx.appcompat.widget.AppCompatButton -->
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/rect_round_ffd464_radius_8"
+        android:text="@string/confirm_text"
+        android:textColor="@color/black"
+        android:textSize="14dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
