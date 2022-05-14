@@ -6,9 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ffu.R
-import com.example.ffu.recommend.RecommendFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -23,7 +21,6 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
     private lateinit var userDB: DatabaseReference
     private var auth : FirebaseAuth? = null
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         auth = Firebase.auth
@@ -31,10 +28,9 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         editProfile(view)
     }
 
-
     private fun setProfile(view: View) {
         var userValueDB: DatabaseReference
-        var introMe = view.findViewById<TextView>(R.id.profile_introduce)
+        val introMe = view.findViewById<TextView>(R.id.profile_introduce)
         val nickname = view.findViewById<TextView>(R.id.profile_nickname_text)
 
         userDB = Firebase.database.getReference("profile").child(auth?.uid.toString())

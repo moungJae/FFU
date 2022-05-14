@@ -20,7 +20,6 @@ class BackgroundActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.background)
 
-
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         val recommendFragment = RecommendFragment()
         val profileFragment = ProfileFragment()
@@ -28,7 +27,6 @@ class BackgroundActivity : AppCompatActivity() {
 
         //처음 시작화면
         replaceFragment(recommendFragment)
-
 
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when(it.itemId){

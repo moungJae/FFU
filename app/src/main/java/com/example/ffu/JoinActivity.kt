@@ -2,8 +2,12 @@ package com.example.ffu
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -22,29 +26,39 @@ class JoinActivity : AppCompatActivity() {
 
     private lateinit var userDB: DatabaseReference
     private lateinit var emailVector: Vector<String>
-    private lateinit var tel: String
     private lateinit var emailValidation: String
-    private var auth : FirebaseAuth? = null
+    private lateinit var auth : FirebaseAuth
+    private lateinit var progressBar : ProgressBar
+    private lateinit var handler : Handler
+    private lateinit var emailInfo: String
+    private lateinit var passwdInfo: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.join)
 
-        tel = getIntent().getStringExtra("tel").toString()
         auth = Firebase.auth
-
+        progressBar = findViewById<ProgressBar>(R.id.join_progressBar)
+        handler = object : Handler(Looper.getMainLooper()) {
+            override fun handleMessage(msg: Message) {
+                val intent = Intent(this@JoinActivity, CheckPhoneNumActivity::class.java)
+                progressBar?.visibility = View.INVISIBLE
+                intent.putExtra("email", emailInfo)
+                intent.putExtra("passwd", passwdInfo)
+                startActivity(intent)
+                finish()
+            }
+        }
         setUserEmails()
-        initBackButton()
-        initJoinButton()
+        goHome()
+        initJoin()
         initCheckEmail()
     }
 
-    private fun initBackButton() {
+    private fun goHome() {
         val backButton = findViewById<Button>(R.id.join_backButton)
 
         backButton.setOnClickListener {
-            val intent = Intent(this, CheckPhoneNumActivity::class.java)
-            startActivity(intent)
             finish()
         }
     }
@@ -57,7 +71,7 @@ class JoinActivity : AppCompatActivity() {
         return editYear.text.toString() + "-" + editMonth.text.toString() + "-" + editDate.text.toString()
     }
 
-    private fun initJoinButton() {
+    private fun initJoin() {
         val joinButton = findViewById<Button>(R.id.join_joinButton)
         val genderRadio = findViewById<RadioGroup>(R.id.join_genderRadio)
 
@@ -66,10 +80,13 @@ class JoinActivity : AppCompatActivity() {
             var genderCheck: Int = 0 // 1 : 남자, 2 : 여자
             var gender: String = ""
             val name: String = findViewById<EditText>(R.id.join_editName).text.toString()
-            val email: String = findViewById<EditText>(R.id.join_editEmail).text.toString()
-            val passwd: String = findViewById<EditText>(R.id.join_editPW).text.toString()
             val checkPW: String = findViewById<EditText>(R.id.join_editCheckPW).text.toString()
             val birth: String = getBirth()
+            val email: String = findViewById<EditText>(R.id.join_editEmail).text.toString()
+            val passwd: String = findViewById<EditText>(R.id.join_editPW).text.toString()
+
+            emailInfo = email
+            passwdInfo = passwd
 
             // 0. email 형식 체크
             if (!checkEmail()) { //틀린 경우
@@ -88,7 +105,7 @@ class JoinActivity : AppCompatActivity() {
                     }
                 }
                 // 2. 패스워드 check
-                if (!passwd.equals(checkPW)) {
+                if (!passwd.equals(checkPW) || passwd.length < 6) {
                     findViewById<EditText>(R.id.join_editCheckPW).setText("")
                     validationBool = false
                 }
@@ -110,9 +127,12 @@ class JoinActivity : AppCompatActivity() {
                     auth?.createUserWithEmailAndPassword(email, passwd)
                         ?.addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
-                                signUpUser(email, passwd, birth, gender, name, tel)
-                                profileSet(name, birth)
-                                finish()
+                                progressBar?.visibility = View.VISIBLE
+                                signUpUser(email, passwd, birth, gender, name)
+                                Thread (Runnable {
+                                    Thread.sleep(3000)
+                                    handler?.handleMessage(Message())
+                                }).start()
                             } else {
                                 Toast.makeText(this, "이메일을 제대로 입력해주세요.", Toast.LENGTH_SHORT).show()
                             }
@@ -124,30 +144,13 @@ class JoinActivity : AppCompatActivity() {
         }
     }
 
-    private fun profileSet(name : String, birth : String) {
+    private fun signUpUser(email: String, passwd: String, birth: String, gender: String, name: String) {
+        val user = mutableMapOf<String, Any>()
         val profile = mutableMapOf<String, Any>()
         val currentTime = System.currentTimeMillis()
         val age = SimpleDateFormat("yyyy-MM-dd-hh-mm")
             .format(currentTime).split("-")[0].toInt() -
                 birth.split("-")[0].toInt() + 1
-
-        userDB = Firebase.database.reference.child("profile").child(auth?.uid.toString())
-        profile["nickname"] = name
-        profile["age"] = age.toString()
-        profile["job"] = ""
-        profile["introMe"] = "자신을 소개하세요"
-        profile["smoke"] = ""
-        profile["drinking"] = ""
-        profile["mbti"] = ""
-        profile["personality"] = ""
-        profile["religion"] = ""
-        profile["hobby"] = ""
-        profile["photo"] = ""
-        userDB.updateChildren(profile)
-    }
-
-    private fun signUpUser(email: String, passwd: String, birth: String, gender: String, name: String, tel: String) {
-        val user = mutableMapOf<String, Any>()
 
         auth?.signInWithEmailAndPassword(email, passwd)
             ?.addOnCompleteListener(this) { task ->
@@ -158,8 +161,21 @@ class JoinActivity : AppCompatActivity() {
                     user["birth"] = birth
                     user["gender"] = gender
                     user["name"] = name
-                    user["tel"] = tel
                     userDB.updateChildren(user)
+
+                    userDB = Firebase.database.reference.child("profile").child(auth?.uid.toString())
+                    profile["nickname"] = name
+                    profile["age"] = age.toString()
+                    profile["job"] = ""
+                    profile["introMe"] = "자신을 소개하세요"
+                    profile["smoke"] = ""
+                    profile["drinking"] = ""
+                    profile["mbti"] = ""
+                    profile["personality"] = ""
+                    profile["religion"] = ""
+                    profile["hobby"] = ""
+                    profile["photo"] = "false"
+                    userDB.updateChildren(profile)
                 }
             }
     }

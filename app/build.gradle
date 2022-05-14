@@ -8,6 +8,9 @@ plugins {
 
 android {
     compileSdk 32
+    task wrapper(type: Wrapper) {
+        gradleVersion = '7.0'
+    }
     defaultConfig {
         applicationId "com.example.ffu"
         minSdk 23
@@ -43,6 +46,7 @@ android {
 
 dependencies {
 
+    implementation 'com.google.firebase:firebase-messaging:23.0.4'
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
