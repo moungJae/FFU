@@ -2,32 +2,35 @@ package com.example.ffu.chatting
 
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ffu.R
 import com.example.ffu.databinding.ItemArticleBinding
 import com.example.ffu.chatting.ArticleModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ArticleAdapter : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder>(diffUtil) {
 
-    inner class ViewHolder(private val binding: ItemArticleBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(articleModel: ArticleModel) {
-            val format = SimpleDateFormat("MM월 dd일")
-            val date = Date(articleModel.createdAt)
-
-            binding.titleTextView.text = articleModel.title
-            binding.dateTextView.text = format.format(date).toString()
-            binding.priceTextView.text = articleModel.price
+class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder>(diffUtil) {
+    inner class ViewHolder(private val binding: ItemArticleBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(articleModel: ArticleModel){
+            binding.itemArticleName.text=articleModel.Name
+            binding.itemArticleGender.text=articleModel.Gender
+            binding.itemArticleBirth.text=articleModel.Birth
 
             if (articleModel.imageUrl.isNotEmpty()) {
                 Glide.with(binding.thumbnailImageView)
                     .load(articleModel.imageUrl)
                     .into(binding.thumbnailImageView)
+            }
+
+            binding.root.setOnClickListener {
+                onItemClicked(articleModel)
             }
         }
     }
@@ -43,13 +46,12 @@ class ArticleAdapter : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder>(diff
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<ArticleModel>() {
             override fun areItemsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
-                return oldItem.createdAt == newItem.createdAt //createdAt을 key값으로
+                return oldItem.Id == newItem.Id
             }
 
             override fun areContentsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 
