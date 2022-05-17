@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
+        startService(Intent(this, ForecdTerminationService::class.java))
 
         setting()
         moveHomePage(auth?.currentUser)

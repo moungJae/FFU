@@ -7,6 +7,7 @@ import android.os.Looper
 import android.os.Message
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -134,7 +135,7 @@ class JoinActivity : AppCompatActivity() {
                                 progressBar?.visibility = View.VISIBLE
                                 signUpUser(email, passwd, birth, gender, name)
                                 Thread (Runnable {
-                                    Thread.sleep(3000)
+                                    Thread.sleep(2000)
                                     handler?.handleMessage(Message())
                                 }).start()
                             } else {
