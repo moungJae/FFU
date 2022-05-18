@@ -13,6 +13,7 @@
     <color name="main_text_color">#3F51B5</color>
     <color name="home_settingtIcon_color">#AAAAAA</color>
     <color name="orange">#ffaa00</color>
+    <color name = "transparent">#00000000</color>
 
     <!-- seunggyu -->
     <color name = "yellow_ffd464">#ffd464</color>
