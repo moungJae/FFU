@@ -23,7 +23,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FFU">
-
+<!--        <service-->
+<!--            android:name="  "-->
+<!--            android:foregroundServiceType="location"-->
+<!--            android:exported="false"/>-->
         <service android:name=".ForecdTerminationService"
             android:stopWithTask="false" />
 
