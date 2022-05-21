@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_radius_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:paddingHorizontal="50dp"
+    android:paddingVertical="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/dialog_check_animation_photo"
+            android:layout_width="150sp"
+            android:layout_height="150sp"
+            android:background="@drawable/profile"
+            android:textColor="@color/main_text_color"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dialog_check_animation_save"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/save"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:background="#3F51B5"
+            app:layout_constraintTop_toBottomOf="@id/dialog_check_animation_photo" />
+
+        <Button
+            android:id="@+id/dialog_check_animation_cancel"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/cancel"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:background="#3F51B5"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
+
+</LinearLayout>

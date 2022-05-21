@@ -33,7 +33,7 @@
             android:value="@string/naver_map_client_id" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".CheckJoinActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,11 +41,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CheckPhoneNumActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".JoinActivity" />
         <!---
         <activity android:name=".recommend.RecommendFragment" />
-        <activity android:name=".profile.ProfileActivity" />-->
+        <activity android:name=".profile.ProfileSettingActivity" />-->
         <activity android:name=".BackgroundActivity"/>
         <activity android:name=".profile.ProfileSettingActivity" />
         <activity android:name=".chatdetail.ChatRoomActivity"/>

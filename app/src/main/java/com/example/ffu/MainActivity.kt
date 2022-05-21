@@ -1,84 +1,124 @@
 package com.example.ffu
 
-import android.app.ProgressDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Message
 import android.util.Log
 import android.view.View
-import android.widget.*
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.main.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var userDB: DatabaseReference
     private lateinit var auth : FirebaseAuth
+    private lateinit var phoneAuthCredential: PhoneAuthCredential
+    private lateinit var verificationId : String
     private lateinit var progressBar : ProgressBar
-    private lateinit var handler : Handler
+    private lateinit var phoneNumber: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
-        startService(Intent(this, ForecdTerminationService::class.java))
 
-        setting()
-        moveHomePage(auth?.currentUser)
-        signUp()
-        loginStart()
+        initialSetting()
+        requestVerification()
+        checkVerification()
+        completeVerification()
     }
 
-    private fun setting() {
+    private fun initialSetting() {
         auth = Firebase.auth
         progressBar = findViewById<ProgressBar>(R.id.main_progressBar)
-        handler = object : Handler(Looper.getMainLooper()) {
-            override fun handleMessage(msg: Message) {
-                progressBar?.visibility = View.INVISIBLE
-                moveHomePage(auth?.currentUser)
+    }
+
+    private fun requestVerification() {
+        val phoneEditText = findViewById<EditText>(R.id.main_editPhone)
+        val requestButton = findViewById<Button>(R.id.main_requestButton)
+        val verificationEditText = findViewById<EditText>(R.id.main_editVerificationNum)
+        val checkVerificationButton = findViewById<Button>(R.id.main_checkVerification)
+        val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            override fun onVerificationCompleted(p0: PhoneAuthCredential) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onVerificationFailed(p0: FirebaseException) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
+                this@MainActivity.verificationId = verificationId
+                verificationEditText.isEnabled = true
+                checkVerificationButton.isEnabled = true
             }
         }
-    }
 
-    private fun signUp() {
-        val signUpButton = findViewById<Button>(R.id.main_signUpButton)
+        requestButton.setOnClickListener {
+            var phoneNum = phoneEditText.text.toString()
 
-        signUpButton.setOnClickListener {
-            startActivity(Intent(this, JoinActivity::class.java))
+            phoneNumber = phoneNum
+            phoneNum = "+82" + phoneNum.substring(1, phoneNum.length)
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNum,
+                90,
+                TimeUnit.SECONDS,
+                this,
+                callbacks )
         }
     }
 
-    private fun loginStart() {
-        val startButton = findViewById<Button>(R.id.main_startButton)
+    private fun checkVerification() {
+        val verificationEditText = findViewById<EditText>(R.id.main_editVerificationNum)
+        val checkVerificationButton = findViewById<Button>(R.id.main_checkVerification)
+        val joinButton = findViewById<Button>(R.id.main_joinButton)
+        var myVerification : String
 
-        startButton.setOnClickListener {
-            val email = findViewById<EditText>(R.id.main_editEmail).text.toString()
-            val password = findViewById<EditText>(R.id.main_editPassword).text.toString()
-
-            if (email.length > 0 && password.length > 0) {
-                auth?.signInWithEmailAndPassword(email, password)
-                    ?.addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            progressBar?.visibility = View.VISIBLE
-                            Thread (Runnable {
-                                Thread.sleep(3000)
-                                handler?.handleMessage(Message())
-                            }).start()
-                        } else {
-                            Toast.makeText(this, "로그인을 실패하셨습니다.", Toast.LENGTH_SHORT).show()
-                        }
+        checkVerificationButton.setOnClickListener {
+            myVerification = verificationEditText.text.toString()
+            phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, myVerification)
+            Log.d("phoneAuthCredential", phoneAuthCredential.toString())
+            auth.signInWithCredential(phoneAuthCredential)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        val profile = mutableMapOf<String, Any>()
+                        Toast.makeText(this, "인증 성공! 다음 버튼을 누르세요", Toast.LENGTH_SHORT).show()
+                        joinButton.isEnabled = true
+                        userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
+                        profile["tel"] = phoneNumber
+                        profile["join"] = "false"
+                        userDB.updateChildren(profile)
+                    } else {
+                        Toast.makeText(this, "인증 실패! 인증 번호를 다시 확인하세요", Toast.LENGTH_SHORT).show()
                     }
-            }
+                }
         }
     }
 
-    private fun moveHomePage(user: FirebaseUser?){
-        if (user != null) {
-            startActivity(Intent(this, BackgroundActivity::class.java))
+    private fun completeVerification() {
+        val joinButton = findViewById<Button>(R.id.main_joinButton)
+
+        joinButton.setOnClickListener {
+            progressBar.visibility = View.VISIBLE
+            Thread(Runnable {
+                Thread.sleep(1500)
+                Handler(Looper.getMainLooper()).post {
+                    progressBar.visibility = View.INVISIBLE
+                    val intent = Intent(this@MainActivity, CheckJoinActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+            }).start()
         }
     }
 }

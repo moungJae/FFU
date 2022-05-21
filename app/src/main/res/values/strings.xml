@@ -13,6 +13,9 @@
     <string name="male">남성</string>
     <string name="female">여성</string>
     <string name="join">회원가입</string>
+    <string name="choice">선택</string>
+    <string name="cancel">취소</string>
+    <string name="save">완료</string>
 
     <string name="HOME">HOME</string>
     <string name="identity_verification">본인 인증</string>
@@ -36,6 +39,8 @@
     <string name="Friends_For_U">Friends For U</string>
     <string name="EMAIL">이메일</string>
     <string name="email">이메일</string>
+    <string name="next_screen">다음 화면</string>
+    <string name="next">다음</string>
 
     <!-- seunggyu -->
     <string name = "confirm_text">추천 받기</string>

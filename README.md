@@ -80,36 +80,42 @@
 ------------
 
 ### 5/4
-1. 애니메이션 사진 변환 확인
+1. Animation 사진 변환 확인
     + 애니메이션 변환 과정 확인
     + 주변에 빛이 많을 경우 변환된 사진이 약간 뭉개지는 문제 확인
 
-2. 데이터베이스 JSON 구조 설계
+2. Database JSON 구조 설계
     + 회원정보, 위치, 프로필, 채팅 등을 구조화
 
-3. 추천 방법 결정
+3. Recommend 방법 결정
     + 머신 러닝을 활용하기 보다 반경 내의 모든 사용자를 추출하여 각 사용자가 원하는 대로 분류하는 기능 추가
 
-4. 사용자 요청, 수락 기능
+4. User request, accept 기능
     + 사용자가 상대방으로부터 요청을 받거나 상대방에게 요청을 할 때 필요한 뷰 구조 논의
 
-5. 사용자 추천 기능
+5. User recommend 기능
     + 지도 API를 활용하여 사용자 추천을 어떻게 할지 논의
 ------------
 
 ### 5/6
-1. 프로필 세팅 과정에서 mbti, 성격, 종교, 취미 버튼을 누르면 다이얼로그로 선택한 data를 가져오도록 수정
+1. Profile 세팅 과정에서 mbti, personality, religion, hobby 버튼을 누르면 dialog로 선택한 data를 가져오도록 수정
     + MbitActivity.kt, PersonalActivity.kt, ReligionActivity.kt, HobbyActivity.kt 제거
     + mbti.xml, personality.xml, religion.xml, hobby.xml 제거
 
 2. 회원가입 시 Realtime Database 에서 users, profile 내에 name 대신에 uid로 교체
 
-3. 프로필 세팅 과정에서 나이 입력하는 부분 제거
+3. Profile 세팅 과정에서 나이 입력하는 부분 제거
     + 회원 가입시 year-month-day 입력하는 부분에서 (현재 year) - (사용자 year) + 1 을 나이로 지정
 
-4. 프로필 화면에서 현재 로그인 한 정보를 Realtime Database 에서 이름, 소개글 등을 가져와서 동적으로 변경되도록 수정
+4. Profile 화면에서 현재 로그인 한 정보를 Realtime Database 에서 이름, 소개글 등을 가져와서 동적으로 변경되도록 수정
 
-5. 프로필 사진 변경 버튼을 누르면 갤러리에 사진을 가져와서 이를 Firebase Storage 에 photo/user_uid/real.jpg 로 저장
+5. Profile 사진 변경 버튼을 누르면 갤러리에 사진을 가져와서 이를 Firebase Storage 에 photo/user_uid/real.jpg 로 저장
+------------
+
+### 5/11
+1. Animation-Server 에서 사용자의 request 처리
+    + 다른 서비스를 이용하는 것이 아닌 public IP를 이용하고 pc를 서버로 사용
+    + server 측에서는 private IP를, client 측에서는 public IP를 사용
 ------------
 
 ### 5/14
@@ -120,6 +126,27 @@
     + 전화번호 인증을 하기 위해 이메일, 비밀번호가 등록되어야 하는 issue 
     + 전화번호 인증 화면으로 이동 후 home 버튼을 누르면 현재 유저의 realtime database 에 삽입된 모든 data 및 이메일 계정 제거
 
-3. 프로필 설정 시 모든 데이터를 입력한 후 저장 버튼을 누르면 progress bar 가 나타나고 모든 data 가 realtime database 에 저장되면 화면에 빠져나오도록 구현
+3. Profile 설정 시 모든 데이터를 입력한 후 저장 버튼을 누르면 progress bar 가 나타나고 모든 data 가 realtime database 에 저장되면 화면에 빠져나오도록 구현
     + 프로필 사진 변경을 누르고 바로 저장 버튼을 누르면 최대 24 초 정도가 소요
     + 따라서 프로필 사진 변경 버튼을 가장 위로 배치하거나 다른 방법을 통해 시간을 최소화할 수 있는 방안을 탐색해야 함
+------------
+
+### 5/15
+1. git merge 후 NaverMap 에러 문제 처리
+    + 몇 개의 파일은 merge 되지 못한 것을 확인하고 이를 수정
+    + 정상적으로 map이 띄워지는 것을 확인(zoom-in, zoom-out 및 이동이 가능)
+    + background로 현재 사용자의 위치(x, y)를 실시간으로 update 해야함
+
+2. personality, hobby 가 중복으로 들어가는 문제 해결
+    + 약간의 로직 변경 및 personality 에 동일한 string 이 있는 문제를 확인 후 수정
+------------
+
+### 5/18
+1. Phone verification 구현
+    + 번호 발송 시 로봇체크가 뜨는 issue 발생
+    + 해당 issue는 "Verifying you're not a robot..." 가 뜬 후에 메시지가 전달됨
+
+2. Chatting 구현 완료
+    + 매칭된 사용자들의 interactive communication 이 가능
+------------
+

@@ -1,7 +1,6 @@
 package com.example.ffu.profile
 
 import android.app.Activity
-import android.app.job.JobInfo
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,14 +9,14 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.*
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.ffu.CheckPhoneNumActivity
+import com.example.ffu.BackgroundActivity
 import com.example.ffu.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -28,7 +27,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.protobuf.Internal
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
@@ -44,96 +42,118 @@ class ProfileSettingActivity : AppCompatActivity() {
     private lateinit var socket: Socket
     private lateinit var dos: DataOutputStream
 
-    private var personalitiesAdd = false
-    private var hobbiesAdd = false
+    private var initFlag = false
     private val personalities = ArrayList<String>()
     private val hobbies = ArrayList<String>()
     private var mbti: String = ""
     private var religion: String = ""
+    private var birth: String = ""
+    private var gender: String = ""
+    private var personFlag : Boolean = false
+    private var requestFlag : Boolean = false
 
     private lateinit var nickname : String
     private lateinit var job : String
     private lateinit var introMe : String
     private lateinit var smoke : String
     private lateinit var drinking : String
-    private var photoCheck : Boolean = false
-
     private lateinit var progressBar : ProgressBar
-    private lateinit var handler : Handler
+
+    private lateinit var editTextArray : Array<EditText>
+    private lateinit var radioButtonArray : Array<RadioButton>
+    private lateinit var buttonArray : Array<Button>
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.profilesetting)
+        setContentView(R.layout.profile_setting)
 
         initializeInformation()
+        setEditableArray()
         setMbti()
         setPersonality()
         setHobby()
         setReligion()
         setPhoto()
         saveProfile()
+        requestListener() // request Listener 등록
     }
 
     private fun initializeInformation() {
-        val profile = mutableMapOf<String, Any>()
+        val animation = mutableMapOf<String, Any>()
 
         auth = Firebase.auth
         storage = FirebaseStorage.getInstance()
-        progressBar = findViewById<ProgressBar>(R.id.profilesetting_progressBar)
-        handler = object : Handler(Looper.getMainLooper()) {
-            override fun handleMessage(msg: Message) {
-                progressBar.visibility = View.INVISIBLE
-            }
+        progressBar = findViewById<ProgressBar>(R.id.profile_setting_progressBar)
+        if (intent.hasExtra("birth")) {
+            birth = intent.getStringExtra("birth").toString()
+            gender = intent.getStringExtra("gender").toString()
         }
-
         userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
-        profile["photo"] = "false"
-        userDB.updateChildren(profile)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                for (ds in snapshot.children) {
-                    when (ds.key.toString()) {
-                        "nickname" -> findViewById<EditText>(R.id.profilesetting_inputnickname).setText(ds.value.toString())
-                        "job" -> findViewById<EditText>(R.id.profilesetting_inputjob).setText(ds.value.toString())
-                        "introMe" -> findViewById<EditText>(R.id.profilesetting_inputIntroduce).setText(ds.value.toString())
-                        "smoke" -> when(ds.value.toString()) {
-                            "비흡연" -> findViewById<RadioButton>(R.id.profilesetting_smoke_radioButton1).isChecked = true
-                            "흡연" -> findViewById<RadioButton>(R.id.profilesetting_smoke_radioButton2).isChecked = true
-                            "가끔" -> findViewById<RadioButton>(R.id.profilesetting_smoke_radioButton3).isChecked = true
-                        }
-                        "drinking" -> when(ds.value.toString()) {
-                            "안함" -> findViewById<RadioButton>(R.id.profilesetting_drink_radioButton1).isChecked = true
-                            "자주" -> findViewById<RadioButton>(R.id.profilesetting_drink_radioButton2).isChecked = true
-                            "가끔" -> findViewById<RadioButton>(R.id.profilesetting_drink_radioButton3).isChecked = true
-                        }
-                        "mbti" -> mbti = ds.value.toString()
-                        "religion" -> religion = ds.value.toString()
-                        "personality" -> {
-                            val personalityList = ds.value.toString().split("/")
-                            for (personality in personalityList) {
-                                if (!personalitiesAdd)
+                if (!initFlag) {
+                    initFlag = true
+                    for (ds in snapshot.children) {
+                        when (ds.key.toString()) {
+                            "nickname" -> findViewById<EditText>(R.id.profile_setting_inputNickname).setText(ds.value.toString())
+                            "job" -> findViewById<EditText>(R.id.profile_setting_inputJob).setText(ds.value.toString())
+                            "introMe" -> findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(ds.value.toString())
+                            "smoke" -> when(ds.value.toString()) {
+                                "비흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1).isChecked = true
+                                "흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2).isChecked = true
+                                "가끔" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton3).isChecked = true
+                            }
+                            "drinking" -> when(ds.value.toString()) {
+                                "안함" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1).isChecked = true
+                                "자주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2).isChecked = true
+                                "가끔" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton3).isChecked = true
+                            }
+                            "mbti" -> mbti = ds.value.toString()
+                            "religion" -> religion = ds.value.toString()
+                            "personality" -> {
+                                val personalityList = ds.value.toString().split("/")
+                                for (personality in personalityList) {
                                     personalities.add(personality)
+                                }
                             }
-                            personalitiesAdd = true
-                        }
-                        "hobby" -> {
-                            val hobbyList = ds.value.toString().split("/")
-                            for (hobby in hobbyList) {
-                                if (!hobbiesAdd)
+                            "hobby" -> {
+                                val hobbyList = ds.value.toString().split("/")
+                                for (hobby in hobbyList) {
                                     hobbies.add(hobby)
+                                }
                             }
-                            hobbiesAdd = true
                         }
                     }
                 }
             }
             override fun onCancelled(error: DatabaseError) {}
         })
+        userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
+        animation["permission"] = "false"
+        userDB.updateChildren(animation)
+    }
+
+    private fun setEditableArray() {
+        editTextArray = arrayOf(findViewById<EditText>(R.id.profile_setting_inputNickname),
+            findViewById<EditText>(R.id.profile_setting_inputJob),
+            findViewById<EditText>(R.id.profile_setting_inputIntroduce),
+            findViewById<EditText>(R.id.profile_setting_inputNickname))
+        radioButtonArray = arrayOf(findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1),
+            findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2),
+            findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton3),
+            findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1),
+            findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2),
+            findViewById<RadioButton>(R.id.profile_setting_drink_radioButton3))
+        buttonArray = arrayOf(findViewById<Button>(R.id.profile_setting_mbtiButton),
+            findViewById<Button>(R.id.profile_setting_personalButton),
+            findViewById<Button>(R.id.profile_setting_religionButton),
+            findViewById<Button>(R.id.profile_setting_hobbyButton),
+            findViewById<Button>(R.id.profile_setting_saveButton))
     }
 
     private fun setMbti() {
-        val mbtiButton = findViewById<Button>(R.id.profilesetting_mbtiButton)
+        val mbtiButton = findViewById<Button>(R.id.profile_setting_mbtiButton)
 
         mbtiButton.setOnClickListener {
             val items = arrayOf("ESTJ", "ESFJ", "ENFJ", "ENTJ",
@@ -162,7 +182,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
     private fun setPersonality() {
-        val personalityButton = findViewById<Button>(R.id.profilesetting_personalButton)
+        val personalityButton = findViewById<Button>(R.id.profile_setting_personalButton)
 
         personalityButton.setOnClickListener {
             val items = arrayOf("활발한", "조용한", "엉뚱한", "진지한",
@@ -205,7 +225,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
     private fun setReligion() {
-        val religionButton = findViewById<Button>(R.id.profilesetting_religionButton)
+        val religionButton = findViewById<Button>(R.id.profile_setting_religionButton)
 
         religionButton.setOnClickListener {
             val items = arrayOf("무교", "기독교", "불교", "천주교",
@@ -231,7 +251,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
     private fun setHobby() {
-        val hobbyButton = findViewById<Button>(R.id.profilesetting_hobbyButton)
+        val hobbyButton = findViewById<Button>(R.id.profile_setting_hobbyButton)
 
         hobbyButton.setOnClickListener {
             val items = arrayOf("영화보기", "독서하기", "맛집탐방", "운동하기",
@@ -276,34 +296,89 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
     }
 
+    private fun setAllEnable() {
+        val photoButton = findViewById<ImageButton>(R.id.profile_setting_imageAddButton)
+
+        photoButton.isEnabled = true
+        for (editText in editTextArray) {
+            editText.isEnabled = true
+        }
+        for (radioButton in radioButtonArray) {
+            radioButton.isEnabled = true
+        }
+        for (button in buttonArray) {
+            button.isEnabled = true
+        }
+    }
+
+    private fun setAllDisable() {
+        val photoButton = findViewById<ImageButton>(R.id.profile_setting_imageAddButton)
+
+        photoButton.isEnabled = false
+        for (editText in editTextArray) {
+            editText.isEnabled = false
+        }
+        for (radioButton in radioButtonArray) {
+            radioButton.isEnabled = false
+        }
+        for (button in buttonArray) {
+            button.isEnabled = false
+        }
+    }
+
     private fun characterization() {
-        val thread : Thread = object : Thread() {
-            override fun run() {
-                // connection request to Server
-                try {
-                    socket = Socket(ip, port)
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-                // Write Buffer
-                try {
-                    dos = DataOutputStream(socket!!.getOutputStream())
-                    dos.writeUTF(auth?.uid.toString())
-                } catch (e: IOException) {
-                    e.printStackTrace()
+        val transformText = findViewById<TextView>(R.id.profile_setting_transform_text)
+
+        transformText.text = "사진 변환중..."
+        Thread {
+            val animation = mutableMapOf<String, Any>()
+
+            userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
+            animation["request"] = "false" // server 가 request 를 처리했는지 판단
+            animation["person"] = "false" // 사람인지 아닌지 판단
+            userDB.updateChildren(animation)
+
+            // connection request to Server
+            try {
+                socket = Socket(ip, port)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            // Write Buffer
+            try {
+                dos = DataOutputStream(socket.getOutputStream())
+                dos.writeUTF(auth.uid.toString())
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+            requestFlag = false
+            personFlag = false
+            while (!requestFlag) {
+                Thread.sleep(100)
+            }
+            // Thread.sleep(500)
+            Handler(Looper.getMainLooper()).post {
+                progressBar.visibility = View.INVISIBLE
+                transformText.text = ""
+                setAllEnable()
+                if (personFlag) {
+                    Toast.makeText(this@ProfileSettingActivity,"애니메이션 변환 완료!",Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@ProfileSettingActivity,"인물사진을 넣어주세요!",Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-        thread.start()
+        }.start()
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setPhoto() {
-        val photoButton = findViewById<Button>(R.id.profilesetting_imageAddButton)
-        val imagesRef = storage!!.reference
-            .child("photo/" + auth?.uid.toString() + "/real.jpg")
+        val photoButton = findViewById<ImageButton>(R.id.profile_setting_imageAddButton)
+        val imagesRef = storage.reference
+            .child("photo/" + auth.uid.toString() + "/real.jpg")
 
         val getFromAlbumResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            progressBar.visibility = View.VISIBLE
+            setAllDisable()
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri = result.data?.data // 선택한 이미지의 주소
                 // 이미지 파일 읽어와서 설정하기
@@ -316,12 +391,11 @@ class ProfileSettingActivity : AppCompatActivity() {
                     val newBitmap = getRotatedBitmap(bitmap, orientation)
                     imagesRef.putFile(uri).addOnSuccessListener {
                         characterization()
-                        photoCheck = true
-                        Toast.makeText(this, "사진 등록을 성공했습니다.", Toast.LENGTH_SHORT).show()
-                    }.addOnFailureListener {
-                        Toast.makeText(this, "사진 등록을 실패했습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
+            } else {
+                progressBar.visibility = View.INVISIBLE
+                setAllEnable()
             }
         }
 
@@ -366,35 +440,36 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
     private fun checkInformation() : Boolean {
-        val smokeGroup = findViewById<RadioGroup>(R.id.profilesetting_smoke_radioGroup)
-        val drinkingGroup = findViewById<RadioGroup>(R.id.profilesetting_drink_radioGroup)
+        val smokeGroup = findViewById<RadioGroup>(R.id.profile_setting_smoke_radioGroup)
+        val drinkingGroup = findViewById<RadioGroup>(R.id.profile_setting_drink_radioGroup)
 
-        nickname = findViewById<EditText>(R.id.profilesetting_inputnickname).text.toString()
-        job = findViewById<EditText>(R.id.profilesetting_inputjob).text.toString()
-        introMe = findViewById<EditText>(R.id.profilesetting_inputIntroduce).text.toString()
+        nickname = findViewById<EditText>(R.id.profile_setting_inputNickname).text.toString()
+        job = findViewById<EditText>(R.id.profile_setting_inputJob).text.toString()
+        introMe = findViewById<EditText>(R.id.profile_setting_inputIntroduce).text.toString()
 
         smoke = when (smokeGroup.checkedRadioButtonId) {
-            R.id.profilesetting_smoke_radioButton1 -> "비흡연"
-            R.id.profilesetting_smoke_radioButton2 -> "흡연"
-            R.id.profilesetting_smoke_radioButton3 -> "가끔"
+            R.id.profile_setting_smoke_radioButton1 -> "비흡연"
+            R.id.profile_setting_smoke_radioButton2 -> "흡연"
+            R.id.profile_setting_smoke_radioButton3 -> "가끔"
             else -> ""
         }
         drinking = when (drinkingGroup.checkedRadioButtonId) {
-            R.id.profilesetting_drink_radioButton1 -> "안함"
-            R.id.profilesetting_drink_radioButton2 -> "자주"
-            R.id.profilesetting_drink_radioButton3 -> "가끔"
+            R.id.profile_setting_drink_radioButton1 -> "안함"
+            R.id.profile_setting_drink_radioButton2 -> "자주"
+            R.id.profile_setting_drink_radioButton3 -> "가끔"
             else -> ""
         }
 
         if (nickname.isEmpty() || job.isEmpty() || introMe.isEmpty() || smoke.isEmpty()
             || drinking.isEmpty() || mbti.isEmpty() || religion.isEmpty()
-            || personalities.size == 0 || hobbies.size == 0 || !photoCheck)
+            || personalities.size == 0 || hobbies.size == 0 || !personFlag || !requestFlag)
             return false
         return true
     }
 
     private fun insertProfileInformation() {
         val profile = mutableMapOf<String, Any>()
+        val animation = mutableMapOf<String, Any>()
         var personality : String =  ""
         var hobby : String = ""
 
@@ -412,6 +487,14 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
 
         userDB = Firebase.database.reference.child("profile").child(auth?.uid.toString())
+        if (birth.length > 0) {
+            val age = SimpleDateFormat("yyyy-MM-dd-hh-mm")
+                .format(System.currentTimeMillis())
+                .split("-")[0].toInt() - birth.split("/")[0].toInt() + 1
+            profile["birth"] = birth
+            profile["gender"] = gender
+            profile["age"] = age.toString()
+        }
         profile["nickname"] = nickname
         profile["job"] = job
         profile["introMe"] = introMe
@@ -421,46 +504,74 @@ class ProfileSettingActivity : AppCompatActivity() {
         profile["religion"] = religion
         profile["personality"] = personality
         profile["hobby"] = hobby
+        profile["join"] = "true"
         userDB.updateChildren(profile)
+
+        userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
+        animation["permission"] = "true"
+        userDB.updateChildren(animation)
+    }
+
+    private fun requestListener() {
+        userDB = Firebase.database.getReference("animation").child(auth.uid.toString())
+        userDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (ds in snapshot.children) {
+                    if (ds.key.toString().equals("person") && ds.value.toString().equals("true")) {
+                        personFlag = true
+                    } else if (ds.key.toString().equals("request") && ds.value.toString().equals("true")) {
+                        requestFlag = true
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    private fun showAnimationPhoto() {
+        val dialog = AlertDialog.Builder(this).create()
+        val edialog : LayoutInflater = LayoutInflater.from(this)
+        val mView : View = edialog.inflate(R.layout.dialog_check_animation,null)
+        val cancel : Button = mView.findViewById(R.id.dialog_check_animation_cancel)
+        val save : Button = mView.findViewById(R.id.dialog_check_animation_save)
+
+        //  취소 버튼 클릭 시
+        cancel.setOnClickListener {
+            dialog.dismiss()
+            dialog.cancel()
+        }
+        //  완료 버튼 클릭 시
+        save.setOnClickListener {
+            if (birth.length > 0) { // 회원가입 완료
+                val intent = Intent(this@ProfileSettingActivity, BackgroundActivity::class.java)
+                insertProfileInformation()
+                startActivity(intent)
+                finish()
+            } else { // 프로필 재세팅 완료
+                insertProfileInformation()
+                finish()
+            }
+            dialog.dismiss()
+            dialog.cancel()
+        }
+        dialog.setView(mView)
+        dialog.create()
+        dialog.show()
     }
 
     private fun saveProfile() {
-        val saveButton = findViewById<Button>(R.id.profilesetting_saveButton)
-        var insertCheck : Boolean = false
-        var i = 0
+        val saveButton = findViewById<Button>(R.id.profile_setting_saveButton)
 
         saveButton.setOnClickListener {
             if (checkInformation()) {
-                progressBar.visibility = View.VISIBLE
-                insertProfileInformation()
-                Thread (Runnable {
-                    while (i < 30) {
-                        userDB = Firebase.database.getReference("profile").child(auth?.uid.toString())
-                        userDB.addValueEventListener(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                for (ds in snapshot.children) {
-                                    if (ds.key.toString().equals("photo") && ds.value.toString().equals("true")) {
-                                        insertCheck = true
-                                    }
-                                }
-                            }
-                            override fun onCancelled(error: DatabaseError) {}
-                        })
-                        Thread.sleep(1000)
-                        if (insertCheck)
-                            break
-                        i++
-                    }
-                    if (insertCheck) {
-                        finish()
-                    }
-                    else {
-                        handler.handleMessage(Message())
-                    }
-                }).start()
+                showAnimationPhoto()
             }
             else {
-                Toast.makeText(this, "정보를 완벽하게 입력해주세요!", Toast.LENGTH_SHORT).show()
+                if (!personFlag) {
+                    Toast.makeText(this, "인물 사진을 넣어주세요.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "정보를 완벽하게 입력해주세요!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

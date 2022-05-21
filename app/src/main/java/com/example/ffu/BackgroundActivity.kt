@@ -1,7 +1,6 @@
 package com.example.ffu
 
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.ffu.chatting.ChattingFragment
@@ -9,8 +8,6 @@ import com.example.ffu.profile.ProfileFragment
 import com.example.ffu.recommend.RecommendFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class BackgroundActivity : AppCompatActivity() {
 
@@ -26,8 +23,9 @@ class BackgroundActivity : AppCompatActivity() {
         val chattingFragment = ChattingFragment()
 
         //처음 시작화면
-        replaceFragment(recommendFragment)
+        replaceFragment(profileFragment)
 
+        bottomNavigationView.selectedItemId = R.id.profile
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.recommend-> replaceFragment(recommendFragment)
