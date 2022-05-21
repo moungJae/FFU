@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                         joinButton.isEnabled = true
                         userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
                         profile["tel"] = phoneNumber
-                        profile["join"] = "false"
+
                         userDB.updateChildren(profile)
                     } else {
                         Toast.makeText(this, "인증 실패! 인증 번호를 다시 확인하세요", Toast.LENGTH_SHORT).show()

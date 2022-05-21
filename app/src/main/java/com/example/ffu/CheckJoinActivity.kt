@@ -2,6 +2,7 @@ package com.example.ffu
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,7 @@ class CheckJoinActivity : AppCompatActivity() {
             userDB.get().addOnSuccessListener {
                 for (ds in it.children) {
                     if (ds.key.toString().equals("join")) {
+                        Log.d("~~", ds.value.toString())
                         if (ds.value.toString().equals("true")) { // 회원가입 o
                             val intent = Intent(this@CheckJoinActivity, BackgroundActivity::class.java)
                             startActivity(intent)
