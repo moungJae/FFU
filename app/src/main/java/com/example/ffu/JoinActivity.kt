@@ -13,6 +13,7 @@ import com.example.ffu.profile.ProfileSettingActivity
 
 class JoinActivity : AppCompatActivity() {
 
+    private lateinit var birthText : TextView
     private lateinit var progressBar : ProgressBar
     private var birth : String = ""
     private var gender : String = ""
@@ -31,6 +32,7 @@ class JoinActivity : AppCompatActivity() {
 
     private fun initialSetting() {
         progressBar = findViewById<ProgressBar>(R.id.join_progressBar)
+        birthText = findViewById<TextView>(R.id.join_text_birth)
     }
 
     private fun checkBirth() {
@@ -74,6 +76,7 @@ class JoinActivity : AppCompatActivity() {
             //  완료 버튼 클릭 시
             save.setOnClickListener {
                 birth = (year.value).toString() + "/" + (month.value).toString() + "/" + (day.value).toString()
+                birthText.setText(birth)
                 myYear = year.value
                 myMonth = month.value
                 myDay = day.value

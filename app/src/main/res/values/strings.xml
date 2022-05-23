@@ -14,8 +14,8 @@
     <string name="female">여성</string>
     <string name="join">회원가입</string>
     <string name="choice">선택</string>
-    <string name="cancel">취소</string>
-    <string name="save">완료</string>
+    <string name="cancel">아니오</string>
+    <string name="save">예</string>
 
     <string name="HOME">HOME</string>
     <string name="identity_verification">본인 인증</string>

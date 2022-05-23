@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initialSetting() {
         auth = Firebase.auth
+        auth.setLanguageCode("kr")
         progressBar = findViewById<ProgressBar>(R.id.main_progressBar)
     }
 
@@ -50,23 +51,26 @@ class MainActivity : AppCompatActivity() {
         val checkVerificationButton = findViewById<Button>(R.id.main_checkVerification)
         val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                TODO("Not yet implemented")
+                //
             }
 
             override fun onVerificationFailed(p0: FirebaseException) {
-                TODO("Not yet implemented")
+                Toast.makeText(this@MainActivity, "잘못된 전화번호입니다. 다시 입력해주세요.", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.INVISIBLE
             }
 
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
                 this@MainActivity.verificationId = verificationId
                 verificationEditText.isEnabled = true
                 checkVerificationButton.isEnabled = true
+                progressBar.visibility = View.INVISIBLE
             }
         }
 
         requestButton.setOnClickListener {
             var phoneNum = phoneEditText.text.toString()
 
+            progressBar.visibility = View.VISIBLE
             phoneNumber = phoneNum
             phoneNum = "+82" + phoneNum.substring(1, phoneNum.length)
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -96,7 +100,6 @@ class MainActivity : AppCompatActivity() {
                         joinButton.isEnabled = true
                         userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
                         profile["tel"] = phoneNumber
-                        profile["join"] = "false"
                         userDB.updateChildren(profile)
                     } else {
                         Toast.makeText(this, "인증 실패! 인증 번호를 다시 확인하세요", Toast.LENGTH_SHORT).show()

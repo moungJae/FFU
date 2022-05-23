@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
+import android.media.Image
 import android.net.Uri
 import android.os.*
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.ffu.BackgroundActivity
 import com.example.ffu.R
 import com.google.firebase.auth.FirebaseAuth
@@ -27,8 +29,10 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.io.*
 import java.net.Socket
+import java.net.URI
 import java.text.SimpleDateFormat
 
 class ProfileSettingActivity : AppCompatActivity() {
@@ -42,7 +46,6 @@ class ProfileSettingActivity : AppCompatActivity() {
     private lateinit var socket: Socket
     private lateinit var dos: DataOutputStream
 
-    private var initFlag = false
     private val personalities = ArrayList<String>()
     private val hobbies = ArrayList<String>()
     private var mbti: String = ""
@@ -80,58 +83,65 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
     private fun initializeInformation() {
-        val animation = mutableMapOf<String, Any>()
+        val pathReference = FirebaseStorage.getInstance().reference
+        val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
+        var userId = ""
 
         auth = Firebase.auth
+        userId = auth.currentUser?.uid.toString()
         storage = FirebaseStorage.getInstance()
         progressBar = findViewById<ProgressBar>(R.id.profile_setting_progressBar)
+
         if (intent.hasExtra("birth")) {
             birth = intent.getStringExtra("birth").toString()
             gender = intent.getStringExtra("gender").toString()
         }
+
+        // 오직 한번만 변경되도록
         userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
+        userDB.get().addOnSuccessListener {
+            if (it.child("nickname").value != null) {
+                findViewById<EditText>(R.id.profile_setting_inputNickname).setText(it.child("nickname").value.toString())
+            }
+            if (it.child("job").value != null) {
+                findViewById<EditText>(R.id.profile_setting_inputJob).setText(it.child("job").value.toString())
+            }
+            if (it.child("introMe").value != null) {
+                findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(it.child("introMe").value.toString())
+            }
+            when(it.child("smoke").value.toString()) {
+                "비흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1).isChecked = true
+                "흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2).isChecked = true
+            }
+            when(it.child("drinking").value.toString()) {
+                "비음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1).isChecked = true
+                "음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2).isChecked = true
+            }
+            mbti = it.child("mbti").value.toString()
+            religion = it.child("religion").value.toString()
+            val personalityList = it.child("personality").value.toString().split("/")
+            for (personality in personalityList) {
+                personalities.add(personality)
+            }
+            val hobbyList = it.child("hobby").value.toString().split("/")
+            for (hobby in hobbyList) {
+                hobbies.add(hobby)
+            }
+        }
+
+        userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (!initFlag) {
-                    initFlag = true
-                    for (ds in snapshot.children) {
-                        when (ds.key.toString()) {
-                            "nickname" -> findViewById<EditText>(R.id.profile_setting_inputNickname).setText(ds.value.toString())
-                            "job" -> findViewById<EditText>(R.id.profile_setting_inputJob).setText(ds.value.toString())
-                            "introMe" -> findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(ds.value.toString())
-                            "smoke" -> when(ds.value.toString()) {
-                                "비흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1).isChecked = true
-                                "흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2).isChecked = true
-                                "가끔" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton3).isChecked = true
-                            }
-                            "drinking" -> when(ds.value.toString()) {
-                                "안함" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1).isChecked = true
-                                "자주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2).isChecked = true
-                                "가끔" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton3).isChecked = true
-                            }
-                            "mbti" -> mbti = ds.value.toString()
-                            "religion" -> religion = ds.value.toString()
-                            "personality" -> {
-                                val personalityList = ds.value.toString().split("/")
-                                for (personality in personalityList) {
-                                    personalities.add(personality)
-                                }
-                            }
-                            "hobby" -> {
-                                val hobbyList = ds.value.toString().split("/")
-                                for (hobby in hobbyList) {
-                                    hobbies.add(hobby)
-                                }
-                            }
-                        }
+                pathReference.child("photo/$userId/real.jpg").downloadUrl.addOnCompleteListener{ task ->
+                    if (task.isSuccessful && !isDestroyed) {
+                        Glide.with(this@ProfileSettingActivity)
+                            .load(task.result)
+                            .into(image)
                     }
                 }
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-        userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
-        animation["permission"] = "false"
-        userDB.updateChildren(animation)
     }
 
     private fun setEditableArray() {
@@ -141,10 +151,8 @@ class ProfileSettingActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.profile_setting_inputNickname))
         radioButtonArray = arrayOf(findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1),
             findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2),
-            findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton3),
             findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1),
-            findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2),
-            findViewById<RadioButton>(R.id.profile_setting_drink_radioButton3))
+            findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2))
         buttonArray = arrayOf(findViewById<Button>(R.id.profile_setting_mbtiButton),
             findViewById<Button>(R.id.profile_setting_personalButton),
             findViewById<Button>(R.id.profile_setting_religionButton),
@@ -328,6 +336,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private fun characterization() {
         val transformText = findViewById<TextView>(R.id.profile_setting_transform_text)
+        val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
 
         transformText.text = "사진 변환중..."
         Thread {
@@ -336,6 +345,7 @@ class ProfileSettingActivity : AppCompatActivity() {
             userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
             animation["request"] = "false" // server 가 request 를 처리했는지 판단
             animation["person"] = "false" // 사람인지 아닌지 판단
+            animation["permission"] = "false"
             userDB.updateChildren(animation)
 
             // connection request to Server
@@ -356,7 +366,6 @@ class ProfileSettingActivity : AppCompatActivity() {
             while (!requestFlag) {
                 Thread.sleep(100)
             }
-            // Thread.sleep(500)
             Handler(Looper.getMainLooper()).post {
                 progressBar.visibility = View.INVISIBLE
                 transformText.text = ""
@@ -372,7 +381,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setPhoto() {
-        val photoButton = findViewById<ImageButton>(R.id.profile_setting_imageAddButton)
+        val photoButton = findViewById<Button>(R.id.profile_setting_image_change_button)
         val imagesRef = storage.reference
             .child("photo/" + auth.uid.toString() + "/real.jpg")
 
@@ -450,13 +459,11 @@ class ProfileSettingActivity : AppCompatActivity() {
         smoke = when (smokeGroup.checkedRadioButtonId) {
             R.id.profile_setting_smoke_radioButton1 -> "비흡연"
             R.id.profile_setting_smoke_radioButton2 -> "흡연"
-            R.id.profile_setting_smoke_radioButton3 -> "가끔"
             else -> ""
         }
         drinking = when (drinkingGroup.checkedRadioButtonId) {
-            R.id.profile_setting_drink_radioButton1 -> "안함"
-            R.id.profile_setting_drink_radioButton2 -> "자주"
-            R.id.profile_setting_drink_radioButton3 -> "가끔"
+            R.id.profile_setting_drink_radioButton1 -> "비음주"
+            R.id.profile_setting_drink_radioButton2 -> "음주"
             else -> ""
         }
 
@@ -512,6 +519,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         userDB.updateChildren(animation)
     }
 
+    // 여러번 요청이 가능하도록 리스너 등록
     private fun requestListener() {
         userDB = Firebase.database.getReference("animation").child(auth.uid.toString())
         userDB.addValueEventListener(object : ValueEventListener {
@@ -532,9 +540,19 @@ class ProfileSettingActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this).create()
         val edialog : LayoutInflater = LayoutInflater.from(this)
         val mView : View = edialog.inflate(R.layout.dialog_check_animation,null)
+        val image : ImageButton = mView.findViewById(R.id.dialog_check_animation_photo)
         val cancel : Button = mView.findViewById(R.id.dialog_check_animation_cancel)
         val save : Button = mView.findViewById(R.id.dialog_check_animation_save)
+        val userId = auth.currentUser?.uid.toString()
+        val pathReference = FirebaseStorage.getInstance().reference
 
+        pathReference.child("photo/$userId/real.jpg").downloadUrl.addOnCompleteListener{ task ->
+            if (task.isSuccessful && !isDestroyed) {
+                Glide.with(this@ProfileSettingActivity)
+                    .load(task.result)
+                    .into(image)
+            }
+        }
         //  취소 버튼 클릭 시
         cancel.setOnClickListener {
             dialog.dismiss()
@@ -568,7 +586,7 @@ class ProfileSettingActivity : AppCompatActivity() {
             }
             else {
                 if (!personFlag) {
-                    Toast.makeText(this, "인물 사진을 넣어주세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "인물 사진을 넣어주세요!", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "정보를 완벽하게 입력해주세요!", Toast.LENGTH_SHORT).show()
                 }

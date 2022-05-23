@@ -56,6 +56,18 @@
                 android:textColor="@color/main_text_color"
                 />
 
+            <Button
+                android:id="@+id/profile_setting_image_change_button"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="20sp"
+                android:layout_gravity="center"
+                android:background="@drawable/box_id"
+                android:text="변경"
+                android:textColor="@color/main_text_color"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -173,12 +185,6 @@
                     android:text="흡연"
                     android:textSize="13sp"/>
 
-                <RadioButton
-                    android:id="@+id/profile_setting_smoke_radioButton3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="가끔"
-                    android:textSize="13sp"/>
             </RadioGroup>
 
         </LinearLayout>
@@ -209,22 +215,16 @@
                     android:id="@+id/profile_setting_drink_radioButton1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="안함"
+                    android:text="비음주"
                     android:textSize="13sp"/>
 
                 <RadioButton
                     android:id="@+id/profile_setting_drink_radioButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="자주"
+                    android:text="음주"
                     android:textSize="13sp"/>
 
-                <RadioButton
-                    android:id="@+id/profile_setting_drink_radioButton3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="가끔"
-                    android:textSize="13sp" />
             </RadioGroup>
 
         </LinearLayout>

@@ -1,17 +1,15 @@
 package com.example.ffu
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.ffu.chatting.ChattingFragment
 import com.example.ffu.profile.ProfileFragment
 import com.example.ffu.recommend.RecommendFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
 
 class BackgroundActivity : AppCompatActivity() {
-
-    private var auth : FirebaseAuth? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +32,6 @@ class BackgroundActivity : AppCompatActivity() {
             }
             true
         }
-
     }
 
     private fun replaceFragment(fragment : Fragment){
