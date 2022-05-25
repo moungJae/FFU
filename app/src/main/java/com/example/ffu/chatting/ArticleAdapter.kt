@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,23 +13,41 @@ import com.bumptech.glide.Glide
 import com.example.ffu.R
 import com.example.ffu.databinding.ItemArticleBinding
 import com.example.ffu.chatting.ArticleModel
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder>(diffUtil) {
+    private lateinit var storage: FirebaseStorage
+    private lateinit var pathReference : StorageReference
+
     inner class ViewHolder(private val binding: ItemArticleBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(articleModel: ArticleModel){
             binding.itemArticleName.text=articleModel.Name
             binding.itemArticleGender.text=articleModel.Gender
             binding.itemArticleBirth.text=articleModel.Birth
 
-            if (articleModel.imageUrl.isNotEmpty()) {
-                Glide.with(binding.thumbnailImageView)
-                    .load(articleModel.imageUrl)
-                    .into(binding.thumbnailImageView)
+            storage = FirebaseStorage.getInstance()
+            pathReference = storage.reference
+            pathReference.child("photo/${articleModel.Id}/real.jpg").downloadUrl.addOnCompleteListener{ task ->
+                if (task.isSuccessful) {
+                    Glide.with(binding.root)
+                        .load(task.result)
+                        .into(binding.thumbnailImageView)
+                }
             }
-
+            /*
+            Glide.with(binding.thumbnailImageView)
+                .load(articleModel.imageUrl.toString())
+                .into(binding.thumbnailImageView)
+            */
+            /*
+            Glide.with(binding.thumbnailImageView)
+                .load(articleModel.imageUrl)
+                .into(binding.thumbnailImageView)
+            */
             binding.root.setOnClickListener {
                 onItemClicked(articleModel)
             }
@@ -36,6 +55,7 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
         return ViewHolder(ItemArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
