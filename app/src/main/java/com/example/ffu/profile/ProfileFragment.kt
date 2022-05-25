@@ -1,8 +1,11 @@
 package com.example.ffu.profile
 
 import android.content.Intent
+import android.location.SettingInjectorService
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,7 +35,6 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         auth = Firebase.auth
         userId = getCurrentUserID(view)
         storage = FirebaseStorage.getInstance()
@@ -41,6 +43,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         setToast()
         setProfile(view)
         editProfile(view)
+        settingButton(view)
     }
 
     // 한번만 실행되도록
@@ -59,6 +62,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         val image = view.findViewById<ImageView>(R.id.profile_profileimage)
 
         userDB = Firebase.database.getReference("animation").child(userId)
+
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (ds in snapshot.children) {
@@ -105,5 +109,15 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
             Snackbar.make(view, "로그인되지 않았습니다", Snackbar.LENGTH_LONG).show()
         }
         return auth.currentUser?.uid.orEmpty()
+    }
+    private fun settingButton(view: View){
+        val settingButton = view.findViewById<Button>(R.id.settingButton)
+
+        settingButton.setOnClickListener {
+            activity?.let {
+                val intent = Intent(context, SettingActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 }

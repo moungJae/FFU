@@ -1,11 +1,15 @@
 package com.example.ffu.chatting
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.ffu.DBKey.Companion.CHILD_CHAT
+import com.example.ffu.DBKey.Companion.DB_PROFILE
 import com.example.ffu.DBKey.Companion.DB_USERS
 import com.example.ffu.R
 import com.example.ffu.chatdetail.ChatRoomActivity
@@ -16,13 +20,18 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.net.URL
 
 
 class ChattingFragment: Fragment(R.layout.fragment_chatting) {
-    //private lateinit var articleDB: DatabaseReference
-    private lateinit var otherId: String
     private lateinit var userDB: DatabaseReference
     private lateinit var articleAdapter: ArticleAdapter
+    private lateinit var storage: FirebaseStorage
+    private lateinit var pathReference : StorageReference
+    private lateinit var userId : String
+    private lateinit var otherId : String
 
 
     private val articleList = mutableListOf<ArticleModel>()
@@ -40,15 +49,16 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
         binding = fragmentHomeBinding
         articleList.clear()
         userDB = Firebase.database.reference
+        userId = getCurrentUserID(view)
+        storage = FirebaseStorage.getInstance()
+        pathReference = storage.reference
 
         getMatchUsers(view)
 
-
         articleAdapter = ArticleAdapter(onItemClicked = { articleModel ->
             if (auth.currentUser != null) {
-
                 // 로그인을 한 상태
-                if (auth.currentUser!!.uid != articleModel.Id) {
+                if (userId != articleModel.Id) {
                     // 채팅방으로 이동 하는 코드
                     context?.let {
                         val intent = Intent(it, ChatRoomActivity::class.java)
@@ -95,13 +105,31 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
     }
 
     private fun getUserByKey(userId: String,view: View){
-        userDB.child(DB_USERS).child(userId).addListenerForSingleValueEvent(object : ValueEventListener{
+        userDB.child(DB_PROFILE).child(userId).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val name = snapshot.child("name").value.toString()
+                val name = snapshot.child("nickname").value.toString()
                 val gender = snapshot.child("gender").value.toString()
                 val birth = snapshot.child("birth").value.toString()
-                val imageUrl ="https://firebasestorage.googleapis.com/v0/b/friends-for-u-5f03a.appspot.com/o/photo%2FPIV7JHlkOYPCsujktM2JDHmLTi92%2Freal.jpg?alt=media&token=b2af19fb-2fd7-45f6-85c9-5f15786d23ad"
-                articleList.add(ArticleModel(userId,name,gender,birth,imageUrl))
+                //var imageUrl : Uri? = null
+                //var imageUrl : String
+
+                /*
+                pathReference.child("photo/$userId/real.jpg").downloadUrl.addOnSuccessListener {uri->
+                    imageUrl = uri.toString()
+                }.addOnFailureListener{uri->imageUrl=""}*/
+
+                /*
+                 pathReference.child("photo/$userId/real.jpg").downloadUrl.addOnCompleteListener{ task ->
+                    if (task.isSuccessful) {
+                        imageUrl = task.result.toString()
+                    } else {
+                        Toast.makeText(context, task.exception.toString(), Toast.LENGTH_SHORT).show()
+                        imageUrl = ""
+                    }
+                }*/
+                //Snackbar.make(view, imageUrl, Snackbar.LENGTH_SHORT).show()
+                //articleList.add(ArticleModel(userId,name,gender,birth,imageUrl))
+                articleList.add(ArticleModel(userId,name,gender,birth))
                 articleAdapter.submitList(articleList)
 
             }

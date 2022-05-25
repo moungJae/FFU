@@ -14,9 +14,13 @@ import com.example.ffu.R
 import com.example.ffu.chatdetail.ChatItem
 import com.example.ffu.databinding.ItemChatLeftBinding
 import com.example.ffu.databinding.ItemChatRightBinding
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class ChatItemAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(diffUtil) {
 
+    private lateinit var storage: FirebaseStorage
+    private lateinit var pathReference : StorageReference
     inner class leftViewHolder(private var binding: ItemChatLeftBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(chatItem: ChatItem) {
@@ -24,10 +28,14 @@ class ChatItemAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(diffUtil)
             binding.itemChatLeftDate.text = chatItem.sendDate
             binding.itemChatLeftMessage.text = chatItem.message
 
-            if (chatItem.imageUrl.isNotEmpty()) {
-                Glide.with(binding.itemChatLeftImage)
-                    .load(chatItem.imageUrl)
-                    .into(binding.itemChatLeftImage)
+            storage = FirebaseStorage.getInstance()
+            pathReference = storage.reference
+            pathReference.child("photo/${chatItem.senderId}/real.jpg").downloadUrl.addOnCompleteListener{ task ->
+                if (task.isSuccessful) {
+                    Glide.with(binding.root)
+                        .load(task.result)
+                        .into(binding.itemChatLeftImage)
+                }
             }
         }
 

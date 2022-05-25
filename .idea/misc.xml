@@ -56,6 +56,7 @@
         <entry key="app/src/main/res/drawable-v24/selector_menu_color.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1065" />
         <entry key="app/src/main/res/layout/activity_chatroom.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_setting.xml" value="0.1276595744680851" />
         <entry key="app/src/main/res/layout/background.xml" value="0.2726449275362319" />
         <entry key="app/src/main/res/layout/checkpn.xml" value="0.25611419677734376" />
         <entry key="app/src/main/res/layout/fragment_chatting.xml" value="0.1" />
@@ -74,6 +75,7 @@
         <entry key="app/src/main/res/layout/mbti.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/personality.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/profile.xml" value="0.2641509433962264" />
+        <entry key="app/src/main/res/layout/profile_setting.xml" value="0.1276595744680851" />
         <entry key="app/src/main/res/layout/profilesetting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/religion.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/root.xml" value="0.15520833333333334" />
