@@ -24,9 +24,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FFU">
 
-        <service android:name=".ForecdTerminationService"
-            android:stopWithTask="false" />
-
         <!-- naver map API auth info -->
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

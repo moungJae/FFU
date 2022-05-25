@@ -22,20 +22,14 @@ class CheckJoinActivity : AppCompatActivity() {
         if (auth.currentUser != null) { // 로그인 상태
             userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
             userDB.get().addOnSuccessListener {
-                if (it.child("join").value == null) {
-                    val intent = Intent(this@CheckJoinActivity, JoinActivity::class.java)
+                if (it.child("join").value.toString().equals("true")) {
+                    val intent = Intent(this@CheckJoinActivity, BackgroundActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
-                    if (it.child("join").value.toString().equals("true")) {
-                        val intent = Intent(this@CheckJoinActivity, BackgroundActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        val intent = Intent(this@CheckJoinActivity, JoinActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
+                    val intent = Intent(this@CheckJoinActivity, JoinActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             }
         } else { // 로그아웃 상태
