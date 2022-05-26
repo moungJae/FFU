@@ -163,7 +163,8 @@ class MainActivity : AppCompatActivity() {
         val joinButton = findViewById<Button>(R.id.main_joinButton)
 
         joinButton.setOnClickListener {
-            progressBar.visibility = View.VISIBLE
+            setPhoneDisable()
+            setVerificationDisable()
             Thread(Runnable {
                 Thread.sleep(2000)
                 Handler(Looper.getMainLooper()).post {

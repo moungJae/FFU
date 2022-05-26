@@ -19,6 +19,7 @@ import com.example.ffu.UserInformation
 import com.example.ffu.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -44,17 +45,9 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         storage = FirebaseStorage.getInstance()
         pathReference = storage.reference
 
-        setToast()
         setProfile(view)
         editProfile(view)
         settingButton(view)
-    }
-
-    // 한번만 실행되도록
-    private fun setToast() {
-        if (!UserInformation.JOIN) {
-            Toast.makeText(context, "프로필 사진을 변환해주세요.", Toast.LENGTH_SHORT).show()
-        }
     }
 
     fun setProfile(view: View) {
@@ -66,11 +59,11 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
             Glide.with(this)
                 .load(UserInformation.URI[userId])
                 .into(image)
+            nickname.setText(UserInformation.NICKNAME[userId] ?: "")
+            introMe.setText(UserInformation.INTROME[userId] ?: "")
         } else {
-            Toast.makeText(context, "프로필을 추가하세요!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "프로필을 변경해주세요!", Toast.LENGTH_SHORT).show()
         }
-        nickname.setText(UserInformation.NICKNAME[userId] ?: "")
-        introMe.setText(UserInformation.INTROME[userId] ?: "")
     }
 
     private fun editProfile(view: View) {
