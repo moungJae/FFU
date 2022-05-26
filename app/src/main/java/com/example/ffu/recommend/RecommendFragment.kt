@@ -6,23 +6,35 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.*
+import android.location.*
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.ffu.R
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.naver.maps.map.*
 import com.naver.maps.geometry.*
+import com.naver.maps.map.*
 import com.naver.maps.map.overlay.*
-import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
+import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_recommend.*
+import java.lang.Math.*
+import kotlin.math.pow
 
 
 class RecommendFragment : Fragment(), OnMapReadyCallback {
@@ -32,16 +44,44 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapView: MapView
 
     // 좌표 조작
-    private lateinit var locationSource: FusedLocationSource
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val radius = 6372.8 * 1000
+    private var recommendLatitude : Double = 0.0
+    private var recommendLongitude : Double = 0.0
+    private lateinit var mLastLocation: Location // 현재 위치 가지고 있는 객체
 
+    private lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개 변수 저장
+    private lateinit var locationSource: FusedLocationSource
+    private lateinit var fusedLocationClient: FusedLocationProviderClient // 현재 위치 가져오기 위한 변수
+    private lateinit var button:Button
+
+    // firebase
+    private lateinit var userDB: DatabaseReference
+    private var auth : FirebaseAuth = Firebase.auth
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        /* 위치 권한 요청 */
+        requestPermission() // 최초 요청
+        /* 좌표 가져오기 */
+        startLocationUpdates()
+        button = view.findViewById(R.id.btn_confirm)
+        button.setOnClickListener { // 클릭하면 추천 리스트 띄우는데 그때 거리 계산하고 띄우기.
+            Log.d("button", "clicked")
+            val test : Int = getDistance(mLastLocation.latitude, mLastLocation.longitude,
+                recommendLatitude, recommendLongitude) / 1000
+            Toast.makeText(requireContext(), mLastLocation.latitude.toString() + " / "
+                   + mLastLocation.longitude.toString() + " / "  + test.toString(), Toast.LENGTH_SHORT).show()
+            Log.d("distance", "$test")
+            // 파이어베이스에서 user 좌표 가져와서 계산하여 uid vector에 넣기.
+
+            // vector를 리스트뷰?로 넘겨주면서 리스트 뷰에서 사용자 정보와 사진 뿌려주기.
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // 위치 권한 요청
-        requestPermission() // 최초 요청
-        //checkPermission() // 권한 확인 후 재 요청 또는 서비스 불가 알림 메시지 띄우기
+
         // map 생성
         var rootview = inflater.inflate(R.layout.fragment_recommend, container, false)
 
@@ -51,20 +91,32 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         return rootview
     }
 
-    // 위치 권한 거부 시
-    // 위치 권한 요청 백그라운드 포그라운드
+    /* ======================== 사용자 거리 계산 하여 일치하는 사용자 넣기========================*/
+
+    fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
+        val c = 2 * asin(sqrt(a))
+        return (radius * c).toInt()
+    }
+    /* ========================권한 요청======================== */
     private fun backgroundPermission() {
         ActivityCompat.requestPermissions(
             requireActivity(),
             arrayOf(
                 android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-            ), 2)
+            ), 2
+        )
     }
+
     private fun backgroundDeniedPermission() {
         var builder = AlertDialog.Builder(context)
-        builder.setTitle("Error").setMessage("서비스 사용에 제약이 있을 수 있습니다. " +
-                "설정 -> 위치 -> 사용 중인 앱 -> (등등 경로 알려주기)" +
-                " 권한을 항상 허용으로 설정해주세요.")
+        builder.setTitle("Error").setMessage(
+            "서비스 사용에 제약이 있을 수 있습니다. " +
+                    "설정 -> 위치 -> 사용 중인 앱 -> (등등 경로 알려주기)" +
+                    " 권한을 항상 허용으로 설정해주세요."
+        )
 
         var listener = DialogInterface.OnClickListener { _, p1 ->
             when (p1) {
@@ -76,11 +128,12 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         builder.show()
     }
 
-    private fun permissionDialog(context : Context){
+    private fun permissionDialog(context: Context) {
         var builder = AlertDialog.Builder(context)
-        builder.setTitle("Alert").
-        setMessage("원할한 서비스를 위해 위치 권한을 항상 허용으로 설정해주세요." +
-                "(사용에 제약이 있을 수 있습니다!)")
+        builder.setTitle("Alert").setMessage(
+            "원할한 서비스를 위해 위치 권한을 항상 허용으로 설정해주세요." +
+                    "(사용에 제약이 있을 수 있습니다!)"
+        )
 
         var listener = DialogInterface.OnClickListener { _, p1 ->
             when (p1) {
@@ -98,15 +151,16 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     }
 
     // 위치 권한 제대로 설정 안됐을 때
-    private fun checkPermission() {
-        if(ContextCompat.checkSelfPermission(
+    private fun checkPermission() : Boolean{
+        if (ContextCompat.checkSelfPermission(
                 requireContext(),
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-            == PackageManager.PERMISSION_DENIED) {
-            //permissionDialog(requireContext())
-            backgroundDeniedPermission()
-            return
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            )
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
         }
+        return false
     }
 
     /**
@@ -120,22 +174,24 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
      * 사용자에게 위치 권한 항상 허용하라고 메시지를 띄울지? 지금 이대로,
      * 또는, 위치 권한 경로를 알려주고 일부 서비스 사용 제약이 있을 수 있다고 띄울까?
      */
-    private fun requestPermission(){
+    private fun requestPermission() {
         // 이미 권한이 있으면 그냥 리턴
-        if(ContextCompat.checkSelfPermission(
+        if (ContextCompat.checkSelfPermission(
                 requireContext(),
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-            == PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            )
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             return
-        }
-        else {
+        } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 ActivityCompat.requestPermissions(
                     requireActivity(),
                     arrayOf(
                         android.Manifest.permission.ACCESS_COARSE_LOCATION,
                         android.Manifest.permission.ACCESS_FINE_LOCATION
-                    ), 1)
+                    ), 1
+                )
                 permissionDialog(requireContext())
                 //checkPermission()
             }
@@ -146,11 +202,71 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                     arrayOf(
                         android.Manifest.permission.ACCESS_COARSE_LOCATION,
                         android.Manifest.permission.ACCESS_FINE_LOCATION
-                    ), 1)
+                    ), 1
+                )
             }
         }
     }
 
+    /* ========================사용자 위치 받기======================== */
+    private fun startLocationUpdates() {
+        // init my location
+//        mLastLocation.latitude = 0.0
+//        mLastLocation.longitude = 0.0
+
+        mLocationRequest = LocationRequest.create().apply {
+            interval = 60 * 1000 // 업데이트 간격 단위, 1000밀리초 단위 (1초)
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY // 정확성
+            fastestInterval = 60 * 1000
+            maxWaitTime = 60 * 1000 // 위치 갱신 요청 최대 대기 시간 (1000 -> 1초)
+        }
+        // FuesdLocationProviderClient의 인스턴스 생성
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // 위치 권한 설정 안되어 있는 경우.
+            Toast.makeText(requireContext(), "위치 권한 거부", Toast.LENGTH_SHORT).show()
+            return
+        }
+        fusedLocationClient!!.requestLocationUpdates(
+            mLocationRequest, mLocationCallback, Looper.myLooper()!!
+        )
+    }
+
+    // 시스템으로 부터 위치 정보를 콜백으로 받음
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            for (location in locationResult.locations) {
+                if (location != null) {
+                    val latitude = location.latitude
+                    val longitude = location.longitude
+                    val locationToFirebase = mutableMapOf<String, Any>()
+
+                    // 파이어베이스에 현재 위치 넣기
+                    mLastLocation = location
+                    locationToFirebase["latitude"] = mLastLocation.latitude
+                    locationToFirebase["longitude"] = mLastLocation.longitude
+                    userDB = Firebase.database.reference.child("recommend").child(auth?.uid.toString())
+                    userDB.updateChildren(locationToFirebase)
+                    Log.d("loc", "${mLastLocation.latitude}, ${mLastLocation.longitude}")
+                }
+            }
+//            // 시스템에서 받은 location 정보를 onLocationChanged()에 전달
+//            mLastLocation = locationResult.lastLocation
+//            //addLocationToFirebase(locationResult.lastLocation)
+        }
+    }
+
+    // 파이어베이스에 위치 넣기.
+    fun addLocationToFirebase(location: Location) {
+
+        //mLastLocation = location
+    }
+
+    /* ========================지도 생성======================== */
     // 지도 화면에 생성
     override fun onMapReady(nMap: NaverMap) {
         naverMap = nMap
@@ -160,13 +276,14 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         naverMap.minZoom = 8.0
         // 초기 위치 설정
         naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(37.5509, 126.9410)))
-
+//        naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(mLastLocation.latitude, mLastLocation.longitude)))
         // 현재 위치 설정
         naverMap.uiSettings.isLocationButtonEnabled = true
 
         //locationSource = FusedLocationSource(this@RecommendFragment, LOCATION_PERMISSION_REQUEST_CODE)
         // 내장 위치 추적 기능 사용
-        naverMap.locationSource = FusedLocationSource(this@RecommendFragment, REQUEST_ACCESS_LOCATION_PERMISSIONS)
+        naverMap.locationSource =
+            FusedLocationSource(this@RecommendFragment, REQUEST_ACCESS_LOCATION_PERMISSIONS)
 
         // 마커 가운데 표시,좌표 받기.
         val marker = Marker()
@@ -174,10 +291,20 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         marker.map = naverMap //marker가 지도에 찍힌다.
         // 마커 아이콘 속성
         marker.icon = MarkerIcons.LIGHTBLUE
-        marker.iconTintColor = Color.rgb(159,214,253)
+        marker.iconTintColor = Color.rgb(159, 214, 253)
 
+//        marker.width = Marker.SIZE_AUTO
+//        marker.height = Marker.SIZE_AUTO
+//        marker.captionText = "이 위치로부터 km 거리의 사용자를 추천 받습니다."
+//        marker.captionRequestedWidth = 100
+//        marker.captionColor = Color.BLUE
+//        marker.captionHaloColor = Color.rgb(200, 255, 200)
+//        marker.captionTextSize = 16f
+//        marker.captionMinZoom = 12.0
+//        marker.captionMaxZoom = 16.0
+        marker.isHideCollidedSymbols = true
         // 카메라 움직임에 대한 이벤트
-        naverMap.addOnCameraChangeListener{ reason, animated ->
+        naverMap.addOnCameraChangeListener { reason, animated ->
             Log.i("NaverMap", "카메라 변경 - reason:$reason, animated: $animated")
             // 현재 보이는 지도의 가운데로 마커 이동
             marker.position = LatLng(
@@ -204,10 +331,17 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             circle.radius = 500.0 // m단위.
             circle.map = naverMap
             circle.outlineWidth = 8
-            circle.color = Color.argb(30,159,214,253)
-            circle.outlineColor = Color.rgb(159,214,253)
+            circle.color = Color.argb(30, 159, 214, 253)
+            circle.outlineColor = Color.rgb(159, 214, 253)
 
+            recommendLatitude = naverMap.cameraPosition.target.latitude
+            recommendLongitude = naverMap.cameraPosition.target.longitude
+            Log.d("recommendLocation", "${recommendLatitude}, ${recommendLongitude}")
         }
+
+//        recommendLocation.latitude = naverMap.cameraPosition.target.latitude
+//        recommendLocation.longitude = naverMap.cameraPosition.target.longitude
+
     }
 
     override fun onStart() {

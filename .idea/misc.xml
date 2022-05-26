@@ -4,14 +4,23 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_id.xml" value="0.172" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/menu_recommend.xml" value="0.1815" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/rect_round_ffd464_radius_8.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/rect_round_white_radius_30.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_chatroom.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/background.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/bottom_sheet.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/checkpn.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_recommend.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_check_animation.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_datepicker.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_chatting.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_profile.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_recommend.xml" value="0.2" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/home.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/item_article.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/join.xml" value="0.264" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/main.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/profile_setting.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/recommend_bottom_sheet.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.24974358974358973" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_button.xml" value="0.1" />

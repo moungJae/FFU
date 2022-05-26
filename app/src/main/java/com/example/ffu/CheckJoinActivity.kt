@@ -7,7 +7,6 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
@@ -29,7 +28,8 @@ class CheckJoinActivity : AppCompatActivity() {
                     if (ds.key.toString().equals("join")) {
                         Log.d("~~", ds.value.toString())
                         if (ds.value.toString().equals("true")) { // 회원가입 o
-                            val intent = Intent(this@CheckJoinActivity, BackgroundActivity::class.java)
+                            val intent =
+                                Intent(this@CheckJoinActivity, BackgroundActivity::class.java)
                             startActivity(intent)
                             finish()
                         } else { // 회원가입 x
