@@ -47,18 +47,20 @@ class UserInformation {
         // 매칭된 유저들의 uid 값을 저장
         var MATCH_USER = ArrayList<String>()
 
-        // 현재 등록된 모든 Listener 정보 (유저 + 매칭 유저 리스너)
+        // 등록된 모든 Listener 정보
         var ALL_LISTENER_INFO = ArrayList<ListenerInfo>()
 
-        // 회원가입된 모든 유저들의 uid 값을 저장
-        lateinit var JOIN_ALL_USER : ArrayList<String>
+        // 지도 위치 권한을 등록한 모든 유저들의 정보 (위도 + 경도)
+        var LATITUDE = mutableMapOf<String, Double>()
+        val LONGITUDE = mutableMapOf<String, Double>()
     }
 
     init {
-        // 모든 유저들의 uid 값은 단 한번만 리스너가 등록되도록 함
+        // 지도 위치 권한을 등록한 모든 유저들에 대해 단 한번만 리스너가 등록되도록 함
+        // 리스너를 등록함으로써 실시간으로 변경되는 위도 및 경도를 감지할 수 있음
         // JOIN = false 인 경우 => 객체가 최초로 생성된 경우
         if (!JOIN) {
-            addAllUserInformation()
+            addAllUserLocation()
         }
         // 등록된 모든 정보를 초기화
         initializeAllInformation()
@@ -177,6 +179,38 @@ class UserInformation {
         return resultList
     }
 
+    private fun addUserLocation(userId : String) {
+        userDB = Firebase.database.reference.child("recommend").child(userId)
+        userDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (ds in snapshot.children) {
+                    if (ds.key.toString().equals("latitude")) {
+                        LATITUDE[userId] = ds.value.toString().toDouble()
+                    } else if (ds.key.toString().equals("longitude")) {
+                        LONGITUDE[userId] = ds.value.toString().toDouble()
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    // 유저들의 위도, 경도의 realtime 변경을 리스너를 등록하여 반영되도록 함
+    private fun addAllUserLocation() {
+        userDB = Firebase.database.reference.child("recommend")
+        userDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (ds in snapshot.children) {
+                    val userId = ds.key.toString()
+                    if (LONGITUDE[userId] == null) {
+                        addUserLocation(userId)
+                    }
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
     // 로그인한 유저 및 매칭 유저들의 profile 세팅
     private fun addUserProfile(userId : String) {
         userDB = Firebase.database.reference.child("profile").child(userId)
@@ -273,22 +307,5 @@ class UserInformation {
             override fun onCancelled(error: DatabaseError) {}
         })
         ALL_LISTENER_INFO.add(ListenerInfo("", userDB, likedByListener))
-    }
-
-    // 회원가입한 모든 유저들을 저장
-    private fun addAllUserInformation() {
-        // 회원가입된 모든 유저들의 정보 저장
-        userDB = Firebase.database.reference.child("join")
-        userDB.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val joinList = ArrayList<String>()
-                for (ds in snapshot.children) {
-                    val userId = ds.key.toString()
-                    joinList.add(userId)
-                }
-                JOIN_ALL_USER = joinList
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
     }
 }
