@@ -9,13 +9,13 @@ data class ChatItem(
     val senderName: String,
     val sendDate : String,
     val message: String,
-    val imageUrl: String,
+    //val imageUrl: String,
     val type: Int
 ) {
     companion object {
         const val LEFT_TYPE = 0
         const val RIGHT_TYPE = 1
     }
-    constructor(): this("", "","","","",-1)
+    constructor(): this("", "","","",-1)
 }
 

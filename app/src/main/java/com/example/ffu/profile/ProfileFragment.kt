@@ -1,15 +1,21 @@
 package com.example.ffu.profile
 
+import android.app.Activity
 import android.content.Intent
+import android.location.SettingInjectorService
 import android.os.Bundle
 import android.util.Log
+
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.ffu.UserInformation
 import com.example.ffu.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -33,7 +39,6 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         auth = Firebase.auth
         userId = getCurrentUserID(view)
         storage = FirebaseStorage.getInstance()
@@ -42,15 +47,13 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         setToast()
         setProfile(view)
         editProfile(view)
+        settingButton(view)
     }
 
     // 한번만 실행되도록
     private fun setToast() {
-        userDB = Firebase.database.getReference("animation").child(userId)
-        userDB.get().addOnSuccessListener {
-            if (it.child("permission").value.toString().equals("false")) {
-                Toast.makeText(context, "프로필 사진을 변환해주세요.", Toast.LENGTH_SHORT).show()
-            }
+        if (!UserInformation.JOIN) {
+            Toast.makeText(context, "프로필 사진을 변환해주세요.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -59,35 +62,15 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         val nickname = view.findViewById<TextView>(R.id.profile_nickname_text)
         val image = view.findViewById<ImageView>(R.id.profile_profileimage)
 
-        userDB = Firebase.database.getReference("animation").child(userId)
-        userDB.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (ds in snapshot.children) {
-                    if(ds.key.toString().equals("permission") && ds.value.toString().equals("true")) {
-                        pathReference.child("photo/$userId/real.jpg").downloadUrl.addOnCompleteListener{ task ->
-                            if (task.isSuccessful) {
-                                Glide.with(activity!!)
-                                    .load(task.result)
-                                    .into(image)
-                            }
-                        }
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
-        userDB = Firebase.database.getReference("profile").child(userId)
-        userDB.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (ds in snapshot.children) {
-                    when (ds.key.toString()) {
-                        "nickname" -> nickname.setText(ds.value.toString())
-                        "introMe" -> introMe.setText(ds.value.toString())
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
+        if (UserInformation.PERMISSION[userId] == true) {
+            Glide.with(this)
+                .load(UserInformation.URI[userId])
+                .into(image)
+        } else {
+            Toast.makeText(context, "프로필을 추가하세요!", Toast.LENGTH_SHORT).show()
+        }
+        nickname.setText(UserInformation.NICKNAME[userId] ?: "")
+        introMe.setText(UserInformation.INTROME[userId] ?: "")
     }
 
     private fun editProfile(view: View) {
@@ -97,6 +80,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
             activity?.let {
                 val intent = Intent(context, ProfileSettingActivity::class.java)
                 startActivity(intent)
+
             }
         }
     }
@@ -106,5 +90,16 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
             Snackbar.make(view, "로그인되지 않았습니다", Snackbar.LENGTH_LONG).show()
         }
         return auth.currentUser?.uid.orEmpty()
+    }
+
+    private fun settingButton(view: View){
+        val settingButton = view.findViewById<Button>(R.id.settingButton)
+
+        settingButton.setOnClickListener {
+            activity?.let {
+                val intent = Intent(context, SettingActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 }

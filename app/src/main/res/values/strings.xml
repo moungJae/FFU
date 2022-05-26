@@ -19,10 +19,10 @@
 
     <string name="HOME">HOME</string>
     <string name="identity_verification">본인 인증</string>
-    <string name="phone_num">휴대전화번호 (예시 01012345678)</string>
+    <string name="phone_num">휴대전화번호 (예시: 01012345678)</string>
     <string name="phone_num_ex">휴대전화번호 입력</string>
     <string name="type_phone_num">휴대폰번호를 입력해주세요</string>
-    <string name="certification_num">인증 번호</string>
+    <string name="certification_num">인증 번호 (예시: 123456)</string>
     <string name="type_certification_num">인증번호를 입력해주세요</string>
     <string name="send_certification_num">인증 번호 입력</string>
     <string name="request_certification_num">인증 요청</string>

@@ -100,6 +100,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 
         // 카메라 움직임 종료에 대한 이벤트
         naverMap.addOnCameraIdleListener {
+            Log.i("NaverMap", "카메라 종료")
             marker.position = LatLng(
                 naverMap.cameraPosition.target.latitude,
                 naverMap.cameraPosition.target.longitude

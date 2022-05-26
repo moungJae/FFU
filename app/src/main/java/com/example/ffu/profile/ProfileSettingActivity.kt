@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
-import android.media.Image
 import android.net.Uri
 import android.os.*
 import android.view.LayoutInflater
@@ -19,6 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.ffu.BackgroundActivity
+import com.example.ffu.UserInformation
 import com.example.ffu.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -29,10 +29,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import java.io.*
 import java.net.Socket
-import java.net.URI
 import java.text.SimpleDateFormat
 
 class ProfileSettingActivity : AppCompatActivity() {
@@ -40,14 +38,15 @@ class ProfileSettingActivity : AppCompatActivity() {
     private lateinit var userDB: DatabaseReference
     private lateinit var auth : FirebaseAuth
     private lateinit var storage: FirebaseStorage
+    private lateinit var userID : String
 
     private val ip = "59.9.212.155"
     private val port = 30000
     private lateinit var socket: Socket
     private lateinit var dos: DataOutputStream
 
-    private val personalities = ArrayList<String>()
-    private val hobbies = ArrayList<String>()
+    private var personalities = ArrayList<String>()
+    private var hobbies = ArrayList<String>()
     private var mbti: String = ""
     private var religion: String = ""
     private var birth: String = ""
@@ -83,12 +82,10 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
     private fun initializeInformation() {
-        val pathReference = FirebaseStorage.getInstance().reference
         val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
-        var userId = ""
 
         auth = Firebase.auth
-        userId = auth.currentUser?.uid.toString()
+        userID = auth.uid.toString()
         storage = FirebaseStorage.getInstance()
         progressBar = findViewById<ProgressBar>(R.id.profile_setting_progressBar)
 
@@ -97,51 +94,27 @@ class ProfileSettingActivity : AppCompatActivity() {
             gender = intent.getStringExtra("gender").toString()
         }
 
-        // 오직 한번만 변경되도록
-        userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
-        userDB.get().addOnSuccessListener {
-            if (it.child("nickname").value != null) {
-                findViewById<EditText>(R.id.profile_setting_inputNickname).setText(it.child("nickname").value.toString())
-            }
-            if (it.child("job").value != null) {
-                findViewById<EditText>(R.id.profile_setting_inputJob).setText(it.child("job").value.toString())
-            }
-            if (it.child("introMe").value != null) {
-                findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(it.child("introMe").value.toString())
-            }
-            when(it.child("smoke").value.toString()) {
-                "비흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1).isChecked = true
-                "흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2).isChecked = true
-            }
-            when(it.child("drinking").value.toString()) {
-                "비음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1).isChecked = true
-                "음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2).isChecked = true
-            }
-            mbti = it.child("mbti").value.toString()
-            religion = it.child("religion").value.toString()
-            val personalityList = it.child("personality").value.toString().split("/")
-            for (personality in personalityList) {
-                personalities.add(personality)
-            }
-            val hobbyList = it.child("hobby").value.toString().split("/")
-            for (hobby in hobbyList) {
-                hobbies.add(hobby)
-            }
+        findViewById<EditText>(R.id.profile_setting_inputNickname).setText(UserInformation.NICKNAME[userID] ?: "")
+        findViewById<EditText>(R.id.profile_setting_inputJob).setText(UserInformation.JOB[userID] ?: "")
+        findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(UserInformation.INTROME[userID] ?: "")
+        when(UserInformation.SMOKE[userID] ?: "") {
+            "비흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1).isChecked = true
+            "흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2).isChecked = true
         }
+        when(UserInformation.DRINKING[userID] ?: "") {
+            "비음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1).isChecked = true
+            "음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2).isChecked = true
+        }
+        mbti = UserInformation.MBTI[userID] ?: ""
+        religion = UserInformation.RELIGION[userID] ?: ""
+        personalities = UserInformation.PERSONALITIES[userID] ?: ArrayList<String>()
+        hobbies = UserInformation.HOBBIES[userID] ?: ArrayList<String>()
 
-        userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
-        userDB.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                pathReference.child("photo/$userId/real.jpg").downloadUrl.addOnCompleteListener{ task ->
-                    if (task.isSuccessful && !isDestroyed) {
-                        Glide.with(this@ProfileSettingActivity)
-                            .load(task.result)
-                            .into(image)
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
+        if (UserInformation.URI[userID] != null) {
+            Glide.with(this@ProfileSettingActivity)
+                .load(UserInformation.URI[userID])
+                .into(image)
+        }
     }
 
     private fun setEditableArray() {
@@ -366,9 +339,13 @@ class ProfileSettingActivity : AppCompatActivity() {
             while (!requestFlag) {
                 Thread.sleep(100)
             }
+            Thread.sleep(500)
             Handler(Looper.getMainLooper()).post {
                 progressBar.visibility = View.INVISIBLE
                 transformText.text = ""
+                Glide.with(this@ProfileSettingActivity)
+                    .load(UserInformation.URI[userID])
+                    .into(image)
                 setAllEnable()
                 if (personFlag) {
                     Toast.makeText(this@ProfileSettingActivity,"애니메이션 변환 완료!",Toast.LENGTH_SHORT).show()
@@ -477,6 +454,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     private fun insertProfileInformation() {
         val profile = mutableMapOf<String, Any>()
         val animation = mutableMapOf<String, Any>()
+        val join = mutableMapOf<String, Any>()
         var personality : String =  ""
         var hobby : String = ""
 
@@ -493,7 +471,7 @@ class ProfileSettingActivity : AppCompatActivity() {
             }
         }
 
-        userDB = Firebase.database.reference.child("profile").child(auth?.uid.toString())
+        userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
         if (birth.length > 0) {
             val age = SimpleDateFormat("yyyy-MM-dd-hh-mm")
                 .format(System.currentTimeMillis())
@@ -517,6 +495,10 @@ class ProfileSettingActivity : AppCompatActivity() {
         userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
         animation["permission"] = "true"
         userDB.updateChildren(animation)
+
+        userDB = Firebase.database.reference.child("join")
+        join[auth.uid.toString()] = "join"
+        userDB.updateChildren(join)
     }
 
     // 여러번 요청이 가능하도록 리스너 등록
@@ -543,16 +525,10 @@ class ProfileSettingActivity : AppCompatActivity() {
         val image : ImageButton = mView.findViewById(R.id.dialog_check_animation_photo)
         val cancel : Button = mView.findViewById(R.id.dialog_check_animation_cancel)
         val save : Button = mView.findViewById(R.id.dialog_check_animation_save)
-        val userId = auth.currentUser?.uid.toString()
-        val pathReference = FirebaseStorage.getInstance().reference
 
-        pathReference.child("photo/$userId/real.jpg").downloadUrl.addOnCompleteListener{ task ->
-            if (task.isSuccessful && !isDestroyed) {
-                Glide.with(this@ProfileSettingActivity)
-                    .load(task.result)
-                    .into(image)
-            }
-        }
+        Glide.with(this@ProfileSettingActivity)
+            .load(UserInformation.URI[userID])
+            .into(image)
         //  취소 버튼 클릭 시
         cancel.setOnClickListener {
             dialog.dismiss()
@@ -560,15 +536,17 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
         //  완료 버튼 클릭 시
         save.setOnClickListener {
-            if (birth.length > 0) { // 회원가입 완료
-                val intent = Intent(this@ProfileSettingActivity, BackgroundActivity::class.java)
-                insertProfileInformation()
-                startActivity(intent)
-                finish()
-            } else { // 프로필 재세팅 완료
-                insertProfileInformation()
-                finish()
-            }
+            insertProfileInformation()
+            progressBar.visibility = View.VISIBLE
+            Thread {
+                Thread.sleep(2000)
+                Handler(Looper.getMainLooper()).post {
+                    val intent = Intent(this@ProfileSettingActivity, BackgroundActivity::class.java)
+                    progressBar.visibility = View.INVISIBLE
+                    startActivity(intent)
+                    finish()
+                }
+            }.start()
             dialog.dismiss()
             dialog.cancel()
         }
