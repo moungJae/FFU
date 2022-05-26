@@ -12,6 +12,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -28,6 +30,8 @@ class ChatRoomActivity : AppCompatActivity() {
     private val adapter = ChatItemAdapter()
     private var myChatDB: DatabaseReference? = null
     private var otherChatDB: DatabaseReference? = null
+    private lateinit var storage: FirebaseStorage
+    private lateinit var pathReference : StorageReference
     private var isOpen = false // 키보드 올라왔는지 확인
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -40,6 +44,8 @@ class ChatRoomActivity : AppCompatActivity() {
         val otherID = getOtherUserID()
         myChatDB = Firebase.database.reference.child(DB_CHATS).child(currentID).child(otherID)
         otherChatDB = Firebase.database.reference.child(DB_CHATS).child(otherID).child(currentID)
+        storage = FirebaseStorage.getInstance()
+        pathReference = storage.reference
 
         //chatDB = Firebase.database.refer3ence.child(DB_CHATS).child("$chatKey")
         setupView()
@@ -66,13 +72,15 @@ class ChatRoomActivity : AppCompatActivity() {
             val current = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
             val formatted = current.format(formatter)
+            val tmpMessage = binding.messageEditText.text.toString()
+            //val tmpUrl = pathReference.child("photo/$tmpId/real.jpg").downloadUrl.toString()
 
             val leftChatItem = ChatItem(
                 senderId = tmpId,
                 senderName = otherName,
                 sendDate =  formatted.toString(),
-                message = binding.messageEditText.text.toString(),
-                imageUrl ="https://firebasestorage.googleapis.com/v0/b/friends-for-u-5f03a.appspot.com/o/photo%2FPIV7JHlkOYPCsujktM2JDHmLTi92%2Freal.jpg?alt=media&token=b2af19fb-2fd7-45f6-85c9-5f15786d23ad",
+                message = tmpMessage,
+                //imageUrl =tmpUrl,
                 type = ChatItem.LEFT_TYPE
             )
 
@@ -80,8 +88,8 @@ class ChatRoomActivity : AppCompatActivity() {
                 senderId = tmpId,
                 senderName =  otherName,
                 sendDate =  formatted.toString(),
-                message = binding.messageEditText.text.toString(),
-                imageUrl ="https://firebasestorage.googleapis.com/v0/b/friends-for-u-5f03a.appspot.com/o/photo%2FPIV7JHlkOYPCsujktM2JDHmLTi92%2Freal.jpg?alt=media&token=b2af19fb-2fd7-45f6-85c9-5f15786d23ad",
+                message = tmpMessage,
+                //imageUrl =tmpUrl,
                 type = ChatItem.RIGHT_TYPE
             )
 

@@ -10,7 +10,6 @@
     <!-- 위치 권한 요청 관련-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!-- 백그라운드 위치 권한-->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <uses-permission android:name="android.permission.SEND_SMS"/>
@@ -23,12 +22,7 @@
         android:label="FFU"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.FFU">
-        <service
-            android:name="ForecdTerminationService"
-            android:foregroundServiceType="location"
-            android:exported="false"/>
 
         <!-- naver map API auth info -->
         <meta-data
@@ -52,6 +46,7 @@
         <activity android:name=".BackgroundActivity"/>
         <activity android:name=".profile.ProfileSettingActivity" />
         <activity android:name=".chatdetail.ChatRoomActivity"/>
+        <activity android:name=".profile.SettingActivity"/>
     </application>
 
 </manifest>
