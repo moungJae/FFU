@@ -51,6 +51,7 @@ class UserInformation {
         var ALL_LISTENER_INFO = ArrayList<ListenerInfo>()
 
         // 지도 위치 권한을 등록한 모든 유저들의 정보 (위도 + 경도)
+        var MAP_USER = ArrayList<String>()
         var LATITUDE = mutableMapOf<String, Double>()
         val LONGITUDE = mutableMapOf<String, Double>()
     }
@@ -58,12 +59,13 @@ class UserInformation {
     init {
         // 지도 위치 권한을 등록한 모든 유저들에 대해 단 한번만 리스너가 등록되도록 함
         // 리스너를 등록함으로써 실시간으로 변경되는 위도 및 경도를 감지할 수 있음
-        // JOIN = false 인 경우 => 객체가 최초로 생성된 경우
-        if (!JOIN) {
+        // TEL.size 값이 0인 경우 => 객체가 최초로 생성된 경우
+        if (TEL.size == 0) {
             addAllUserLocation()
+        } else {
+            // 등록된 모든 정보를 초기화
+            initializeAllInformation()
         }
-        // 등록된 모든 정보를 초기화
-        initializeAllInformation()
         // 현재 로그인한 유저에 대한 auth 변경
         authSetting()
         // 현재 로그인한 유저의 정보 저장
@@ -98,6 +100,7 @@ class UserInformation {
         var reference : DatabaseReference
         var listener : ValueEventListener
 
+        removeInformation(userId)
         for (listenerInfo in ALL_LISTENER_INFO) {
             if (userId.equals(listenerInfo.userId)) {
                 reference = listenerInfo.reference
@@ -122,9 +125,7 @@ class UserInformation {
 
     // 재로그인 or 다른 번호로 로그인한 경우 데이터 중첩을 방지하기 위함
     private fun initializeAllInformation() {
-        if (JOIN) {
-            removeAllListener()
-        }
+        removeAllListener()
         JOIN = false
         NICKNAME.clear()
         INTROME.clear()
@@ -203,6 +204,7 @@ class UserInformation {
                 for (ds in snapshot.children) {
                     val userId = ds.key.toString()
                     if (LONGITUDE[userId] == null) {
+                        MAP_USER.add(userId)
                         addUserLocation(userId)
                     }
                 }
@@ -289,7 +291,7 @@ class UserInformation {
         addUserAnimation(currentUserId)
     }
 
-    // 로그인한 유저 및 매칭 유저들의 profile 및 animation 세팅
+    // 현재 로그인한 유저의 매칭 유저들의 profile 및 animation 세팅
     private fun addAllMatchUserInformation() {
         val currentUserId = auth.uid.toString()
         userDB = Firebase.database.reference.child("likedBy").child(currentUserId).child("match")

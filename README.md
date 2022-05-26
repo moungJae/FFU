@@ -175,3 +175,16 @@
 2. 애니메이션 사진으로 변환하고자 할 사진을 선택한 경우 변환 과정이 보여지도록 함
     + 사진 선택 시 해당 사진이 화면에 나타나고 "사진 변환중..." 이라는 문구를 통해 progressbar 가 진행
     + server 측에서 애니메이션 사진으로 변환한 경우 변환된 사진이 나타남
+------------
+
+### 5/27
+1. Firebase database 에서 data를 가져오는 버퍼링 해결
+    + UserInformation Class 를 이용하여 해결
+    + 로그인 시 UserInformation 객체를 생성함으로써 Listener 등록
+        + Firebasse database 내에 존재하는 data들을 companion object의 flag, map, arrayList를 통해 data 접근
+    + 로그아웃 후 동일한 번호 or 다른 번호로 로그인할 경우
+        + 기존에 존재하던 listener 및 flag, map, arrayList 에 대한 초기화 
+        + listener 중첩 시 overhead 가 커지는 issue 방지
+        + 다른 번호로 로그인 시 이전에 로그인한 유저의 map 및 arrayList 에 저장된 data가 지속적으로 남게 되는 issue 방지
+    
+2. 핸드폰 인증 시, 단 한번만 요청이 가능하도록 
