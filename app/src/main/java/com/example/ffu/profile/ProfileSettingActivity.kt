@@ -22,20 +22,18 @@ import com.example.ffu.UserInformation
 import com.example.ffu.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-
 import com.metagalactic.dotprogressbar.DotProgressBar
 import de.hdodenhof.circleimageview.CircleImageView
-
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
+import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.UserInformation.Companion.ANIMATION
+import com.example.ffu.UserInformation.Companion.URI
 
 class ProfileSettingActivity : AppCompatActivity() {
 
@@ -82,6 +80,27 @@ class ProfileSettingActivity : AppCompatActivity() {
         saveProfile()
     }
 
+    // 취미를 '/' 으로 split 하여 리스트 형태로 반환
+    private fun setHobbies(hobbies : String) : ArrayList<String> {
+        val resultList = ArrayList<String>()
+        val hobbyList = hobbies.split("/")
+
+        for (hobby in hobbyList) {
+            resultList.add(hobby)
+        }
+        return resultList
+    }
+
+    // 성격을 '/' 으로 split 하여 리스트 형태로 반환
+    private fun setPersonalities(personalities : String) : ArrayList<String> {
+        val resultList = ArrayList<String>()
+        val personalityList = personalities.split("/")
+
+        for (personality in personalityList) {
+            resultList.add(personality)
+        }
+        return resultList
+    }
 
     private fun initializeInformation() {
         val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
@@ -96,23 +115,23 @@ class ProfileSettingActivity : AppCompatActivity() {
             gender = intent.getStringExtra("gender").toString()
         }
 
-        findViewById<EditText>(R.id.profile_setting_inputNickname).setText(UserInformation.NICKNAME[userID] ?: "")
-        findViewById<EditText>(R.id.profile_setting_inputJob).setText(UserInformation.JOB[userID] ?: "")
-        findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(UserInformation.INTROME[userID] ?: "")
-        when(UserInformation.SMOKE[userID] ?: "") {
+        findViewById<EditText>(R.id.profile_setting_inputNickname).setText(PROFILE[userID]?.nickname ?: "")
+        findViewById<EditText>(R.id.profile_setting_inputJob).setText(PROFILE[userID]?.job ?: "")
+        findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(PROFILE[userID]?.introMe ?: "")
+        when(PROFILE[userID]?.smoke ?: "") {
             "비흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1).isChecked = true
             "흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2).isChecked = true
         }
-        when(UserInformation.DRINKING[userID] ?: "") {
+        when(PROFILE[userID]?.drinking ?: "") {
             "비음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1).isChecked = true
             "음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2).isChecked = true
         }
-        mbti = UserInformation.MBTI[userID] ?: ""
-        religion = UserInformation.RELIGION[userID] ?: ""
-        personalities = UserInformation.PERSONALITIES[userID] ?: ArrayList<String>()
-        hobbies = UserInformation.HOBBIES[userID] ?: ArrayList<String>()
+        mbti = PROFILE[userID]?.mbti ?: ""
+        religion = PROFILE[userID]?.religion ?: ""
+        personalities = setPersonalities(PROFILE[userID]?.personality ?: "")
+        hobbies = setHobbies(PROFILE[userID]?.hobby ?: "")
 
-        if (UserInformation.URI[userID] != null) {
+        if (URI[userID] != null) {
             Glide.with(this@ProfileSettingActivity)
                 .load(UserInformation.URI[userID])
                 .into(image)
@@ -312,9 +331,9 @@ class ProfileSettingActivity : AppCompatActivity() {
             val animation = mutableMapOf<String, Any>()
 
             userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
-            animation["request"] = "false" // server 가 request 를 처리했는지 판단
-            animation["person"] = "false" // 사람인지 아닌지 판단
-            animation["permission"] = "false"
+            animation["request"] = false // server 가 request 를 처리했는지 판단
+            animation["person"] = false // 사람인지 아닌지 판단
+            animation["permission"] = false
             userDB.updateChildren(animation)
 
             // connection request to Server
@@ -330,9 +349,8 @@ class ProfileSettingActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            UserInformation.REQUEST = false
-            UserInformation.PERSON = false
-            while (!UserInformation.REQUEST) {
+            Thread.sleep(500)
+            while (!ANIMATION[userID]!!.request) {
                 Thread.sleep(100)
             }
             Thread.sleep(500)
@@ -340,10 +358,10 @@ class ProfileSettingActivity : AppCompatActivity() {
                 progressBar.visibility = View.INVISIBLE
                 transformText.text = ""
                 Glide.with(this@ProfileSettingActivity)
-                    .load(UserInformation.URI[userID])
+                    .load(URI[userID])
                     .into(image)
                 setAllEnable()
-                if (UserInformation.PERSON) {
+                if (ANIMATION[userID]!!.person) {
                     Toast.makeText(this@ProfileSettingActivity,"애니메이션 변환 완료!",Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@ProfileSettingActivity,"인물사진을 넣어주세요!",Toast.LENGTH_SHORT).show()
@@ -442,7 +460,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         if (nickname.isEmpty() || job.isEmpty() || introMe.isEmpty() || smoke.isEmpty()
             || drinking.isEmpty() || mbti.isEmpty() || religion.isEmpty()
-            || personalities.size == 0 || hobbies.size == 0 || !UserInformation.PERSON)
+            || personalities.size == 0 || hobbies.size == 0 || !ANIMATION[userID]!!.person)
             return false
         return true
     }
@@ -466,7 +484,7 @@ class ProfileSettingActivity : AppCompatActivity() {
             }
         }
 
-        userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
+        userDB = Firebase.database.reference.child("profile").child(userID)
         if (birth.length > 0) {
             val age = SimpleDateFormat("yyyy-MM-dd-hh-mm")
                 .format(System.currentTimeMillis())
@@ -484,11 +502,11 @@ class ProfileSettingActivity : AppCompatActivity() {
         profile["religion"] = religion
         profile["personality"] = personality
         profile["hobby"] = hobby
-        profile["join"] = "true"
+        profile["join"] = true
         userDB.updateChildren(profile)
 
-        userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
-        animation["permission"] = "true"
+        userDB = Firebase.database.reference.child("animation").child(userID)
+        animation["permission"] = true
         userDB.updateChildren(animation)
     }
 
@@ -537,7 +555,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                 showAnimationPhoto()
             }
             else {
-                if (!UserInformation.PERSON) {
+                if (!ANIMATION[userID]!!.person) {
                     Toast.makeText(this, "인물 사진을 넣어주세요!", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "정보를 완벽하게 입력해주세요!", Toast.LENGTH_SHORT).show()

@@ -21,18 +21,29 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.example.ffu.UserInformation.Companion.PROFILE
 
 class CheckJoinActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var userId: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loading)
 
+        setAuth()
+        checkUser()
+    }
+
+    private fun setAuth() {
         auth = Firebase.auth
-        // Toast.makeText(this, auth.uid.toString(), Toast.LENGTH_SHORT).show()
-        if (auth.uid.equals("k34RDUo0Q8c7eDalOa3wECdrFB83")) {
+        userId = auth.uid.toString()
+    }
+
+    private fun checkUser() {
+        // dummy uid 가 들어간 경우
+        if (userId == "k34RDUo0Q8c7eDalOa3wECdrFB83") {
             processLogout()
         } else {
             if (auth.currentUser != null) { // 로그인 상태
@@ -55,7 +66,7 @@ class CheckJoinActivity : AppCompatActivity() {
                 Thread.sleep(3000)
                 Handler(Looper.getMainLooper()).post {
                     progressBar.visibility = View.INVISIBLE
-                    if (UserInformation.JOIN) {
+                    if (PROFILE[userId]?.join ?: false == true) {
                         val intent = Intent(this@CheckJoinActivity, BackgroundActivity::class.java)
                         startActivity(intent)
                     } else {

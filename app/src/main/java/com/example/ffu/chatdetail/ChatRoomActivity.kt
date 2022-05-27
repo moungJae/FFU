@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ffu.DBKey.Companion.DB_CHATS
-import com.example.ffu.UserInformation.Companion.NICKNAME
 import com.example.ffu.databinding.ActivityChatroomBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -20,6 +19,8 @@ import com.google.firebase.storage.StorageReference
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.jar.Attributes
+import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.UserInformation.Companion.ANIMATION
 
 class ChatRoomActivity : AppCompatActivity() {
 
@@ -43,11 +44,10 @@ class ChatRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
         //Log.d("otherName",otherName)
         val currentID = getCurrentUserID()
         val otherID = getOtherUserID()
-        val Name = NICKNAME[currentID]
+        val Name = PROFILE[currentID]?.nickname ?: ""
         myChatDB = Firebase.database.reference.child(DB_CHATS).child(currentID).child(otherID)
         otherChatDB = Firebase.database.reference.child(DB_CHATS).child(otherID).child(currentID)
         storage = FirebaseStorage.getInstance()

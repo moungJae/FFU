@@ -1,35 +1,26 @@
 package com.example.ffu.profile
 
-import android.app.Activity
-import android.app.ActivityOptions
 import android.content.Intent
-import android.location.SettingInjectorService
 import android.os.Bundle
-import android.util.Log
-
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.ffu.UserInformation
 import com.example.ffu.R
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.UserInformation.Companion.ANIMATION
+import com.example.ffu.UserInformation.Companion.URI
 
 class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
@@ -56,15 +47,15 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         val nickname = view.findViewById<TextView>(R.id.profile_nickname_text)
         val image = view.findViewById<ImageView>(R.id.profile_profile_image)
 
-        if (UserInformation.PERMISSION[userId] == true) {
+        if (ANIMATION[userId]?.permission == true) {
             Glide.with(this)
-                .load(UserInformation.URI[userId])
+                .load(URI[userId])
                 .into(image)
-            nickname.setText(UserInformation.NICKNAME[userId] ?: "")
-            introMe.setText(UserInformation.INTROME[userId] ?: "")
+            nickname.setText(PROFILE[userId]?.nickname ?: "")
+            introMe.setText(PROFILE[userId]?.introMe ?: "")
         } else {
-            nickname.setText(UserInformation.NICKNAME[userId] ?: "")
-            introMe.setText(UserInformation.INTROME[userId] ?: "")
+            nickname.setText(PROFILE[userId]?.nickname ?: "")
+            introMe.setText(PROFILE[userId]?.introMe ?: "")
             Toast.makeText(context, "프로필을 변경해주세요!", Toast.LENGTH_SHORT).show()
         }
     }

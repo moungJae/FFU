@@ -73,7 +73,6 @@ class MainActivity : AppCompatActivity() {
         checkVerificationButton.isEnabled = false
     }
 
-
     private fun requestVerification() {
         val phoneEditText = findViewById<EditText>(R.id.main_editPhone)
         val requestButton = findViewById<LoadingButton>(R.id.main_requestButton)
@@ -89,8 +88,9 @@ class MainActivity : AppCompatActivity() {
 
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
                 this@MainActivity.verificationId = verificationId
-                setPhoneEnable()
                 setVerificationEnable()
+                requestButton.loadingSuccessful()
+                setPhoneEnable()
             }
         }
 
@@ -108,8 +108,6 @@ class MainActivity : AppCompatActivity() {
                         TimeUnit.SECONDS,
                         this,
                         callbacks )
-                    requestButton.loadingSuccessful()
-
                 } else {
                     requestButton.loadingFailed()
                     Toast.makeText(this, "이미 인증 요청을 하셨습니다.", Toast.LENGTH_SHORT).show()
@@ -139,7 +137,7 @@ class MainActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         val profile = mutableMapOf<String, Any>()
-                        Toast.makeText(this, "인증 성공! 다음 버튼을 누르세요", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "인증 성공! 다음 화면으로 넘어가세요.", Toast.LENGTH_SHORT).show()
                         checkVerificationButton.loadingSuccessful()
                         joinButton.isEnabled = true
                         userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
@@ -157,14 +155,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun completeVerification() {
         val joinButton = findViewById<Button>(R.id.main_joinButton)
+        val progressBar = findViewById<DotProgressBar>(R.id.main_progressbar)
 
         joinButton.setOnClickListener {
             setPhoneDisable()
             setVerificationDisable()
+            progressBar.visibility = View.VISIBLE
             Thread(Runnable {
                 Thread.sleep(2000)
                 Handler(Looper.getMainLooper()).post {
                     val intent = Intent(this@MainActivity, CheckJoinActivity::class.java)
+                    progressBar.visibility = View.INVISIBLE
                     startActivity(intent)
                     finish()
                 }

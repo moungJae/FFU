@@ -10,6 +10,8 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ffu.profile.ProfileSettingActivity
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.metagalactic.dotprogressbar.DotProgressBar
 
 class JoinActivity : AppCompatActivity() {

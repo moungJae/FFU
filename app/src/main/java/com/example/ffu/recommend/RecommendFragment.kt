@@ -38,6 +38,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.lang.Math.*
 import kotlin.math.pow
+import com.example.ffu.UserInformation.Companion.RECOMMEND
 
 class RecommendFragment : Fragment(), OnMapReadyCallback {
 
@@ -90,19 +91,15 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         button = view.findViewById(R.id.btn_confirm)
         locationMsg = view.findViewById(R.id.locationMsg)
         button.setOnClickListener { // 클릭하면 추천 리스트 띄우는데 그때 거리 계산하고 띄우기.
-            Log.d("button", "clicked")
-            val test : Int = getDistance(mLastLocation.latitude, mLastLocation.longitude,
-                recommendLatitude, recommendLongitude) / 1000
-            Log.d("distance", "$test km")
             // 파이어베이스에서 user 좌표 가져와서 계산하여 uid vector에 넣기.
             val usersUid : ArrayList<String> = UserInformation.MAP_USER
             val myRadius : Int = 10 // EditText 또는 numberdialog로 거리 설정해야함.
-            var recommendUsersUid = ArrayList<String>()
+            val recommendUsersUid = ArrayList<String>()
             // 리스트에 거리 내의 사용자의 uid 넣기.
             for (uid in usersUid) {
                 if (uid == auth.uid) continue
                 val distance : Int =
-                    getDistance(UserInformation.LATITUDE[uid], UserInformation.LONGITUDE[uid],
+                    getDistance(RECOMMEND[uid]?.latitude, RECOMMEND[uid]?.longitude,
                     recommendLatitude, recommendLongitude) / 1000
                 if (distance < myRadius) {
                     recommendUsersUid.add(uid)
@@ -110,10 +107,8 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             }
             // button 누르면 bottomSheet (추천 List) 띄우기.
             // bottomsheet v1
-            var bottomSheet = RecommendList(recommendUsersUid)
+            val bottomSheet = RecommendList(recommendUsersUid)
             bottomSheet.show(childFragmentManager, RecommendList.TAG)
-
-
         }
     }
     override fun onCreateView(

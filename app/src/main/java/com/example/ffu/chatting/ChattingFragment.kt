@@ -9,10 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ffu.DBKey.Companion.DB_PROFILE
 import com.example.ffu.R
-import com.example.ffu.UserInformation.Companion.BIRTH
-import com.example.ffu.UserInformation.Companion.GENDER
 import com.example.ffu.UserInformation.Companion.MATCH_USER
-import com.example.ffu.UserInformation.Companion.NICKNAME
 import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.chatdetail.ChatRoomActivity
 import com.example.ffu.databinding.FragmentChattingBinding
@@ -24,7 +21,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-
+import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.UserInformation.Companion.ANIMATION
 
 public class ChattingFragment: Fragment(R.layout.fragment_chatting) {
     private lateinit var userDB: DatabaseReference
@@ -32,8 +30,6 @@ public class ChattingFragment: Fragment(R.layout.fragment_chatting) {
     private lateinit var storage: FirebaseStorage
     private lateinit var pathReference : StorageReference
     private lateinit var userId : String
-
-
 
     private val articleList = mutableListOf<ArticleModel>()
 
@@ -87,9 +83,9 @@ public class ChattingFragment: Fragment(R.layout.fragment_chatting) {
 
     private fun addArticleList(){
         for(matchId in MATCH_USER){
-            val name = NICKNAME[matchId]
-            val gender = GENDER[matchId]
-            val birth = BIRTH[matchId]
+            val name = PROFILE[matchId]?.nickname ?: ""
+            val gender = PROFILE[matchId]?.gender ?: ""
+            val birth = PROFILE[matchId]?.birth ?: ""
             val imageUri = URI[matchId]
 
             articleList.add(ArticleModel(matchId,name,gender,birth,imageUri))

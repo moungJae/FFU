@@ -49,14 +49,6 @@ class BackgroundActivity : AppCompatActivity() {
 
         }
     }
-    /*
-    override fun onResume() {
-        super.onResume()
-        if(auth.currentUser==null){
-            startActivity(Intent(this,MainActivity::class.java))
-            finish()
-        }
-    }*/
 
     // 프로필 편집을 하게 되는 경우
     private fun checkSetProfile() {
