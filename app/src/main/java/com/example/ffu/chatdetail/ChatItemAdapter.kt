@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ffu.UserInformation
 import com.example.ffu.R
+import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.chatdetail.ChatItem
 import com.example.ffu.databinding.ItemChatLeftBinding
 import com.example.ffu.databinding.ItemChatRightBinding
@@ -20,8 +21,6 @@ import com.google.firebase.storage.StorageReference
 
 class ChatItemAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(diffUtil) {
 
-    private lateinit var storage: FirebaseStorage
-    private lateinit var pathReference : StorageReference
     inner class leftViewHolder(private var binding: ItemChatLeftBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(chatItem: ChatItem) {
@@ -29,18 +28,9 @@ class ChatItemAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(diffUtil)
             binding.itemChatLeftDate.text = chatItem.sendDate
             binding.itemChatLeftMessage.text = chatItem.message
 
-            // storage = FirebaseStorage.getInstance()
             Glide.with(binding.root)
-                .load(UserInformation.URI[chatItem.senderId])
+                .load(URI[chatItem.senderId])
                 .into(binding.itemChatLeftImage)
-            /* pathReference = storage.reference
-            pathReference.child("photo/${chatItem.senderId}/real.jpg").downloadUrl.addOnCompleteListener{ task ->
-                if (task.isSuccessful) {
-                    Glide.with(binding.root)
-                        .load(task.result)
-                        .into(binding.itemChatLeftImage)
-                }
-            }*/
         }
 
     }

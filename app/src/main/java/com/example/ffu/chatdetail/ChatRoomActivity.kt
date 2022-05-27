@@ -2,10 +2,13 @@ package com.example.ffu.chatdetail
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.widget.ScrollView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ffu.DBKey.Companion.DB_CHATS
+import com.example.ffu.UserInformation.Companion.NICKNAME
 import com.example.ffu.databinding.ActivityChatroomBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -16,6 +19,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.jar.Attributes
 
 class ChatRoomActivity : AppCompatActivity() {
 
@@ -39,9 +43,11 @@ class ChatRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        var otherName = getOtherUserName()
+
+        //Log.d("otherName",otherName)
         val currentID = getCurrentUserID()
         val otherID = getOtherUserID()
+        val Name = NICKNAME[currentID]
         myChatDB = Firebase.database.reference.child(DB_CHATS).child(currentID).child(otherID)
         otherChatDB = Firebase.database.reference.child(DB_CHATS).child(otherID).child(currentID)
         storage = FirebaseStorage.getInstance()
@@ -59,6 +65,7 @@ class ChatRoomActivity : AppCompatActivity() {
                 chatList.add(chatItem)
                 adapter.submitList(chatList)
                 adapter.notifyDataSetChanged()
+                binding.chatRecyclerView.scrollToPosition(adapter.itemCount - 1)
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -73,30 +80,30 @@ class ChatRoomActivity : AppCompatActivity() {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
             val formatted = current.format(formatter)
             val tmpMessage = binding.messageEditText.text.toString()
-            //val tmpUrl = pathReference.child("photo/$tmpId/real.jpg").downloadUrl.toString()
+            if(tmpMessage!=""){
+                val leftChatItem = ChatItem(
+                    senderId = tmpId,
+                    senderName = Name,
+                    sendDate =  formatted.toString(),
+                    message = tmpMessage,
+                    type = ChatItem.LEFT_TYPE
+                )
 
-            val leftChatItem = ChatItem(
-                senderId = tmpId,
-                senderName = otherName,
-                sendDate =  formatted.toString(),
-                message = tmpMessage,
-                //imageUrl =tmpUrl,
-                type = ChatItem.LEFT_TYPE
-            )
+                val rightChatItem = ChatItem(
+                    senderId = tmpId,
+                    senderName =  Name,
+                    sendDate =  formatted.toString(),
+                    message = tmpMessage,
+                    type = ChatItem.RIGHT_TYPE
+                )
 
-            val rightChatItem = ChatItem(
-                senderId = tmpId,
-                senderName =  otherName,
-                sendDate =  formatted.toString(),
-                message = tmpMessage,
-                //imageUrl =tmpUrl,
-                type = ChatItem.RIGHT_TYPE
-            )
+                myChatDB?.push()?.setValue(rightChatItem)
+                otherChatDB?.push()?.setValue(leftChatItem)
+                //전송 후 빈칸 만들기
+                binding.messageEditText.text = null
+                //binding.chatRecyclerView.setStackFromEnd()
+            }
 
-            myChatDB?.push()?.setValue(rightChatItem)
-            otherChatDB?.push()?.setValue(leftChatItem)
-            //전송 후 빈칸 만들기
-            binding.messageEditText.text = null
         }
 
     }
@@ -107,10 +114,10 @@ class ChatRoomActivity : AppCompatActivity() {
     private fun getOtherUserID(): String {
         return intent.getStringExtra("OtherId")!!
     }
-
+    /*
     private fun getOtherUserName(): String {
         return intent.getStringExtra("OtherName").toString()
-    }
+    }*/
 
     private fun setupView() {
         // 키보드 Open/Close 체크
