@@ -5,11 +5,10 @@ import androidx.annotation.ColorInt
 
 data class ChatItem(
 
-    val senderId: String,
-    val senderName: String,
-    val sendDate : String,
-    val message: String,
-    //val imageUrl: String,
+    val senderId: String?,
+    val senderName: String?,
+    val sendDate : String?,
+    val message: String?,
     val type: Int
 ) {
     companion object {

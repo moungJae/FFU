@@ -13,8 +13,6 @@ import com.google.firebase.storage.StorageReference
 
 
 class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder>(diffUtil) {
-    private lateinit var storage: FirebaseStorage
-    private lateinit var pathReference : StorageReference
 
     inner class ViewHolder(private val binding: ItemArticleBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(articleModel: ArticleModel){
@@ -22,6 +20,11 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
             binding.itemArticleGender.text=articleModel.Gender
             binding.itemArticleBirth.text=articleModel.Birth
 
+            Glide.with(binding.root)
+                .load(articleModel.imageUri)
+                .into(binding.thumbnailImageView)
+
+            /*
             storage = FirebaseStorage.getInstance()
             pathReference = storage.reference
             pathReference.child("photo/${articleModel.Id}/real.jpg").downloadUrl.addOnCompleteListener{ task ->
@@ -30,7 +33,7 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
                         .load(task.result)
                         .into(binding.thumbnailImageView)
                 }
-            }
+            }*/
             /*
             Glide.with(binding.thumbnailImageView)
                 .load(articleModel.imageUrl.toString())

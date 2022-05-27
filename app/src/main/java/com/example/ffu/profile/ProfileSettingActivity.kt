@@ -29,6 +29,9 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+
+import com.metagalactic.dotprogressbar.DotProgressBar
+
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
@@ -51,15 +54,13 @@ class ProfileSettingActivity : AppCompatActivity() {
     private var religion: String = ""
     private var birth: String = ""
     private var gender: String = ""
-    private var personFlag : Boolean = false
-    private var requestFlag : Boolean = false
 
     private lateinit var nickname : String
     private lateinit var job : String
     private lateinit var introMe : String
     private lateinit var smoke : String
     private lateinit var drinking : String
-    private lateinit var progressBar : ProgressBar
+    private lateinit var progressBar : DotProgressBar
 
     private lateinit var editTextArray : Array<EditText>
     private lateinit var radioButtonArray : Array<RadioButton>
@@ -78,8 +79,8 @@ class ProfileSettingActivity : AppCompatActivity() {
         setReligion()
         setPhoto()
         saveProfile()
-        requestListener() // request Listener 등록
     }
+
 
     private fun initializeInformation() {
         val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
@@ -87,7 +88,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         auth = Firebase.auth
         userID = auth.uid.toString()
         storage = FirebaseStorage.getInstance()
-        progressBar = findViewById<ProgressBar>(R.id.profile_setting_progressBar)
+        progressBar = findViewById<DotProgressBar>(R.id.profile_setting_progressbar)
 
         if (intent.hasExtra("birth")) {
             birth = intent.getStringExtra("birth").toString()
@@ -334,9 +335,9 @@ class ProfileSettingActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            requestFlag = false
-            personFlag = false
-            while (!requestFlag) {
+            UserInformation.REQUEST = false
+            UserInformation.PERSON = false
+            while (!UserInformation.REQUEST) {
                 Thread.sleep(100)
             }
             Thread.sleep(500)
@@ -347,7 +348,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                     .load(UserInformation.URI[userID])
                     .into(image)
                 setAllEnable()
-                if (personFlag) {
+                if (UserInformation.PERSON) {
                     Toast.makeText(this@ProfileSettingActivity,"애니메이션 변환 완료!",Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@ProfileSettingActivity,"인물사진을 넣어주세요!",Toast.LENGTH_SHORT).show()
@@ -446,7 +447,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         if (nickname.isEmpty() || job.isEmpty() || introMe.isEmpty() || smoke.isEmpty()
             || drinking.isEmpty() || mbti.isEmpty() || religion.isEmpty()
-            || personalities.size == 0 || hobbies.size == 0 || !personFlag || !requestFlag)
+            || personalities.size == 0 || hobbies.size == 0 || !UserInformation.PERSON)
             return false
         return true
     }
@@ -454,7 +455,6 @@ class ProfileSettingActivity : AppCompatActivity() {
     private fun insertProfileInformation() {
         val profile = mutableMapOf<String, Any>()
         val animation = mutableMapOf<String, Any>()
-        val join = mutableMapOf<String, Any>()
         var personality : String =  ""
         var hobby : String = ""
 
@@ -495,27 +495,6 @@ class ProfileSettingActivity : AppCompatActivity() {
         userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
         animation["permission"] = "true"
         userDB.updateChildren(animation)
-
-        userDB = Firebase.database.reference.child("join")
-        join[auth.uid.toString()] = "join"
-        userDB.updateChildren(join)
-    }
-
-    // 여러번 요청이 가능하도록 리스너 등록
-    private fun requestListener() {
-        userDB = Firebase.database.getReference("animation").child(auth.uid.toString())
-        userDB.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (ds in snapshot.children) {
-                    if (ds.key.toString().equals("person") && ds.value.toString().equals("true")) {
-                        personFlag = true
-                    } else if (ds.key.toString().equals("request") && ds.value.toString().equals("true")) {
-                        requestFlag = true
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
     }
 
     private fun showAnimationPhoto() {
@@ -563,7 +542,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                 showAnimationPhoto()
             }
             else {
-                if (!personFlag) {
+                if (!UserInformation.PERSON) {
                     Toast.makeText(this, "인물 사진을 넣어주세요!", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "정보를 완벽하게 입력해주세요!", Toast.LENGTH_SHORT).show()

@@ -21,7 +21,10 @@ class UserInformation {
 
     companion object {
         // 현재 유저의 회원가입 여부
+        var CURRENT_USERID : String = ""
         var JOIN : Boolean = false
+        var PERSON : Boolean = false
+        var REQUEST : Boolean = false
 
         // 현재 유저 및 매칭된 유저들의 profile 정보
         var NICKNAME = mutableMapOf<String, String>()
@@ -52,7 +55,6 @@ class UserInformation {
 
         // 지도 위치 권한을 등록한 모든 유저들의 정보 (위도 + 경도)
         var MAP_USER = ArrayList<String>()
-
         var LATITUDE = mutableMapOf<String, Double>()
         val LONGITUDE = mutableMapOf<String, Double>()
     }
@@ -60,12 +62,13 @@ class UserInformation {
     init {
         // 지도 위치 권한을 등록한 모든 유저들에 대해 단 한번만 리스너가 등록되도록 함
         // 리스너를 등록함으로써 실시간으로 변경되는 위도 및 경도를 감지할 수 있음
-        // JOIN = false 인 경우 => 객체가 최초로 생성된 경우
-        if (!JOIN) {
+        // TEL.size 값이 0인 경우 => 객체가 최초로 생성된 경우
+        if (TEL.size == 0) {
             addAllUserLocation()
+        } else {
+            // 등록된 모든 정보를 초기화
+            initializeAllInformation()
         }
-        // 등록된 모든 정보를 초기화
-        initializeAllInformation()
         // 현재 로그인한 유저에 대한 auth 변경
         authSetting()
         // 현재 로그인한 유저의 정보 저장
@@ -100,6 +103,7 @@ class UserInformation {
         var reference : DatabaseReference
         var listener : ValueEventListener
 
+        removeInformation(userId)
         for (listenerInfo in ALL_LISTENER_INFO) {
             if (userId.equals(listenerInfo.userId)) {
                 reference = listenerInfo.reference
@@ -124,10 +128,10 @@ class UserInformation {
 
     // 재로그인 or 다른 번호로 로그인한 경우 데이터 중첩을 방지하기 위함
     private fun initializeAllInformation() {
-        if (JOIN) {
-            removeAllListener()
-        }
+        removeAllListener()
         JOIN = false
+        PERSON = false
+        REQUEST = false
         NICKNAME.clear()
         INTROME.clear()
         AGE.clear()
@@ -152,6 +156,7 @@ class UserInformation {
     // 로그인한 유저의 auth 세팅
     private fun authSetting() {
         auth = Firebase.auth
+        CURRENT_USERID = auth.uid.toString()
     }
 
     // 해당 유저가 회원가입이 된 경우(join = true)
@@ -233,9 +238,9 @@ class UserInformation {
                         "religion" -> RELIGION[userId] = ds.value.toString()
                         "smoke" -> SMOKE[userId] = ds.value.toString()
                         "tel" -> TEL[userId] = ds.value.toString()
-                        "join" -> JOIN = setUserJoin(ds.value.toString())
                         "hobby" -> HOBBIES[userId] = setHobbies(ds.value.toString())
                         "personality" -> PERSONALITIES[userId] = setPersonalities(ds.value.toString())
+                        "join" -> if (userId.equals(CURRENT_USERID)) JOIN = setUserJoin(ds.value.toString())
                     }
                 }
             }
@@ -253,6 +258,11 @@ class UserInformation {
                 for (ds in snapshot.children) {
                     if (ds.key.toString().equals("permission") && ds.value.toString().equals("true")) {
                         PERMISSION[userId] = true
+                    }
+                    else if (userId.equals(CURRENT_USERID) && ds.key.toString().equals("person") && ds.value.toString().equals("true")) {
+                        PERSON = true
+                    } else if (userId.equals(CURRENT_USERID) && ds.key.toString().equals("request") && ds.value.toString().equals("true")) {
+                        REQUEST = true
                     }
                 }
                 pathReference.child("photo/$userId/real.jpg").downloadUrl.addOnCompleteListener{ task ->
@@ -287,16 +297,13 @@ class UserInformation {
 
     // 현재 로그인한 유저의 profile 및 animation 세팅
     private fun addCurrentUserInformation() {
-        val currentUserId = auth.uid.toString()
-        MATCH_USER.add(currentUserId)
-        addUserProfile(currentUserId)
-        addUserAnimation(currentUserId)
+        addUserProfile(CURRENT_USERID)
+        addUserAnimation(CURRENT_USERID)
     }
 
-    // 로그인한 유저 및 매칭 유저들의 profile 및 animation 세팅
+    // 현재 로그인한 유저의 매칭 유저들의 profile 및 animation 세팅
     private fun addAllMatchUserInformation() {
-        val currentUserId = auth.uid.toString()
-        userDB = Firebase.database.reference.child("likedBy").child(currentUserId).child("match")
+        userDB = Firebase.database.reference.child("likedBy").child(CURRENT_USERID).child("match")
         val likedByListener = userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (ds in snapshot.children) {
