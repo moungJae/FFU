@@ -9,6 +9,7 @@ import com.example.ffu.chatting.ChattingFragment
 import com.example.ffu.profile.ProfileFragment
 import com.example.ffu.recommend.RecommendFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,6 +17,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.ismaeldivita.chipnavigation.ChipNavigationBar
+
 
 class BackgroundActivity : AppCompatActivity() {
 
@@ -26,7 +29,7 @@ class BackgroundActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.background)
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNavigationView = findViewById<ChipNavigationBar>(R.id.bottomNavigationView)
         val recommendFragment = RecommendFragment()
         val profileFragment = ProfileFragment()
         val chattingFragment = ChattingFragment()
@@ -35,14 +38,15 @@ class BackgroundActivity : AppCompatActivity() {
         //처음 시작화면
         replaceFragment(profileFragment)
 
-        bottomNavigationView.selectedItemId = R.id.profile
-        bottomNavigationView.setOnNavigationItemSelectedListener {
-            when(it.itemId){
+        bottomNavigationView.setItemSelected(R.id.profile)
+        bottomNavigationView.setOnItemSelectedListener {
+            when(it){
                 R.id.recommend-> replaceFragment(recommendFragment)
                 R.id.profile-> replaceFragment(profileFragment)
                 R.id.chatting->replaceFragment(chattingFragment)
             }
             true
+
         }
     }
     /*

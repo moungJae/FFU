@@ -29,6 +29,9 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+
+import com.metagalactic.dotprogressbar.DotProgressBar
+
 import java.io.*
 import java.net.Socket
 import java.text.SimpleDateFormat
@@ -59,7 +62,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     private lateinit var introMe : String
     private lateinit var smoke : String
     private lateinit var drinking : String
-    private lateinit var progressBar : ProgressBar
+    private lateinit var progressBar : DotProgressBar
 
     private lateinit var editTextArray : Array<EditText>
     private lateinit var radioButtonArray : Array<RadioButton>
@@ -79,7 +82,9 @@ class ProfileSettingActivity : AppCompatActivity() {
         setPhoto()
         saveProfile()
         requestListener() // request Listener 등록
+
     }
+
 
     private fun initializeInformation() {
         val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
@@ -87,7 +92,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         auth = Firebase.auth
         userID = auth.uid.toString()
         storage = FirebaseStorage.getInstance()
-        progressBar = findViewById<ProgressBar>(R.id.profile_setting_progressBar)
+        progressBar = findViewById<DotProgressBar>(R.id.profile_setting_progressbar)
 
         if (intent.hasExtra("birth")) {
             birth = intent.getStringExtra("birth").toString()
@@ -496,9 +501,6 @@ class ProfileSettingActivity : AppCompatActivity() {
         animation["permission"] = "true"
         userDB.updateChildren(animation)
 
-        userDB = Firebase.database.reference.child("join")
-        join[auth.uid.toString()] = "join"
-        userDB.updateChildren(join)
     }
 
     // 여러번 요청이 가능하도록 리스너 등록

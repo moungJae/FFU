@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
+
+
 
     <TextView
         android:id="@+id/editTextView"
@@ -21,6 +25,7 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="300dp"
         android:layout_height="550dp"
         android:layout_marginTop="0dp"
@@ -40,8 +45,8 @@
                 android:id="@+id/profile_setting_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="프로필 변경: "
                 android:layout_marginTop="15sp"
+                android:text="프로필 변경: "
                 android:textColor="@color/black"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -50,18 +55,17 @@
                 android:id="@+id/profile_setting_imageAddButton"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
-                android:layout_marginLeft="20sp"
                 android:layout_gravity="center"
+                android:layout_marginLeft="20sp"
                 android:background="@drawable/profile"
-                android:textColor="@color/main_text_color"
-                />
+                android:textColor="@color/main_text_color" />
 
             <Button
                 android:id="@+id/profile_setting_image_change_button"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginLeft="20sp"
                 android:layout_gravity="center"
+                android:layout_marginLeft="20sp"
                 android:background="@drawable/box_id"
                 android:text="변경"
                 android:textColor="@color/main_text_color"
@@ -91,8 +95,7 @@
                 android:layout_height="wrap_content"
                 android:hint="닉네임을 입력하세요"
                 android:inputType="text"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
 
         </LinearLayout>
 
@@ -118,7 +121,7 @@
                 android:layout_marginLeft="5sp"
                 android:hint="직업을 입력하세요"
                 android:inputType="text"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
 
         </LinearLayout>
 
@@ -144,7 +147,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:hint="친구들에게 나를 소개하세요!"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
 
 
         </LinearLayout>
@@ -176,14 +179,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="비흡연"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
                 <RadioButton
                     android:id="@+id/profile_setting_smoke_radioButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="흡연"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
             </RadioGroup>
 
@@ -216,14 +219,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="비음주"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
                 <RadioButton
                     android:id="@+id/profile_setting_drink_radioButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="음주"
-                    android:textSize="13sp"/>
+                    android:textSize="13sp" />
 
             </RadioGroup>
 
@@ -296,6 +299,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -306,29 +310,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ProgressBar
-            android:id="@+id/profile_setting_progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="200dp"
+        <com.metagalactic.dotprogressbar.DotProgressBar
+            android:id="@+id/profile_setting_progressbar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:indeterminate="true"
-            android:max="100"
-            android:minWidth="200dp"
-            android:minHeight="50dp"
-            android:progress="0"
-            android:visibility="invisible" />
+            android:layout_centerHorizontal="true"
+            app:dpb_dotColor="@color/colorAccent"
+            app:dpb_noOfDots="4"
+            android:visibility="invisible"
+            />
+
 
         <TextView
             android:id="@+id/profile_setting_transform_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text=""
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:textStyle="bold"
-            android:gravity="center"
-            />
+            android:textStyle="bold" />
 
     </LinearLayout>
 

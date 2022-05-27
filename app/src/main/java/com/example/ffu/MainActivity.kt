@@ -18,15 +18,15 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.metagalactic.dotprogressbar.DotProgressBar
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var userDB: DatabaseReference
     private lateinit var auth : FirebaseAuth
     private lateinit var phoneAuthCredential: PhoneAuthCredential
     private lateinit var verificationId : String
-    private lateinit var progressBar : ProgressBar
+    private lateinit var progressBar : DotProgressBar
     private lateinit var phoneNumber: String
     private var requestFlag: Boolean = false
 
@@ -42,7 +42,8 @@ class MainActivity : AppCompatActivity() {
     private fun initialSetting() {
         auth = Firebase.auth
         auth.setLanguageCode("kr")
-        progressBar = findViewById<ProgressBar>(R.id.main_progressBar)
+        progressBar = findViewById<DotProgressBar>(R.id.main_progressbar)
+
     }
 
     private fun setPhoneEnable() {
@@ -82,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         checkVerificationButton.isEnabled = false
         progressBar.visibility = View.VISIBLE
     }
+
 
     private fun requestVerification() {
         val phoneEditText = findViewById<EditText>(R.id.main_editPhone)
