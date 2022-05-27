@@ -31,6 +31,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 
 import com.metagalactic.dotprogressbar.DotProgressBar
+import de.hdodenhof.circleimageview.CircleImageView
 
 import java.io.*
 import java.net.Socket
@@ -279,9 +280,6 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
     private fun setAllEnable() {
-        val photoButton = findViewById<ImageButton>(R.id.profile_setting_imageAddButton)
-
-        photoButton.isEnabled = true
         for (editText in editTextArray) {
             editText.isEnabled = true
         }
@@ -294,9 +292,6 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
     private fun setAllDisable() {
-        val photoButton = findViewById<ImageButton>(R.id.profile_setting_imageAddButton)
-
-        photoButton.isEnabled = false
         for (editText in editTextArray) {
             editText.isEnabled = false
         }
@@ -310,7 +305,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private fun characterization() {
         val transformText = findViewById<TextView>(R.id.profile_setting_transform_text)
-        val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
+        val image = findViewById<CircleImageView>(R.id.profile_setting_imageAddButton)
 
         transformText.text = "사진 변환중..."
         Thread {
@@ -501,7 +496,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this).create()
         val edialog : LayoutInflater = LayoutInflater.from(this)
         val mView : View = edialog.inflate(R.layout.dialog_check_animation,null)
-        val image : ImageButton = mView.findViewById(R.id.dialog_check_animation_photo)
+        val image : CircleImageView = mView.findViewById(R.id.dialog_check_animation_photo)
         val cancel : Button = mView.findViewById(R.id.dialog_check_animation_cancel)
         val save : Button = mView.findViewById(R.id.dialog_check_animation_save)
 

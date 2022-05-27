@@ -48,6 +48,7 @@
         android:hint="@string/phone_num_ex"
         android:inputType="number"
         android:text=""
+        android:maxLength="11"
         android:textColorHint="#8E8D8D"
         app:layout_constraintBottom_toTopOf="@id/guideline5"
         app:layout_constraintLeft_toLeftOf="parent"

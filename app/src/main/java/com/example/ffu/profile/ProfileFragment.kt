@@ -1,6 +1,7 @@
 package com.example.ffu.profile
 
 import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Intent
 import android.location.SettingInjectorService
 import android.os.Bundle
@@ -53,7 +54,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
     fun setProfile(view: View) {
         val introMe = view.findViewById<TextView>(R.id.profile_introduce)
         val nickname = view.findViewById<TextView>(R.id.profile_nickname_text)
-        val image = view.findViewById<ImageView>(R.id.profile_profileimage)
+        val image = view.findViewById<ImageView>(R.id.profile_profile_image)
 
         if (UserInformation.PERMISSION[userId] == true) {
             Glide.with(this)

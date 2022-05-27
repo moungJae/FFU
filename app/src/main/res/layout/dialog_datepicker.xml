@@ -4,6 +4,7 @@
     android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:background="@color/white"
     android:orientation="vertical"
     android:layout_gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -19,7 +20,7 @@
         <NumberPicker
             android:id="@+id/dialog_datePicker_year"
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
+            android:layout_height="250dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:theme="@style/NumberPicker"/>
@@ -27,7 +28,7 @@
         <NumberPicker
             android:id="@+id/dialog_datePicker_month"
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
+            android:layout_height="250dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:theme="@style/NumberPicker"/>
@@ -35,7 +36,7 @@
         <NumberPicker
             android:id="@+id/dialog_datePicker_day"
             android:layout_width="wrap_content"
-            android:layout_height="150dp"
+            android:layout_height="250dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:theme="@style/NumberPicker"/>

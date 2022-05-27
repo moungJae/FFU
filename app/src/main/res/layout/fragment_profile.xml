@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/profileimageView"
@@ -49,15 +50,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:textSize="15sp"/>
 
-            <ImageView
-                android:id="@+id/profile_profileimage"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_profile_image"
+                android:layout_width="130sp"
+                android:layout_height="130sp"
                 android:src="@drawable/profileimage"
+                android:layout_centerHorizontal="true"
+                android:transitionName="imgTransition"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profile_profileTextView"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="15dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -65,7 +68,7 @@
                 android:textSize="30dp"
                 android:id="@+id/profile_nickname_text"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/profile_profileimage"
+                app:layout_constraintStart_toStartOf="@id/profile_profile_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profile_profileTextView"
                 android:textColor="@color/black"
@@ -77,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/profile_introduce"
                 android:textColor="@color/black"
-                app:layout_constraintStart_toEndOf="@id/profile_profileimage"
+                app:layout_constraintStart_toEndOf="@id/profile_profile_image"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profile_nickname_text"
                 android:layout_marginTop="40dp"/>
@@ -93,7 +96,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="5sp"
                 android:layout_marginBottom="15dp"
-                app:layout_constraintStart_toEndOf="@id/profile_profileimage"
+                app:layout_constraintStart_toEndOf="@id/profile_profile_image"
                 android:text="프로필 편집"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

@@ -51,14 +51,14 @@
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
-            <ImageButton
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_setting_imageAddButton"
                 android:layout_width="50sp"
                 android:layout_height="50sp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20sp"
                 android:background="@drawable/profile"
-                android:textColor="@color/main_text_color" />
+                android:textColor="@color/main_text_color"/>
 
             <Button
                 android:id="@+id/profile_setting_image_change_button"

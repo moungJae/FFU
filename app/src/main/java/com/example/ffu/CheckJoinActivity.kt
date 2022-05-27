@@ -31,11 +31,16 @@ class CheckJoinActivity : AppCompatActivity() {
         setContentView(R.layout.loading)
 
         auth = Firebase.auth
-        if (auth.currentUser != null) { // 로그인 상태
-            UserInformation()
-            processLogin()
-        } else { // 로그아웃 상태 => 핸드폰 인증 화면으로 즉시 이동
+        Log.d("test", auth.uid.toString())
+        if (auth.uid.equals("k34RDUo0Q8c7eDalOa3wECdrFB83")) {
             processLogout()
+        } else {
+            if (auth.currentUser != null) { // 로그인 상태
+                UserInformation()
+                processLogin()
+            } else { // 로그아웃 상태 => 핸드폰 인증 화면으로 즉시 이동
+                processLogout()
+            }
         }
     }
 
