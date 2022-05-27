@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_margin="10sp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/imageView"
@@ -53,19 +53,24 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline4" />
 
-    <Button
+    <com.dx.dxloadingbutton.lib.LoadingButton
         android:id="@+id/main_requestButton"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="40sp"
-        android:background="#3F51B5"
-        android:text="@string/request_certification_num"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:layout_marginLeft="10sp"
-        app:layout_constraintLeft_toRightOf="parent"
+        android:layout_height="50sp"
+        app:lb_resetAfterFailed="true"
+        app:lb_btnRippleColor="#000000"
+        app:lb_btnDisabledColor="#cccccc"
+        app:lb_disabledTextColor="#999999"
+        app:lb_rippleEnable="true"
+        app:lb_btnText="@string/request_certification_num"
+        custom:lb_btnColor="#3F51B5"
         app:layout_constraintStart_toEndOf="@+id/main_editPhone"
         app:layout_constraintTop_toBottomOf="@id/guideline4"
-        app:layout_constraintBottom_toTopOf="@id/guideline5" />
+        app:layout_constraintBottom_toTopOf="@id/guideline5"
+        android:layout_marginLeft="20sp"
+        />
+
 
     <TextView
         android:id="@+id/main_textMsg"
@@ -93,19 +98,23 @@
         app:layout_constraintTop_toBottomOf="@id/guideline6"
         app:layout_constraintBottom_toTopOf="@id/guideline7"/>
 
-    <Button
-        android:layout_width="65sp"
-        android:layout_height="45sp"
+    <com.dx.dxloadingbutton.lib.LoadingButton
         android:id="@+id/main_checkVerification"
-        android:text="@string/confirm"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:enabled="false"
-        android:layout_marginLeft="10sp"
-        android:background="#3F51B5"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="50sp"
+        app:lb_resetAfterFailed="true"
+        app:lb_btnRippleColor="#000000"
+        app:lb_btnDisabledColor="#cccccc"
+        app:lb_disabledTextColor="#999999"
+        app:lb_rippleEnable="true"
+        app:lb_btnText="@string/confirm"
+        custom:lb_btnColor="#3F51B5"
         app:layout_constraintLeft_toRightOf="@id/main_editVerificationNum"
         app:layout_constraintTop_toBottomOf="@id/guideline6"
-        app:layout_constraintBottom_toTopOf="@id/guideline7"/>
+        app:layout_constraintBottom_toTopOf="@id/guideline7"
+        android:layout_marginLeft="20sp"
+        />
 
     <Button
         android:layout_width="300sp"
@@ -123,25 +132,6 @@
         app:layout_constraintRight_toRightOf="parent"
         />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="visible"
-        tools:ignore="MissingConstraints">
-
-        <com.metagalactic.dotprogressbar.DotProgressBar
-            android:id="@+id/main_progressbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            app:dpb_dotColor="@color/colorAccent"
-            app:dpb_noOfDots="4"
-            android:visibility="invisible"
-            />
-
-    </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline1"

@@ -57,7 +57,7 @@
                 android:layout_height="50sp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="20sp"
-                android:background="@drawable/profile"
+                android:background="@drawable/profileimage"
                 android:textColor="@color/main_text_color" />
 
             <Button

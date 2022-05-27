@@ -40,10 +40,10 @@ class CheckJoinActivity : AppCompatActivity() {
     }
 
     private fun processLogin() {
-        val loadButton : Button = findViewById<Button>(R.id.loading_button)
+        val loadButton = findViewById<Button>(R.id.loading_button)
         val progressBar = findViewById<ProgressBar>(R.id.loading_progressBar)
 
-        loadButton.text = "반갑습니다 ^^"
+        loadButton.text = "입장"
         loadButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE
             Thread(Runnable {
@@ -63,10 +63,11 @@ class CheckJoinActivity : AppCompatActivity() {
     }
 
     private fun processLogout() {
-        val loadButton : Button = findViewById<Button>(R.id.loading_button)
+        val loadButton = findViewById<Button>(R.id.loading_button)
         val progressBar = findViewById<ProgressBar>(R.id.loading_progressBar)
 
-        loadButton.text = "핸드폰 인증하러 고고"
+        loadButton.text = "핸드폰 인증"
+
         loadButton.setOnClickListener {
             val intent = Intent(this@CheckJoinActivity, MainActivity::class.java)
             startActivity(intent)

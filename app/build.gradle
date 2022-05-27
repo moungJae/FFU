@@ -77,4 +77,8 @@ dependencies {
 
     implementation 'com.github.metagalactic:DotProgressBar:1.0.4'
     implementation 'com.github.ismaeldivita:chip-navigation-bar:1.4.0'
+
+    //Button
+    implementation 'com.github.StevenDXC:DxLoadingButton:2.4'
+
 }
