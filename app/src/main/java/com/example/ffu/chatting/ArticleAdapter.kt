@@ -2,21 +2,14 @@ package com.example.ffu.chatting
 
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ffu.R
 import com.example.ffu.databinding.ItemArticleBinding
-import com.example.ffu.chatting.ArticleModel
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder>(diffUtil) {

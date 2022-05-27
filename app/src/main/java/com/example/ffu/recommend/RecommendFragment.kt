@@ -15,11 +15,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.ffu.R
+import com.example.ffu.UserInformation
 import com.naver.maps.geometry.*
 import com.naver.maps.map.*
 import com.naver.maps.map.overlay.*
@@ -27,15 +30,14 @@ import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_recommend.*
 import java.lang.Math.*
 import kotlin.math.pow
-
 
 class RecommendFragment : Fragment(), OnMapReadyCallback {
 
@@ -53,28 +55,65 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationSource: FusedLocationSource
     private lateinit var fusedLocationClient: FusedLocationProviderClient // 현재 위치 가져오기 위한 변수
     private lateinit var button:Button
-
+    private lateinit var locationMsg : TextView
     // firebase
     private lateinit var userDB: DatabaseReference
     private var auth : FirebaseAuth = Firebase.auth
 
+    // bottomSheet
+    private lateinit var bottomSheet: ConstraintLayout
+    lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // bottomsheet v2
+//        bottomSheet = view.findViewById<ConstraintLayout>(R.id.fragmentBottomSheet)
+//        sheetBehavior = BottomSheetBehavior.from(bottomSheet)
+//        sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+//            override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                when (newState) {
+//                    BottomSheetBehavior.STATE_COLLAPSED -> {}
+//                    BottomSheetBehavior.STATE_DRAGGING -> {}
+//                    BottomSheetBehavior.STATE_EXPANDED -> {}
+//                    BottomSheetBehavior.STATE_HIDDEN -> {}
+//                    BottomSheetBehavior.STATE_SETTLING -> {}
+//                }
+//            }
+//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//            }
+//        }) // 여기까지 위에다 옮겨도됨.
+
         /* 위치 권한 요청 */
         requestPermission() // 최초 요청
         /* 좌표 가져오기 */
         startLocationUpdates()
         button = view.findViewById(R.id.btn_confirm)
+        locationMsg = view.findViewById(R.id.locationMsg)
         button.setOnClickListener { // 클릭하면 추천 리스트 띄우는데 그때 거리 계산하고 띄우기.
             Log.d("button", "clicked")
             val test : Int = getDistance(mLastLocation.latitude, mLastLocation.longitude,
                 recommendLatitude, recommendLongitude) / 1000
-            Toast.makeText(requireContext(), mLastLocation.latitude.toString() + " / "
-                   + mLastLocation.longitude.toString() + " / "  + test.toString(), Toast.LENGTH_SHORT).show()
-            Log.d("distance", "$test")
+            Log.d("distance", "$test km")
             // 파이어베이스에서 user 좌표 가져와서 계산하여 uid vector에 넣기.
+            val usersUid : ArrayList<String> = UserInformation.MAP_USER
+            val myRadius : Int = 10 // EditText 또는 numberdialog로 거리 설정해야함.
+            var recommendUsersUid = ArrayList<String>()
+            // 리스트에 거리 내의 사용자의 uid 넣기.
+            for (uid in usersUid) {
+                if (uid == auth.uid) continue
+                val distance : Int =
+                    getDistance(UserInformation.LATITUDE[uid], UserInformation.LONGITUDE[uid],
+                    recommendLatitude, recommendLongitude) / 1000
+                if (distance < myRadius) {
+                    recommendUsersUid.add(uid)
+                }
+            }
+            // button 누르면 bottomSheet (추천 List) 띄우기.
+            // bottomsheet v1
+            var bottomSheet = RecommendList(recommendUsersUid)
+            bottomSheet.show(childFragmentManager, RecommendList.TAG)
 
-            // vector를 리스트뷰?로 넘겨주면서 리스트 뷰에서 사용자 정보와 사진 뿌려주기.
+
         }
     }
     override fun onCreateView(
@@ -93,9 +132,9 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 
     /* ======================== 사용자 거리 계산 하여 일치하는 사용자 넣기========================*/
 
-    fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
+    fun getDistance(lat1: Double?, lon1: Double?, lat2: Double, lon2: Double): Int {
+        val dLat = Math.toRadians(lat2 - lat1!!)
+        val dLon = Math.toRadians(lon2 - lon1!!)
         val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
         val c = 2 * asin(sqrt(a))
         return (radius * c).toInt()
@@ -241,17 +280,8 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         override fun onLocationResult(locationResult: LocationResult) {
             for (location in locationResult.locations) {
                 if (location != null) {
-                    val latitude = location.latitude
-                    val longitude = location.longitude
-                    val locationToFirebase = mutableMapOf<String, Any>()
-
                     // 파이어베이스에 현재 위치 넣기
-                    mLastLocation = location
-                    locationToFirebase["latitude"] = mLastLocation.latitude
-                    locationToFirebase["longitude"] = mLastLocation.longitude
-                    userDB = Firebase.database.reference.child("recommend").child(auth?.uid.toString())
-                    userDB.updateChildren(locationToFirebase)
-                    Log.d("loc", "${mLastLocation.latitude}, ${mLastLocation.longitude}")
+                    addMyLocation(location)
                 }
             }
 //            // 시스템에서 받은 location 정보를 onLocationChanged()에 전달
@@ -260,10 +290,14 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    // 파이어베이스에 위치 넣기.
-    fun addLocationToFirebase(location: Location) {
-
-        //mLastLocation = location
+    private fun addMyLocation(location: Location) {
+        mLastLocation = location
+        val locationToFirebase = mutableMapOf<String, Any>()
+        locationToFirebase["latitude"] = mLastLocation.latitude
+        locationToFirebase["longitude"] = mLastLocation.longitude
+        userDB = Firebase.database.reference.child("recommend").child(auth?.uid.toString())
+        userDB.updateChildren(locationToFirebase)
+        Log.d("loc", "${mLastLocation.latitude}, ${mLastLocation.longitude}")
     }
 
     /* ========================지도 생성======================== */
@@ -280,7 +314,6 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         // 현재 위치 설정
         naverMap.uiSettings.isLocationButtonEnabled = true
 
-        //locationSource = FusedLocationSource(this@RecommendFragment, LOCATION_PERMISSION_REQUEST_CODE)
         // 내장 위치 추적 기능 사용
         naverMap.locationSource =
             FusedLocationSource(this@RecommendFragment, REQUEST_ACCESS_LOCATION_PERMISSIONS)
@@ -293,15 +326,6 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         marker.icon = MarkerIcons.LIGHTBLUE
         marker.iconTintColor = Color.rgb(159, 214, 253)
 
-//        marker.width = Marker.SIZE_AUTO
-//        marker.height = Marker.SIZE_AUTO
-//        marker.captionText = "이 위치로부터 km 거리의 사용자를 추천 받습니다."
-//        marker.captionRequestedWidth = 100
-//        marker.captionColor = Color.BLUE
-//        marker.captionHaloColor = Color.rgb(200, 255, 200)
-//        marker.captionTextSize = 16f
-//        marker.captionMinZoom = 12.0
-//        marker.captionMaxZoom = 16.0
         marker.isHideCollidedSymbols = true
         // 카메라 움직임에 대한 이벤트
         naverMap.addOnCameraChangeListener { reason, animated ->
@@ -314,12 +338,15 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             // 원 안보이게 하기
             circle.map = null
             // 텍스트 세팅, 확인 버튼 비활성화 -> run 사용하여 text 교체하면될듯?
-
+            button.visibility = View.INVISIBLE
+            locationMsg.visibility = View.INVISIBLE
         }
 
         // 카메라 움직임 종료에 대한 이벤트
         naverMap.addOnCameraIdleListener {
             Log.i("NaverMap", "카메라 종료")
+            button.visibility = View.VISIBLE
+            locationMsg.visibility = View.VISIBLE
             marker.position = LatLng(
                 naverMap.cameraPosition.target.latitude,
                 naverMap.cameraPosition.target.longitude
@@ -339,15 +366,12 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             recommendLongitude = naverMap.cameraPosition.target.longitude
             Log.d("recommendLocation", "${recommendLatitude}, ${recommendLongitude}")
         }
-
-//        recommendLocation.latitude = naverMap.cameraPosition.target.latitude
-//        recommendLocation.longitude = naverMap.cameraPosition.target.longitude
-
     }
 
     override fun onStart() {
         super.onStart()
         mapView.onStart()
+
     }
 
     override fun onResume() {

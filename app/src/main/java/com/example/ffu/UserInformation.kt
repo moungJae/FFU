@@ -51,6 +51,8 @@ class UserInformation {
         var ALL_LISTENER_INFO = ArrayList<ListenerInfo>()
 
         // 지도 위치 권한을 등록한 모든 유저들의 정보 (위도 + 경도)
+        var MAP_USER = ArrayList<String>()
+
         var LATITUDE = mutableMapOf<String, Double>()
         val LONGITUDE = mutableMapOf<String, Double>()
     }
@@ -179,6 +181,7 @@ class UserInformation {
         return resultList
     }
 
+    // 위치 가져오기
     private fun addUserLocation(userId : String) {
         userDB = Firebase.database.reference.child("recommend").child(userId)
         userDB.addValueEventListener(object : ValueEventListener {
@@ -203,6 +206,7 @@ class UserInformation {
                 for (ds in snapshot.children) {
                     val userId = ds.key.toString()
                     if (LONGITUDE[userId] == null) {
+                        MAP_USER.add(userId)
                         addUserLocation(userId)
                     }
                 }

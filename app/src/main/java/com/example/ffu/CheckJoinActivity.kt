@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
@@ -30,6 +31,7 @@ class CheckJoinActivity : AppCompatActivity() {
         setContentView(R.layout.loading)
 
         auth = Firebase.auth
+        Log.d("test", auth.uid.toString())
         if (auth.currentUser != null) { // 로그인 상태
             UserInformation()
             processLogin()
