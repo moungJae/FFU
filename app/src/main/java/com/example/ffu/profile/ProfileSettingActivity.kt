@@ -454,7 +454,6 @@ class ProfileSettingActivity : AppCompatActivity() {
     private fun insertProfileInformation() {
         val profile = mutableMapOf<String, Any>()
         val animation = mutableMapOf<String, Any>()
-        val join = mutableMapOf<String, Any>()
         var personality : String =  ""
         var hobby : String = ""
 
@@ -495,10 +494,6 @@ class ProfileSettingActivity : AppCompatActivity() {
         userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
         animation["permission"] = "true"
         userDB.updateChildren(animation)
-
-        userDB = Firebase.database.reference.child("join")
-        join[auth.uid.toString()] = "join"
-        userDB.updateChildren(join)
     }
 
     // 여러번 요청이 가능하도록 리스너 등록
