@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:text="프로필을 변경하시겠습니까?"
             android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textStyle="normal"
             />
 
     </LinearLayout>
@@ -48,11 +48,12 @@
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="center">
 
         <Button
             android:id="@+id/dialog_check_animation_save"
-            android:layout_width="100dp"
+            android:layout_width="50sp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -64,7 +65,7 @@
 
         <Button
             android:id="@+id/dialog_check_animation_cancel"
-            android:layout_width="100dp"
+            android:layout_width="50sp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
