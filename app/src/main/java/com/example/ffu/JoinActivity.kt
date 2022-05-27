@@ -10,11 +10,12 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ffu.profile.ProfileSettingActivity
+import com.metagalactic.dotprogressbar.DotProgressBar
 
 class JoinActivity : AppCompatActivity() {
 
     private lateinit var birthText : TextView
-    private lateinit var progressBar : ProgressBar
+    private lateinit var progressBar : DotProgressBar
     private var birth : String = ""
     private var gender : String = ""
     private var myYear = 1970
@@ -31,7 +32,7 @@ class JoinActivity : AppCompatActivity() {
     }
 
     private fun initialSetting() {
-        progressBar = findViewById<ProgressBar>(R.id.join_progressBar)
+        progressBar = findViewById<DotProgressBar>(R.id.join_progressbar)
         birthText = findViewById<TextView>(R.id.join_text_birth)
     }
 

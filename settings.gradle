@@ -14,7 +14,10 @@ dependencyResolutionManagement {
         maven {
             // naver map API
             url 'https://naver.jfrog.io/artifactory/maven/'
+
         }
+        maven { url 'https://jitpack.io'}
+
     }
 }
 rootProject.name = "FFU"

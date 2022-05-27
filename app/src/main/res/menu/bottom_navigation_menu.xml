@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/recommend"
-        android:icon="@drawable/menu_recommend"
-        android:title="추천"
-        />
+        android:icon="@drawable/location"
+        android:title="Recommend"
+        app:cnb_iconColor="@color/home"/>
     <item
         android:id="@+id/matching"
-        android:icon="@drawable/menu_matching"
-        android:title="매칭"
-        />
+        android:icon="@drawable/ic_heart"
+        android:title="Matching"
+        app:cnb_iconColor="@color/activity"/>
     <item
         android:id="@+id/chatting"
-        android:icon="@drawable/menu_chatting"
-        android:title="채팅"
-        />
+        android:icon="@drawable/chatting"
+        android:title="Chat"
+        app:cnb_iconColor="@color/favorites" />
     <item
         android:id="@+id/profile"
-        android:icon="@drawable/menu_profile"
-        android:title="프로필"
-        />
+        android:icon="@drawable/ic_person"
+        android:title="Profile"
+        app:cnb_iconColor="@color/settings" />
+
+
 
 </menu>
