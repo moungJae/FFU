@@ -186,6 +186,7 @@ class UserInformation {
         return resultList
     }
 
+    // 위치 가져오기
     private fun addUserLocation(userId : String) {
         userDB = Firebase.database.reference.child("recommend").child(userId)
         userDB.addValueEventListener(object : ValueEventListener {

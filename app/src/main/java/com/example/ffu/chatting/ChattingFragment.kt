@@ -2,17 +2,12 @@ package com.example.ffu.chatting
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.example.ffu.DBKey.Companion.CHILD_CHAT
 import com.example.ffu.DBKey.Companion.DB_PROFILE
-import com.example.ffu.DBKey.Companion.DB_USERS
 import com.example.ffu.R
 import com.example.ffu.UserInformation.Companion.BIRTH
 import com.example.ffu.UserInformation.Companion.GENDER
@@ -29,7 +24,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import java.net.URL
 
 
 public class ChattingFragment: Fragment(R.layout.fragment_chatting) {
