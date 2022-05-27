@@ -62,6 +62,8 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
             nickname.setText(UserInformation.NICKNAME[userId] ?: "")
             introMe.setText(UserInformation.INTROME[userId] ?: "")
         } else {
+            nickname.setText(UserInformation.NICKNAME[userId] ?: "")
+            introMe.setText(UserInformation.INTROME[userId] ?: "")
             Toast.makeText(context, "프로필을 변경해주세요!", Toast.LENGTH_SHORT).show()
         }
     }

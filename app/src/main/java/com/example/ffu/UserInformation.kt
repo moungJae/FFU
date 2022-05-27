@@ -286,7 +286,7 @@ class UserInformation {
     // 현재 로그인한 유저의 profile 및 animation 세팅
     private fun addCurrentUserInformation() {
         val currentUserId = auth.uid.toString()
-        MATCH_USER.add(currentUserId)
+        // MATCH_USER.add(currentUserId)
         addUserProfile(currentUserId)
         addUserAnimation(currentUserId)
     }
