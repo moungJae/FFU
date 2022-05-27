@@ -52,5 +52,7 @@
     <string name="menu_leaderboard">Leaderboard</string>
     <string name="menu_store">Store</string>
     <string name="menu_profile">Profile</string>
+    <string name="Success">Success</string>
+    <string name="Loading">Loading..</string>
 
 </resources>
