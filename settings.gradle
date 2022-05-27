@@ -10,6 +10,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
+        jcenter()
         mavenCentral()
         maven {
             // naver map API
@@ -17,7 +18,6 @@ dependencyResolutionManagement {
 
         }
         maven { url 'https://jitpack.io'}
-
     }
 }
 rootProject.name = "FFU"

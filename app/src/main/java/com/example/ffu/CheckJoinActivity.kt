@@ -31,6 +31,7 @@ class CheckJoinActivity : AppCompatActivity() {
         setContentView(R.layout.loading)
 
         auth = Firebase.auth
+        Log.d("test", auth.uid.toString())
         if (auth.currentUser != null) { // 로그인 상태
             UserInformation()
             processLogin()
