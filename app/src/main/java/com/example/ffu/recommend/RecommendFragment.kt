@@ -351,7 +351,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 naverMap.cameraPosition.target.latitude,
                 naverMap.cameraPosition.target.longitude
             )
-            circle.radius = 500.0 // m단위.
+            circle.radius = 5000.0 // m단위.
             circle.map = naverMap
             circle.outlineWidth = 8
             circle.color = Color.argb(30, 159, 214, 253)

@@ -12,6 +12,9 @@ import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
 import com.example.ffu.R
+import com.example.ffu.UserInformation
+import com.example.ffu.UserInformation.Companion.CURRENT_USERID
+import com.example.ffu.chatting.ArticleModel
 import com.example.ffu.databinding.FragmentBottomsheetBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -27,26 +30,14 @@ import com.google.firebase.ktx.Firebase
 
 class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFragment() {
 
-    private val users = recommendUsersUid // 거리에 매치되는 user 리스트
+    private val recommendUsers = recommendUsersUid // 거리에 매치되는 user 리스트
     // firebase
     private lateinit var userDB: DatabaseReference
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
     }
-    private val userList = mutableListOf<RecommendArticleModel>()
+    private val recommendUserList = mutableListOf<RecommendArticleModel>()
 
-    private val listener = object : ChildEventListener {
-        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            val recommendArticleModel = snapshot.getValue(RecommendArticleModel::class.java)
-            recommendArticleModel ?: return
-            userList.add(recommendArticleModel)
-            recommendAdapter.submitList(userList)
-        }
-        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-        override fun onChildRemoved(snapshot: DataSnapshot) {}
-        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
-        override fun onCancelled(error: DatabaseError) {}
-    }
     // user View
     private var binding: FragmentBottomsheetBinding? = null
     private lateinit var recommendAdapter: RecommendAdapter
@@ -58,7 +49,6 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_bottomsheet, container, false)
         view.findViewById<Button>(R.id.returnToMap).setOnClickListener {
-            userDB.removeEventListener(listener)
             dismiss()
         }
 
@@ -68,24 +58,22 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userList.clear()
-        userDB = Firebase.database.reference.child(DB_PROFILE)
+        recommendUserList.clear()
+        //userDB = Firebase.database.reference.child(DB_PROFILE)
 
         // bottomsheet view
         val fragmentBottomsheetBinding = FragmentBottomsheetBinding.bind(view)
         binding = fragmentBottomsheetBinding
 
         recommendAdapter = RecommendAdapter()
-        // test
-//        recommendAdapter.submitList(mutableListOf<RecommendArticleModel>().apply {
-////            add(RecommendArticleModel("test1", 22, "mbti1", ""))
-////            add(RecommendArticleModel("test2", 23, "mbti2", ""))
-////            add(RecommendArticleModel("test3", 24, "mbti3", ""))
-//        })
+
+        addRecommendUserList()
+
+
         fragmentBottomsheetBinding.recommendedUsersView.layoutManager = LinearLayoutManager(context)
         fragmentBottomsheetBinding.recommendedUsersView.adapter = recommendAdapter
 
-        userDB.addChildEventListener(listener)
+        //userDB.addChildEventListener(listener)
 
     }
 
@@ -121,7 +109,7 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
 
     override fun onDestroy() {
         super.onDestroy()
-        userDB.removeEventListener(listener)
+        //userDB.removeEventListener(listener)
     }
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
@@ -130,5 +118,20 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
     }
     companion object {
         const val TAG = "RecommendList"
+    }
+
+    private fun addRecommendUserList(){
+        for(userId in recommendUsers){
+            if(CURRENT_USERID!=userId){
+                val nickname = UserInformation.PROFILE[userId]?.nickname ?: ""
+                val gender = UserInformation.PROFILE[userId]?.gender ?: ""
+                val birth = UserInformation.PROFILE[userId]?.birth ?: ""
+                val imageUri = UserInformation.URI[userId]?:""
+                recommendUserList.add(RecommendArticleModel(nickname,gender,birth,imageUri))
+                recommendAdapter.submitList(recommendUserList)
+            }
+
+        }
+
     }
 }
