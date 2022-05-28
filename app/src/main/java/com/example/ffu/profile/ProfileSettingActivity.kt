@@ -34,6 +34,13 @@ import java.text.SimpleDateFormat
 import com.example.ffu.UserInformation.Companion.PROFILE
 import com.example.ffu.UserInformation.Companion.ANIMATION
 import com.example.ffu.UserInformation.Companion.URI
+import com.example.ffu.utils.Animation
+import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
+import com.example.ffu.utils.DBKey.Companion.DB_LIKEDBY
+import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
+import com.example.ffu.utils.DBKey.Companion.DB_RECOMMEND
+import com.example.ffu.utils.DBKey.Companion.DB_MATCH
+import com.example.ffu.utils.Profile
 
 class ProfileSettingActivity : AppCompatActivity() {
 
@@ -102,6 +109,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         return resultList
     }
 
+    // 이전에 기입했던 정보들이 editText 에 남도록 설정
     private fun initializeInformation() {
         val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
 
@@ -115,17 +123,19 @@ class ProfileSettingActivity : AppCompatActivity() {
             gender = intent.getStringExtra("gender").toString()
         }
 
-        findViewById<EditText>(R.id.profile_setting_inputNickname).setText(PROFILE[userID]?.nickname ?: "")
-        findViewById<EditText>(R.id.profile_setting_inputJob).setText(PROFILE[userID]?.job ?: "")
-        findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(PROFILE[userID]?.introMe ?: "")
-        when(PROFILE[userID]?.smoke ?: "") {
+        findViewById<EditText>(R.id.profile_setting_inputNickname).setText(PROFILE[userID]?.nickname)
+        findViewById<EditText>(R.id.profile_setting_inputJob).setText(PROFILE[userID]?.job)
+        findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(PROFILE[userID]?.introMe)
+
+        when(PROFILE[userID]?.smoke) {
             "비흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1).isChecked = true
             "흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2).isChecked = true
         }
-        when(PROFILE[userID]?.drinking ?: "") {
+        when(PROFILE[userID]?.drinking) {
             "비음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1).isChecked = true
             "음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2).isChecked = true
         }
+
         mbti = PROFILE[userID]?.mbti ?: ""
         religion = PROFILE[userID]?.religion ?: ""
         personalities = setPersonalities(PROFILE[userID]?.personality ?: "")
@@ -143,10 +153,12 @@ class ProfileSettingActivity : AppCompatActivity() {
             findViewById<EditText>(R.id.profile_setting_inputJob),
             findViewById<EditText>(R.id.profile_setting_inputIntroduce),
             findViewById<EditText>(R.id.profile_setting_inputNickname))
+
         radioButtonArray = arrayOf(findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1),
             findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2),
             findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1),
             findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2))
+
         buttonArray = arrayOf(findViewById<Button>(R.id.profile_setting_mbtiButton),
             findViewById<Button>(R.id.profile_setting_personalButton),
             findViewById<Button>(R.id.profile_setting_religionButton),
@@ -173,7 +185,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                 i++
             }
 
-            val builder = AlertDialog.Builder(this)
+            AlertDialog.Builder(this)
                 .setTitle("자신의 MBTI를 하나 선택해주세요")
                 .setSingleChoiceItems(items, checkedItem) { dialog, which ->
                     mbti = items[which]
@@ -206,7 +218,8 @@ class ProfileSettingActivity : AppCompatActivity() {
                     i++
                 }
             }
-            val builder = AlertDialog.Builder(this)
+
+            AlertDialog.Builder(this)
                 .setTitle("자신의 성격을 여러개 선택해주세요")
                 .setMultiChoiceItems(items, checkedItems){ dialogInterface: DialogInterface, i: Int, b: Boolean ->
                     if(b){
@@ -242,7 +255,8 @@ class ProfileSettingActivity : AppCompatActivity() {
                 }
                 i++
             }
-            val builder = AlertDialog.Builder(this)
+
+            AlertDialog.Builder(this)
                 .setTitle("자신의 종교를 하나 선택해주세요")
                 .setSingleChoiceItems(items, checkedItem) { dialog, which ->
                     religion = items[which]
@@ -278,7 +292,8 @@ class ProfileSettingActivity : AppCompatActivity() {
                     i++
                 }
             }
-            val builder = AlertDialog.Builder(this)
+
+            AlertDialog.Builder(this)
                 .setTitle("자신의 취미를 여러개 선택해주세요")
                 .setMultiChoiceItems(items, checkedItems){ dialogInterface: DialogInterface, i: Int, b: Boolean ->
                     if(b){
@@ -298,6 +313,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
     }
 
+    // 프로필 변환이 끝날 경우
     private fun setAllEnable() {
         for (editText in editTextArray) {
             editText.isEnabled = true
@@ -310,6 +326,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
     }
 
+    // 프로필 변환이 시작될 때
     private fun setAllDisable() {
         for (editText in editTextArray) {
             editText.isEnabled = false
@@ -322,6 +339,13 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
     }
 
+    // animation 사진으로 변환해주는 python server 와 socket communication 을 한다.
+    // animation 의 총 3가지 flag 를 통해 response 한다.
+    // (1) request : server 에게 요청하기 전 false, server 측에게 응답받으면 true
+    // (2) person : server 에서 인물 사진임을 판단하면 true, 그 외엔 false
+    // (3) permission : 프로필을 변환하고 완벽하게 저장할 경우 true, 그 외엔 false
+    //     프로필을 변환을 한 후에 비정상적으로 program 을 종료하거나 뒤로 이동할 경우
+    //     permission 값이 false 가 되어 의도치 않은 사진(실물 사진)이 나타나는 것을 방지
     private fun characterization() {
         val transformText = findViewById<TextView>(R.id.profile_setting_transform_text)
         val image = findViewById<CircleImageView>(R.id.profile_setting_imageAddButton)
@@ -330,36 +354,34 @@ class ProfileSettingActivity : AppCompatActivity() {
         Thread {
             val animation = mutableMapOf<String, Any>()
 
-            userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
-            animation["request"] = false // server 가 request 를 처리했는지 판단
-            animation["person"] = false // 사람인지 아닌지 판단
+            userDB = Firebase.database.reference.child(DB_ANIMATION).child(userID)
+            animation["request"] = false
+            animation["person"] = false
             animation["permission"] = false
             userDB.updateChildren(animation)
 
-            // connection request to Server
+            // 1. server 에게 connection request 및 buffer write
             try {
                 socket = Socket(ip, port)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-            // Write Buffer
-            try {
                 dos = DataOutputStream(socket.getOutputStream())
-                dos.writeUTF(auth.uid.toString())
+                dos.writeUTF(userID)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+
+            // 2. server 에서 요청(request = true)이 올 때 까지 대기
             while (!ANIMATION[userID]!!.request) {
                 Thread.sleep(100)
             }
-            Thread.sleep(500)
+
+            // 3. server 에서 요청이 온 경우, person flag 에 따라 변환이 되었는지 판단
             Handler(Looper.getMainLooper()).post {
-                progressBar.visibility = View.INVISIBLE
+                setAllEnable()
                 transformText.text = ""
+                progressBar.visibility = View.INVISIBLE
                 Glide.with(this@ProfileSettingActivity)
                     .load(URI[userID])
                     .into(image)
-                setAllEnable()
                 if (ANIMATION[userID]!!.person) {
                     Toast.makeText(this@ProfileSettingActivity,"애니메이션 변환 완료!",Toast.LENGTH_SHORT).show()
                 } else {
@@ -373,11 +395,11 @@ class ProfileSettingActivity : AppCompatActivity() {
     private fun setPhoto() {
         val photoButton = findViewById<Button>(R.id.profile_setting_image_change_button)
         val imagesRef = storage.reference
-            .child("photo/" + auth.uid.toString() + "/real.jpg")
+            .child("photo/" + userID + "/real.jpg")
 
         val getFromAlbumResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            progressBar.visibility = View.VISIBLE
             setAllDisable()
+            progressBar.visibility = View.VISIBLE
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri = result.data?.data // 선택한 이미지의 주소
                 // 이미지 파일 읽어와서 설정하기
@@ -393,8 +415,8 @@ class ProfileSettingActivity : AppCompatActivity() {
                     }
                 }
             } else {
-                progressBar.visibility = View.INVISIBLE
                 setAllEnable()
+                progressBar.visibility = View.INVISIBLE
             }
         }
 
@@ -407,7 +429,6 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun getOrientationOfImage(uri: Uri): Int {
-        // uri -> inputStream
         val inputStream = contentResolver.openInputStream(uri)
         val exif: ExifInterface? = try {
             ExifInterface(inputStream!!)
@@ -417,7 +438,6 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
         inputStream.close()
 
-        // 회전된 각도 알아내기
         val orientation = exif?.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
         if (orientation != -1) {
             when (orientation) {
@@ -433,11 +453,13 @@ class ProfileSettingActivity : AppCompatActivity() {
     private fun getRotatedBitmap(bitmap: Bitmap?, degrees: Float): Bitmap? {
         if (bitmap == null) return null
         if (degrees == 0F) return bitmap
+
         val m = Matrix()
         m.setRotate(degrees, bitmap.width.toFloat() / 2, bitmap.height.toFloat() / 2)
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, m, true)
     }
 
+    // 모든 정보를 입력했는지를 확인
     private fun checkInformation() : Boolean {
         val smokeGroup = findViewById<RadioGroup>(R.id.profile_setting_smoke_radioGroup)
         val drinkingGroup = findViewById<RadioGroup>(R.id.profile_setting_drink_radioGroup)
@@ -464,9 +486,10 @@ class ProfileSettingActivity : AppCompatActivity() {
         return true
     }
 
+    // firebase realtime database 에 입력한 모든 정보들을 insertion
     private fun insertProfileInformation() {
-        val profile = mutableMapOf<String, Any>()
-        val animation = mutableMapOf<String, Any>()
+        val profile : Profile
+        val animation : Animation
         var personality : String =  ""
         var hobby : String = ""
 
@@ -483,30 +506,36 @@ class ProfileSettingActivity : AppCompatActivity() {
             }
         }
 
-        userDB = Firebase.database.reference.child("profile").child(userID)
         if (birth.length > 0) {
             val age = SimpleDateFormat("yyyy-MM-dd-hh-mm")
                 .format(System.currentTimeMillis())
                 .split("-")[0].toInt() - birth.split("/")[0].toInt() + 1
-            profile["birth"] = birth
-            profile["gender"] = gender
-            profile["age"] = age.toString()
+            profile = Profile(age.toString(), birth, drinking, gender,
+                hobby, introMe, job, mbti, nickname, personality,
+                religion, smoke, PROFILE[userID]?.tel, true)
+        } else {
+            profile = Profile(PROFILE[userID]?.age, PROFILE[userID]?.birth, drinking,
+                PROFILE[userID]?.gender, hobby, introMe, job, mbti, nickname, personality,
+                religion, smoke, PROFILE[userID]?.tel, true)
         }
-        profile["nickname"] = nickname
-        profile["job"] = job
-        profile["introMe"] = introMe
-        profile["smoke"] = smoke
-        profile["drinking"] = drinking
-        profile["mbti"] = mbti
-        profile["religion"] = religion
-        profile["personality"] = personality
-        profile["hobby"] = hobby
-        profile["join"] = true
-        userDB.updateChildren(profile)
+        animation = Animation(permission = true, person = true, request = true)
 
-        userDB = Firebase.database.reference.child("animation").child(userID)
-        animation["permission"] = true
-        userDB.updateChildren(animation)
+        userDB = Firebase.database.reference.child(DB_PROFILE).child(userID)
+        userDB.setValue(profile)
+
+        userDB = Firebase.database.reference.child(DB_ANIMATION).child(userID)
+        userDB.setValue(animation)
+    }
+
+    private fun completeProfileSetting() {
+        insertProfileInformation()
+        Thread {
+            Thread.sleep(2000)
+            Handler(Looper.getMainLooper()).post {
+                startActivity(Intent(this@ProfileSettingActivity, BackgroundActivity::class.java))
+                finish()
+            }
+        }.start()
     }
 
     private fun showAnimationPhoto() {
@@ -516,31 +545,22 @@ class ProfileSettingActivity : AppCompatActivity() {
         val image : CircleImageView = mView.findViewById(R.id.dialog_check_animation_photo)
         val cancel : Button = mView.findViewById(R.id.dialog_check_animation_cancel)
         val save : Button = mView.findViewById(R.id.dialog_check_animation_save)
+        val dialog_progressBar : DotProgressBar = mView.findViewById(R.id.dialog_check_animation_progressbar)
 
-        Glide.with(this@ProfileSettingActivity)
+        Glide.with(this)
             .load(UserInformation.URI[userID])
             .into(image)
-        //  취소 버튼 클릭 시
+
         cancel.setOnClickListener {
             dialog.dismiss()
             dialog.cancel()
         }
-        //  완료 버튼 클릭 시
+
         save.setOnClickListener {
-            insertProfileInformation()
-            progressBar.visibility = View.VISIBLE
-            Thread {
-                Thread.sleep(2000)
-                Handler(Looper.getMainLooper()).post {
-                    val intent = Intent(this@ProfileSettingActivity, BackgroundActivity::class.java)
-                    progressBar.visibility = View.INVISIBLE
-                    startActivity(intent)
-                    finish()
-                }
-            }.start()
-            dialog.dismiss()
-            dialog.cancel()
+            dialog_progressBar.visibility = View.VISIBLE
+            completeProfileSetting()
         }
+
         dialog.setView(mView)
         dialog.create()
         dialog.show()

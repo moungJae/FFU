@@ -48,10 +48,33 @@
 
     </LinearLayout>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.metagalactic.dotprogressbar.DotProgressBar
+            android:id="@+id/dialog_check_animation_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:dpb_dotColor="@color/colorAccent"
+            app:dpb_noOfDots="4"
+            android:visibility="invisible"
+            />
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:paddingBottom="20dp"
         android:orientation="horizontal"
         android:layout_gravity="center">

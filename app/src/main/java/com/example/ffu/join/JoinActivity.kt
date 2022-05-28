@@ -1,4 +1,4 @@
-package com.example.ffu
+package com.example.ffu.join
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,15 +9,15 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.ffu.R
 import com.example.ffu.profile.ProfileSettingActivity
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.metagalactic.dotprogressbar.DotProgressBar
 
 class JoinActivity : AppCompatActivity() {
 
     private lateinit var birthText : TextView
     private lateinit var progressBar : DotProgressBar
+
     private var birth : String = ""
     private var gender : String = ""
     private var myYear = 1970
@@ -30,7 +30,7 @@ class JoinActivity : AppCompatActivity() {
 
         initialSetting()
         checkBirth()
-        moveNextJoin()
+        checkData()
     }
 
     private fun initialSetting() {
@@ -55,22 +55,27 @@ class JoinActivity : AppCompatActivity() {
             year.wrapSelectorWheel = false
             month.wrapSelectorWheel = false
             day.wrapSelectorWheel = false
+
             //  editText 설정 해제
             year.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             month.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
             day.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
+
             //  최소값 설정
             year.minValue = 1970
             month.minValue = 1
             day.minValue = 1
+
             //  최대값 설정
             year.maxValue = 2021
             month.maxValue = 12
             day.maxValue = 31
+
             // 현재 지정값 설정
             year.value = myYear
             month.value = myMonth
             day.value = myDay
+
             //  취소 버튼 클릭 시
             cancel.setOnClickListener {
                 dialog.dismiss()
@@ -101,12 +106,21 @@ class JoinActivity : AppCompatActivity() {
         }
     }
 
-    private fun moveNextJoin() {
+    private fun moveNext() {
+        val intent = Intent(this, ProfileSettingActivity::class.java)
+
+        intent.putExtra("birth", birth)
+        intent.putExtra("gender", gender)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun checkData() {
         val nextButton = findViewById<Button>(R.id.join_joinNext)
 
         nextButton.setOnClickListener {
             checkGender()
-            if (birth.length == 0 || gender.length == 0) {
+            if (birth.isEmpty() || gender.isEmpty()) {
                 Toast.makeText(this, "정보를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
             else {
@@ -114,12 +128,7 @@ class JoinActivity : AppCompatActivity() {
                 Thread(Runnable {
                     Thread.sleep(1500)
                     Handler(Looper.getMainLooper()).post {
-                        val intent = Intent(this@JoinActivity, ProfileSettingActivity::class.java)
-                        progressBar.visibility = View.INVISIBLE
-                        intent.putExtra("birth", birth)
-                        intent.putExtra("gender", gender)
-                        startActivity(intent)
-                        finish()
+                        moveNext()
                     }
                 }).start()
             }

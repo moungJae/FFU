@@ -1,15 +1,11 @@
 package com.example.ffu
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.ffu.chatting.ChattingFragment
 import com.example.ffu.profile.ProfileFragment
 import com.example.ffu.recommend.RecommendFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -18,7 +14,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
-
+import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
+import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
 
 class BackgroundActivity : AppCompatActivity() {
 
@@ -46,7 +43,6 @@ class BackgroundActivity : AppCompatActivity() {
                 R.id.chatting->replaceFragment(chattingFragment)
             }
             true
-
         }
     }
 
@@ -55,7 +51,7 @@ class BackgroundActivity : AppCompatActivity() {
         var animationFlag = 0
         var profileFlag = 0
 
-        userDB = Firebase.database.reference.child("animation").child(auth.uid.toString())
+        userDB = Firebase.database.reference.child(DB_ANIMATION).child(auth.uid.toString())
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 animationFlag++
@@ -65,7 +61,8 @@ class BackgroundActivity : AppCompatActivity() {
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-        userDB = Firebase.database.reference.child("profile").child(auth.uid.toString())
+
+        userDB = Firebase.database.reference.child(DB_PROFILE).child(auth.uid.toString())
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 profileFlag++

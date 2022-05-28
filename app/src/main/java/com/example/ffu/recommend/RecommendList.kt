@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ffu.DBKey.Companion.DB_PROFILE
+import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
 import com.example.ffu.R
 import com.example.ffu.databinding.FragmentBottomsheetBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
