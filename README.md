@@ -208,3 +208,26 @@
         + ANIMATION : key = userId, value = Animation
         + RECOMMEND : key = userId, value = Recommend
 ------------
+
+### 5/29
+1. CheckLoginActivity Class 추가
+    + 어플을 삭제하고 설치하여 접근할 때 dummy uid 로 로그인되는 issue 가 존재했음
+    + 따라서, 실제로 존재하는 uid 인지를 check 하여 존재하지 않을 경우 Logout 처리하였음
+
+2. Packaging
+    + join package
+        + CheckLoginActivity : uid 검사
+        + JoinActivity : birth, gender 입력
+        + PhoneVerificationActivity : phone 인증
+        + WelcomeActivity : 첫 화면
+    + utils package
+        + Animation : animation data class
+        + Profile : profile data class
+        + Recommend : recommend data class
+        + DBKey : db key data class
+
+3. Code refactoring 및 annotation
+    + code 간결화 및 code 설명이 필요한 부분에 대해서 annotation 추가 
+    + DBKey 를 통해 firebase Realtime database 에 data 접근 처리
+    + Map 을 이용해 key-value 형태로 update 하지 않고, 클래스를 객체화하여 update 하는 형태로 변경
+------------
