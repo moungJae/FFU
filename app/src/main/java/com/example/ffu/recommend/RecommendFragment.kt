@@ -17,7 +17,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -30,7 +29,6 @@ import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -46,6 +44,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapView: MapView
 
     // 좌표 조작
+    private var setDistance = 10
     private val radius = 6372.8 * 1000
     private var recommendLatitude : Double = 0.0
     private var recommendLongitude : Double = 0.0
@@ -60,43 +59,24 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private lateinit var userDB: DatabaseReference
     private var auth : FirebaseAuth = Firebase.auth
 
-    // bottomSheet
-    private lateinit var bottomSheet: ConstraintLayout
-    lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // bottomsheet v2
-//        bottomSheet = view.findViewById<ConstraintLayout>(R.id.fragmentBottomSheet)
-//        sheetBehavior = BottomSheetBehavior.from(bottomSheet)
-//        sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-//            override fun onStateChanged(bottomSheet: View, newState: Int) {
-//                when (newState) {
-//                    BottomSheetBehavior.STATE_COLLAPSED -> {}
-//                    BottomSheetBehavior.STATE_DRAGGING -> {}
-//                    BottomSheetBehavior.STATE_EXPANDED -> {}
-//                    BottomSheetBehavior.STATE_HIDDEN -> {}
-//                    BottomSheetBehavior.STATE_SETTLING -> {}
-//                }
-//            }
-//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-//            }
-//        }) // 여기까지 위에다 옮겨도됨.
 
         /* 위치 권한 요청 */
         requestPermission() // 최초 요청
+
         /* 좌표 가져오기 */
         startLocationUpdates()
-        button = view.findViewById(R.id.btn_confirm)
+        button = view.findViewById(R.id.recommendButton)
         locationMsg = view.findViewById(R.id.locationMsg)
         button.setOnClickListener { // 클릭하면 추천 리스트 띄우는데 그때 거리 계산하고 띄우기.
             Log.d("button", "clicked")
-            val test : Int = getDistance(mLastLocation.latitude, mLastLocation.longitude,
-                recommendLatitude, recommendLongitude) / 1000
-            Log.d("distance", "$test km")
+            Log.d("current Location", "${mLastLocation.latitude}, ${mLastLocation.longitude}")
+            Log.d("configured Location", "$recommendLatitude, $recommendLongitude")
+
             // 파이어베이스에서 user 좌표 가져와서 계산하여 uid vector에 넣기.
             val usersUid : ArrayList<String> = UserInformation.MAP_USER
-            val myRadius : Int = 10 // EditText 또는 numberdialog로 거리 설정해야함.
+
             var recommendUsersUid = ArrayList<String>()
             // 리스트에 거리 내의 사용자의 uid 넣기.
             for (uid in usersUid) {
@@ -104,16 +84,13 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 val distance : Int =
                     getDistance(UserInformation.LATITUDE[uid], UserInformation.LONGITUDE[uid],
                     recommendLatitude, recommendLongitude) / 1000
-                if (distance < myRadius) {
+                if (distance < setDistance) {
                     recommendUsersUid.add(uid)
                 }
             }
             // button 누르면 bottomSheet (추천 List) 띄우기.
-            // bottomsheet v1
             var bottomSheet = RecommendList(recommendUsersUid)
             bottomSheet.show(childFragmentManager, RecommendList.TAG)
-
-
         }
     }
     override fun onCreateView(
@@ -132,7 +109,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 
     /* ======================== 사용자 거리 계산 하여 일치하는 사용자 넣기========================*/
 
-    fun getDistance(lat1: Double?, lon1: Double?, lat2: Double, lon2: Double): Int {
+    private fun getDistance(lat1: Double?, lon1: Double?, lat2: Double, lon2: Double): Int {
         val dLat = Math.toRadians(lat2 - lat1!!)
         val dLon = Math.toRadians(lon2 - lon1!!)
         val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
@@ -153,7 +130,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         var builder = AlertDialog.Builder(context)
         builder.setTitle("Error").setMessage(
             "서비스 사용에 제약이 있을 수 있습니다. " +
-                    "설정 -> 위치 -> 사용 중인 앱 -> (등등 경로 알려주기)" +
+                    "설정 -> 위치 -> 사용 중인 앱 -> 항상 허용" +
                     " 권한을 항상 허용으로 설정해주세요."
         )
 
@@ -202,17 +179,6 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         return false
     }
 
-    /**
-     * 1. 위치 권한 요청 -> deny -> 백그라운드 요청 -> yes -> 백그라운드는 되는데 포그라운드 X
-     * 2. 위치 권한 요청 -> yes -> 백그라운드 요청 -> no -> 백그라운드 안되므로 에러 메시지 띄우고
-     *
-     * 최초에 -> 위치 권한 요청 -> deny -> 백그라운드 요청 -> yes -> 백그라운드 X, 포그라운드 X
-     * 근데 백그라운드만 되면 포그라운드는 자동으로 되는건데..?
-     *
-     * 회의.
-     * 사용자에게 위치 권한 항상 허용하라고 메시지를 띄울지? 지금 이대로,
-     * 또는, 위치 권한 경로를 알려주고 일부 서비스 사용 제약이 있을 수 있다고 띄울까?
-     */
     private fun requestPermission() {
         // 이미 권한이 있으면 그냥 리턴
         if (ContextCompat.checkSelfPermission(
@@ -249,15 +215,12 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 
     /* ========================사용자 위치 받기======================== */
     private fun startLocationUpdates() {
-        // init my location
-//        mLastLocation.latitude = 0.0
-//        mLastLocation.longitude = 0.0
 
         mLocationRequest = LocationRequest.create().apply {
-            interval = 60 * 1000 // 업데이트 간격 단위, 1000밀리초 단위 (1초)
+            interval = 5 * 1000 // 업데이트 간격 단위, 1000밀리초 단위 (1초)
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY // 정확성
-            fastestInterval = 60 * 1000
-            maxWaitTime = 60 * 1000 // 위치 갱신 요청 최대 대기 시간 (1000 -> 1초)
+            fastestInterval = 5 * 1000
+            maxWaitTime = 30 * 1000 // 위치 갱신 요청 최대 대기 시간 (1000 -> 1초)
         }
         // FuesdLocationProviderClient의 인스턴스 생성
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -279,6 +242,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             for (location in locationResult.locations) {
+                Log.d("LocationResult", "$location")
                 if (location != null) {
                     // 파이어베이스에 현재 위치 넣기
                     addMyLocation(location)
@@ -356,7 +320,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 naverMap.cameraPosition.target.latitude,
                 naverMap.cameraPosition.target.longitude
             )
-            circle.radius = 500.0 // m단위.
+            circle.radius = setDistance * 1000.0 // m단위. 현재 10 * 1000m
             circle.map = naverMap
             circle.outlineWidth = 8
             circle.color = Color.argb(30, 159, 214, 253)
