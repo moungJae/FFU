@@ -69,7 +69,9 @@ class UserInformation {
         userDB = Firebase.database.reference.child("profile").child(userId)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                PROFILE[userId] = snapshot.getValue(Profile::class.java) as Profile
+                if (snapshot.getValue(Profile::class.java) != null) {
+                    PROFILE[userId] = snapshot.getValue(Profile::class.java) as Profile
+                }
             }
             override fun onCancelled(error: DatabaseError) {}
         })
@@ -80,10 +82,12 @@ class UserInformation {
         userDB = Firebase.database.reference.child("animation").child(userId)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                ANIMATION[userId] = snapshot.getValue(Animation::class.java) as Animation
-                pathReference.child("photo/$userId/real.jpg").downloadUrl.addOnCompleteListener{ task ->
-                    if (task.isSuccessful) {
-                        URI[userId] = task.result.toString()
+                if (snapshot.getValue(Animation::class.java) != null) {
+                    ANIMATION[userId] = snapshot.getValue(Animation::class.java) as Animation
+                    pathReference.child("photo/$userId/real.jpg").downloadUrl.addOnCompleteListener{ task ->
+                        if (task.isSuccessful) {
+                            URI[userId] = task.result.toString()
+                        }
                     }
                 }
             }
@@ -96,7 +100,9 @@ class UserInformation {
         userDB = Firebase.database.reference.child("recommend").child(userId)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                RECOMMEND[userId] = snapshot.getValue(Recommend::class.java) as Recommend
+                if (snapshot.getValue(Recommend::class.java) != null) {
+                    RECOMMEND[userId] = snapshot.getValue(Recommend::class.java) as Recommend
+                }
             }
             override fun onCancelled(error: DatabaseError) { }
         })
@@ -128,12 +134,10 @@ class UserInformation {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val matchUserId = snapshot.key.toString()
                 MATCH_USER.add(matchUserId)
-                Log.d("삽입 완료", matchUserId)
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val matchUserId = snapshot.key.toString()
                 MATCH_USER.remove(matchUserId)
-                Log.d("삭제 완료", matchUserId)
             }
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}

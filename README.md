@@ -187,4 +187,24 @@
         + listener 중첩 시 overhead 가 커지는 issue 방지
         + 다른 번호로 로그인 시 이전에 로그인한 유저의 map 및 arrayList 에 저장된 data가 지속적으로 남게 되는 issue 방지
     
-2. 핸드폰 인증 시, 단 한번만 요청이 가능하도록 
+2. 핸드폰 인증 시, 단 한번만 요청이 가능하도록 수정
+------------
+
+### 5/28
+1. UI Design
+    + progress bar, button, background, 글꼴 등 변경
+
+2. Chatting
+    + 실시간 채팅시, 화면이 고정되는 문제 해결
+    + 애니메이션 사진이 버퍼링 없이 정상적으로 뜨도록 해결
+
+3. Map
+    + 특정 지점에서의 유저와의 거리 계산 해결
+    + 반경 내에 존재하는 유저들을 listView 에 띄우도록 함
+
+4. UserInformation Class 리모델링
+    + Profile, Animation, Recommend 에 대한 data class 를 통해 총 3가지 map의 value를 언급한 클래스 타입으로 할당이 되도록 변경
+        + PROFILE : key = userId, value = Profile
+        + ANIMATION : key = userId, value = Animation
+        + RECOMMEND : key = userId, value = Recommend
+------------
