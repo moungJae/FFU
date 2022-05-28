@@ -349,7 +349,6 @@ class ProfileSettingActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-            Thread.sleep(500)
             while (!ANIMATION[userID]!!.request) {
                 Thread.sleep(100)
             }

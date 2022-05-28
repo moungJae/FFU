@@ -110,14 +110,26 @@ class UserInformation {
 
     // 지도 위치 권한을 등록한 모든 유저들에 대한 profile, animation, location 리스너를 등록
     private fun addAllUserInformation() {
+        userDB = Firebase.database.reference.child("profile")
+        userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val userId = snapshot.key.toString()
+
+                addUserProfile(userId)
+                addUserAnimation(userId)
+            }
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
         userDB = Firebase.database.reference.child("recommend")
         userDB.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val userId = snapshot.key.toString()
 
                 MAP_USER.add(userId)
-                addUserProfile(userId)
-                addUserAnimation(userId)
                 addUserLocation(userId)
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {}
