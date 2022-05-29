@@ -178,7 +178,7 @@
 ------------
 
 ### 5/27
-1. Firebase database 에서 data를 가져오는 버퍼링 해결
+1. Firebase database 에서 data를 가져올 때 버퍼링 문제를 해결
     + UserInformation Class 를 이용하여 해결
     + 로그인 시 UserInformation 객체를 생성함으로써 Listener 등록
         + Firebasse database 내에 존재하는 data들을 companion object의 flag, map, arrayList를 통해 data 접근
