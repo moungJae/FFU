@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.ffu.join.WelcomeActivity
 import com.example.ffu.R
+import com.example.ffu.join.CheckLoginActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class SettingActivity :AppCompatActivity(){
@@ -26,7 +27,7 @@ class SettingActivity :AppCompatActivity(){
         signOutButton.setOnClickListener {
             auth.signOut()
             ActivityCompat.finishAffinity(this)
-            startActivity(Intent(this, WelcomeActivity::class.java))
+            startActivity(Intent(this, CheckLoginActivity::class.java))
             finish()
         }
     }
