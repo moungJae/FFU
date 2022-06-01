@@ -40,7 +40,15 @@ class UserInformation {
         var MAP_USER = ArrayList<String>()
 
         // 매칭된 모든 유저들의 uid 값을 저장
-        var MATCH_USER = ArrayList<String>()
+        var MATCH_USER =  mutableMapOf<String, Boolean>()
+
+        // 현재 유저가 Like를 받은 유저들의 uid 값을 저장
+        var RECEIVEDLIKE_USER = mutableMapOf<String, Boolean>()
+
+        // 현재 유저가 Like를 보낸 유저들의 uid 값을 저장
+        var SENDLIKE_USER = mutableMapOf<String, Boolean>()
+
+
     }
 
     init {
@@ -54,9 +62,14 @@ class UserInformation {
             CREATE_FLAG = true
             addAllUserInformation()
             addAllMatchUsers()
+            addAllReceivedLikeUsers()
+            addAllSendLikeUsers()
         } else {
             MATCH_USER.clear()
+            RECEIVEDLIKE_USER.clear()
             addAllMatchUsers()
+            addAllReceivedLikeUsers()
+            addAllSendLikeUsers()
         }
     }
 
@@ -141,15 +154,52 @@ class UserInformation {
 
     // 현재 로그인한 유저의 매칭된 유저들의 uid 저장
     private fun addAllMatchUsers() {
-        userDB = Firebase.database.reference.child(DB_LIKEDBY).child(CURRENT_USERID).child(DB_MATCH)
+        userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match")
+
         userDB.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val matchUserId = snapshot.key.toString()
-                MATCH_USER.add(matchUserId)
+                MATCH_USER[matchUserId]=true
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val matchUserId = snapshot.key.toString()
                 MATCH_USER.remove(matchUserId)
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    // 현재 로그인한 유저에게 like를 보낸 유저의 uid 저장
+    private fun addAllReceivedLikeUsers() {
+        userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("receivedLike")
+        userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val receivedUserId = snapshot.key.toString()
+                RECEIVEDLIKE_USER[receivedUserId]=true
+            }
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val receivedUserId= snapshot.key.toString()
+                RECEIVEDLIKE_USER.remove(receivedUserId)
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    // 현재 로그인한 유저에게 like를 보낸 유저의 uid 저장
+    private fun addAllSendLikeUsers() {
+        userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike")
+        userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val sendUserId = snapshot.key.toString()
+                SENDLIKE_USER[sendUserId]=true
+            }
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val sendUserId = snapshot.key.toString()
+                SENDLIKE_USER.remove(sendUserId)
             }
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}

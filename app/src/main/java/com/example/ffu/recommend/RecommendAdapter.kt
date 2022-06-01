@@ -6,14 +6,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ffu.R
 import com.example.ffu.UserInformation
+import com.example.ffu.chatting.ArticleAdapter
 
 import com.example.ffu.chatting.ArticleModel
 
 
 import com.example.ffu.databinding.UsersArticleBinding
 
-class RecommendAdapter: ListAdapter<RecommendArticleModel, RecommendAdapter.ViewHolder>(diffUtil) {
+class RecommendAdapter(val onItemClicked: (RecommendArticleModel) -> Unit) : ListAdapter<RecommendArticleModel, RecommendAdapter.ViewHolder>(diffUtil) {
     inner class ViewHolder(private val binding: UsersArticleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(recommendArticleModel: RecommendArticleModel) {
 
@@ -25,6 +27,9 @@ class RecommendAdapter: ListAdapter<RecommendArticleModel, RecommendAdapter.View
                 Glide.with(binding.recommendUserImage)
                     .load(recommendArticleModel.imageUrl)
                     .into(binding.recommendUserImage)
+            }
+            binding.root.setOnClickListener {
+                onItemClicked(recommendArticleModel)
             }
 
         }

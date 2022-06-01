@@ -1,6 +1,6 @@
-package com.example.ffu.recommend
+package com.example.ffu.matching
 
-data class RecommendArticleModel(
+data class LikeArticleModel(
     val Id:String,
     val nickName: String,
     val age: String,

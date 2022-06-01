@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.ffu.chatting.ChattingFragment
+import com.example.ffu.matching.MatchingFragment
 import com.example.ffu.profile.ProfileFragment
 import com.example.ffu.recommend.RecommendFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -28,6 +29,7 @@ class BackgroundActivity : AppCompatActivity() {
 
         val bottomNavigationView = findViewById<ChipNavigationBar>(R.id.bottomNavigationView)
         val recommendFragment = RecommendFragment()
+        val matchingFragment = MatchingFragment()
         val profileFragment = ProfileFragment()
         val chattingFragment = ChattingFragment()
 
@@ -39,6 +41,7 @@ class BackgroundActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener {
             when(it){
                 R.id.recommend-> replaceFragment(recommendFragment)
+                R.id.matching-> replaceFragment(matchingFragment)
                 R.id.profile-> replaceFragment(profileFragment)
                 R.id.chatting->replaceFragment(chattingFragment)
             }

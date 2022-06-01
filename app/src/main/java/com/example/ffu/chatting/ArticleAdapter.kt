@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ffu.databinding.ItemArticleBinding
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 
 
 class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder>(diffUtil) {
@@ -23,27 +21,6 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
             Glide.with(binding.root)
                 .load(articleModel.imageUri)
                 .into(binding.thumbnailImageView)
-
-            /*
-            storage = FirebaseStorage.getInstance()
-            pathReference = storage.reference
-            pathReference.child("photo/${articleModel.Id}/real.jpg").downloadUrl.addOnCompleteListener{ task ->
-                if (task.isSuccessful) {
-                    Glide.with(binding.root)
-                        .load(task.result)
-                        .into(binding.thumbnailImageView)
-                }
-            }*/
-            /*
-            Glide.with(binding.thumbnailImageView)
-                .load(articleModel.imageUrl.toString())
-                .into(binding.thumbnailImageView)
-            */
-            /*
-            Glide.with(binding.thumbnailImageView)
-                .load(articleModel.imageUrl)
-                .into(binding.thumbnailImageView)
-            */
             binding.root.setOnClickListener {
                 onItemClicked(articleModel)
             }

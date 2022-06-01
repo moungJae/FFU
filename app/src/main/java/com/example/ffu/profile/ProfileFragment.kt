@@ -26,7 +26,6 @@ import com.example.ffu.UserInformation.Companion.URI
 
 class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
-    private lateinit var userDB: DatabaseReference
     private lateinit var auth : FirebaseAuth
     private lateinit var userId : String
     private lateinit var storage: FirebaseStorage
