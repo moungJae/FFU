@@ -1,9 +1,13 @@
 package com.example.ffu.chatdetail
+import android.content.Context
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import android.widget.ScrollView
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,16 +48,21 @@ class ChatRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
         //Log.d("otherName",otherName)
         val currentID = getCurrentUserID()
         val otherID = getOtherUserID()
         val Name = PROFILE[currentID]?.nickname ?: ""
+        val OtherName = getOtherUserName()
         myChatDB = Firebase.database.reference.child(DB_CHATS).child(currentID).child(otherID)
         otherChatDB = Firebase.database.reference.child(DB_CHATS).child(otherID).child(currentID)
         storage = FirebaseStorage.getInstance()
         pathReference = storage.reference
 
         //chatDB = Firebase.database.refer3ence.child(DB_CHATS).child("$chatKey")
+
+        binding.activityChatroomName.text=OtherName
+
         setupView()
         setupAdapter()
 
@@ -106,13 +115,21 @@ class ChatRoomActivity : AppCompatActivity() {
 
         }
 
+        binding.activityChatroomBack.setOnClickListener{
+            finish()
+        }
+
     }
+
     private fun getCurrentUserID(): String{
         return auth.currentUser?.uid.orEmpty()
     }
 
     private fun getOtherUserID(): String {
         return intent.getStringExtra("OtherId")!!
+    }
+    private fun getOtherUserName(): String {
+        return intent.getStringExtra("OtherName")!!
     }
     /*
     private fun getOtherUserName(): String {

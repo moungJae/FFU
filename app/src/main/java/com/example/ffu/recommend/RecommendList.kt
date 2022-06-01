@@ -9,24 +9,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ffu.DBKey.Companion.DB_PROFILE
+import com.bumptech.glide.Glide
 import com.example.ffu.R
 import com.example.ffu.UserInformation
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
-import com.example.ffu.chatting.ArticleModel
+import com.example.ffu.UserInformation.Companion.RECEIVEDLIKE_USER
+import com.example.ffu.UserInformation.Companion.SENDLIKE_USER
 import com.example.ffu.databinding.FragmentBottomsheetBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import de.hdodenhof.circleimageview.CircleImageView
+
 
 class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFragment() {
 
@@ -65,10 +68,13 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
         val fragmentBottomsheetBinding = FragmentBottomsheetBinding.bind(view)
         binding = fragmentBottomsheetBinding
 
-        recommendAdapter = RecommendAdapter()
+        recommendAdapter = RecommendAdapter(onItemClicked = { RecommendArticleModel->
+            showUserInformation(RecommendArticleModel)
+
+        })
+
 
         addRecommendUserList()
-
 
         fragmentBottomsheetBinding.recommendedUsersView.layoutManager = LinearLayoutManager(context)
         fragmentBottomsheetBinding.recommendedUsersView.adapter = recommendAdapter
@@ -122,16 +128,65 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
 
     private fun addRecommendUserList(){
         for(userId in recommendUsers){
-            if(CURRENT_USERID!=userId){
+            if(CURRENT_USERID!=userId && SENDLIKE_USER[userId]!=true &&  RECEIVEDLIKE_USER[userId]!=true){
                 val nickname = UserInformation.PROFILE[userId]?.nickname ?: ""
                 val gender = UserInformation.PROFILE[userId]?.gender ?: ""
                 val birth = UserInformation.PROFILE[userId]?.birth ?: ""
                 val imageUri = UserInformation.URI[userId]?:""
-                recommendUserList.add(RecommendArticleModel(nickname,gender,birth,imageUri))
+                recommendUserList.add(RecommendArticleModel(userId,nickname,gender,birth,imageUri))
                 recommendAdapter.submitList(recommendUserList)
             }
 
         }
+    }
 
+    private fun showUserInformation(recommendArticleModel: RecommendArticleModel) {
+
+
+        val userId = recommendArticleModel.Id
+        val dialog = AlertDialog.Builder(requireActivity()).create()
+        val edialog : LayoutInflater = LayoutInflater.from(requireActivity())
+        val mView : View = edialog.inflate(R.layout.dialog_userinformation,null)
+        val image : CircleImageView = mView.findViewById(R.id.dialog_userinformation_photo)
+        val cancel : ImageButton = mView.findViewById(R.id.dialog_userinformation_cancel)
+        val age : TextView = mView.findViewById(R.id.dialog_userinformation_age)
+        val birth : TextView = mView.findViewById(R.id.dialog_userinformation_birth)
+        val drinking : TextView = mView.findViewById(R.id.dialog_userinformation_drinking)
+        val hobby : TextView = mView.findViewById(R.id.dialog_userinformation_hobby)
+        val job : TextView = mView.findViewById(R.id.dialog_userinformation_job)
+        val mbti : TextView = mView.findViewById(R.id.dialog_userinformation_mbti)
+        val personality : TextView = mView.findViewById(R.id.dialog_userinformation_personality)
+        val smoke: TextView = mView.findViewById(R.id.dialog_userinformation_smoke)
+        val like : Button = mView.findViewById(R.id.dialog_userinformation_like)
+
+        age.text="나이 : "+UserInformation.PROFILE[userId]?.age
+        birth.text="생일 : "+UserInformation.PROFILE[userId]?.birth
+        drinking.text="음주여부 : "+UserInformation.PROFILE[userId]?.drinking
+        hobby.text="취미 : "+UserInformation.PROFILE[userId]?.hobby
+        job.text="직업 : "+UserInformation.PROFILE[userId]?.job
+        mbti.text="mbti : "+UserInformation.PROFILE[userId]?.mbti
+        personality.text="성격 : "+UserInformation.PROFILE[userId]?.personality
+        smoke.text="흡연여부 : "+UserInformation.PROFILE[userId]?.smoke
+
+        Glide.with(this)
+            .load(recommendArticleModel.imageUrl)
+            .into(image)
+        //  취소 버튼 클릭 시
+        cancel.setOnClickListener {
+            dialog.dismiss()
+            dialog.cancel()
+        }
+        //  완료 버튼 클릭 시
+        like.setOnClickListener {
+            val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike").child(CURRENT_USERID)
+            val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike").child(userId)
+            receivedLikeDB.setValue("")
+            sendLikeDB.setValue("")
+            dialog.dismiss()
+            dialog.cancel()
+        }
+        dialog.setView(mView)
+        dialog.create()
+        dialog.show()
     }
 }
