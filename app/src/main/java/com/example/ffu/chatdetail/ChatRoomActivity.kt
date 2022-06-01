@@ -19,6 +19,8 @@ import com.google.firebase.storage.StorageReference
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.utils.ChatItem
+
 class ChatRoomActivity : AppCompatActivity() {
 
     private val auth: FirebaseAuth by lazy {
@@ -82,7 +84,7 @@ class ChatRoomActivity : AppCompatActivity() {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
             val formatted = current.format(formatter)
             val tmpMessage = binding.messageEditText.text.toString()
-            if(tmpMessage!=""){
+            if(tmpMessage!=""){ //""이면 보내지 않는다.
                 val leftChatItem = ChatItem(
                     senderId = tmpId,
                     senderName = Name,

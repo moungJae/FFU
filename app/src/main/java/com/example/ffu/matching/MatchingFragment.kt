@@ -1,13 +1,13 @@
 package com.example.ffu.matching
 
-import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,36 +17,30 @@ import com.example.ffu.UserInformation
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.example.ffu.UserInformation.Companion.MATCH_USER
 import com.example.ffu.UserInformation.Companion.PROFILE
-import com.example.ffu.UserInformation.Companion.RECEIVEDLIKE_USER
+import com.example.ffu.UserInformation.Companion.RECEIVED_LIKE_USER
 import com.example.ffu.UserInformation.Companion.URI
-import com.example.ffu.chatdetail.ChatRoomActivity
-import com.example.ffu.chatting.ArticleAdapter
-import com.example.ffu.chatting.ArticleModel
-import com.example.ffu.databinding.FragmentChattingBinding
 import com.example.ffu.databinding.FragmentMatchingBinding
-import com.example.ffu.recommend.RecommendArticleModel
-import com.google.android.material.snackbar.Snackbar
+import com.example.ffu.utils.History
+import com.example.ffu.utils.LikeArticle
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import de.hdodenhof.circleimageview.CircleImageView
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
     private lateinit var likeArticleAdapter: LikeArticleAdapter
-
-
-    private val likeArticleList = mutableListOf<LikeArticleModel>()
-
+    private val likeArticleList = mutableListOf<LikeArticle>()
     private var binding: FragmentMatchingBinding? = null
+
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -66,14 +60,14 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
     private fun addReceivedLikeArticleList(){
 
-        for(likeId in RECEIVEDLIKE_USER.keys){
+        for(likeId in RECEIVED_LIKE_USER.keys){
             if(MATCH_USER[likeId]!=true){
                 val name = PROFILE[likeId]?.nickname ?: ""
                 val gender = PROFILE[likeId]?.gender ?: ""
                 val birth = PROFILE[likeId]?.birth ?: ""
                 val imageUri = URI[likeId]?:""
                 //Log.d("name",name)
-                likeArticleList.add(LikeArticleModel(likeId,name,gender,birth,imageUri))
+                likeArticleList.add(LikeArticle(likeId,name,gender,birth,imageUri))
                 likeArticleAdapter.submitList(likeArticleList)
             }
         }
@@ -85,7 +79,8 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         likeArticleAdapter.notifyDataSetChanged()
     }
 
-    private fun showUserInformation(likeArticleModel: LikeArticleModel) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showUserInformation(likeArticleModel: LikeArticle) {
 
 
         val userId = likeArticleModel.Id
@@ -130,6 +125,27 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             //나에 상대방꺼 저장
             val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
             myDB.setValue("")
+
+            val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
+            val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val formatted = current.format(formatter).toString()
+
+            val matchUserHistoryItem = History(
+                name = PROFILE[userId]?.nickname!!,
+                time = formatted!!,
+                type = History.MATCH_TYPE
+            )
+
+            val matchOtherUserHistoryItem = History(
+                name = PROFILE[CURRENT_USERID]?.nickname!!,
+                time = formatted!!,
+                type = History.MATCH_TYPE
+            )
+
+            userHistoryDB.push().setValue(matchUserHistoryItem)
+            otherHistoryDB.push().setValue(matchOtherUserHistoryItem)
 
 
             //val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)

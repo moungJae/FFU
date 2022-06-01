@@ -1,7 +1,4 @@
-package com.example.ffu.chatdetail
-
-import androidx.annotation.ColorInt
-
+package com.example.ffu.utils
 
 data class ChatItem(
 
@@ -17,4 +14,3 @@ data class ChatItem(
     }
     constructor(): this("", "","","",-1)
 }
-

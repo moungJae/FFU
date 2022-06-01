@@ -39,6 +39,7 @@ import com.google.firebase.ktx.Firebase
 import java.lang.Math.*
 import kotlin.math.pow
 import com.example.ffu.UserInformation.Companion.RECOMMEND
+import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 
 class RecommendFragment : Fragment(), OnMapReadyCallback {
 
@@ -97,7 +98,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             val recommendUsersUid = ArrayList<String>()
             // 리스트에 거리 내의 사용자의 uid 넣기.
             for (uid in usersUid) {
-                if (uid == auth.uid) continue
+                if (uid == CURRENT_USERID) continue
                 val distance : Int =
                     getDistance(RECOMMEND[uid]?.latitude, RECOMMEND[uid]?.longitude,
                     recommendLatitude, recommendLongitude) / 1000
@@ -290,7 +291,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         val locationToFirebase = mutableMapOf<String, Any>()
         locationToFirebase["latitude"] = mLastLocation.latitude
         locationToFirebase["longitude"] = mLastLocation.longitude
-        userDB = Firebase.database.reference.child("recommend").child(auth?.uid.toString())
+        userDB = Firebase.database.reference.child("recommend").child(CURRENT_USERID)
         userDB.updateChildren(locationToFirebase)
         Log.d("loc", "${mLastLocation.latitude}, ${mLastLocation.longitude}")
     }

@@ -1,6 +1,6 @@
 package com.example.ffu
 
-import com.example.ffu.utils.Animation
+import com.example.ffu.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -8,12 +8,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
-import com.example.ffu.utils.DBKey.Companion.DB_LIKEDBY
 import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
 import com.example.ffu.utils.DBKey.Companion.DB_RECOMMEND
-import com.example.ffu.utils.DBKey.Companion.DB_MATCH
-import com.example.ffu.utils.Profile
-import com.example.ffu.utils.Recommend
 
 class UserInformation {
 
@@ -29,26 +25,30 @@ class UserInformation {
         var CURRENT_USERID : String = ""
 
         // 회원가입한 모든 유저들의 profile, animation, recommend 정보
-        var PROFILE = mutableMapOf<String, Profile>()
-        var ANIMATION = mutableMapOf<String, Animation>()
-        var RECOMMEND = mutableMapOf<String, Recommend>()
+        val PROFILE = mutableMapOf<String, Profile>()
+        val ANIMATION = mutableMapOf<String, Animation>()
+        val RECOMMEND = mutableMapOf<String, Recommend>()
 
         // 회원가입한 모든 유저들의 uid(key)를 통해 imageUri(value) 저장
-        var URI = mutableMapOf<String, String>()
+        val URI = mutableMapOf<String, String>()
 
         // 지도 위치 권한을 등록한 모든 유저들의 정보 (위도 + 경도)
-        var MAP_USER = ArrayList<String>()
+        val MAP_USER = ArrayList<String>()
 
         // 매칭된 모든 유저들의 uid 값을 저장
-        var MATCH_USER =  mutableMapOf<String, Boolean>()
+        val MATCH_USER = mutableMapOf<String, Boolean>()
 
-        // 현재 유저가 Like를 받은 유저들의 uid 값을 저장
-        var RECEIVEDLIKE_USER = mutableMapOf<String, Boolean>()
+        // 현재 유저가 Like 를 받은 유저들의 uid 값을 저장
+        val RECEIVED_LIKE_USER = mutableMapOf<String, Boolean>()
 
-        // 현재 유저가 Like를 보낸 유저들의 uid 값을 저장
-        var SENDLIKE_USER = mutableMapOf<String, Boolean>()
+        // 현재 유저가 Like 를 보낸 유저들의 uid 값을 저장
+        val SEND_LIKE_USER = mutableMapOf<String, Boolean>()
 
+        // 현재 유저의 history 정보를 저장
+        val HISTORY = ArrayList<History>()
 
+        // 기존에 등록된 리스너를 제거
+        val LISTENER_INFO = ArrayList<Listener>()
     }
 
     init {
@@ -61,22 +61,35 @@ class UserInformation {
         if (!CREATE_FLAG) {
             CREATE_FLAG = true
             addAllUserInformation()
-            addAllMatchUsers()
-            addAllReceivedLikeUsers()
-            addAllSendLikeUsers()
-        } else {
-            MATCH_USER.clear()
-            RECEIVEDLIKE_USER.clear()
-            addAllMatchUsers()
-            addAllReceivedLikeUsers()
-            addAllSendLikeUsers()
+        } else { // 기존에 존재하던 매칭된 유저들의 정보들 초기화
+            initializeInfo()
         }
+        addAllMatchUsers()
+        addAllLikeUsers()
+        addUserHistory()
     }
 
     // 로그인한 유저의 auth 세팅
     private fun authSetting() {
         auth = Firebase.auth
         CURRENT_USERID = auth.uid.toString()
+    }
+
+    // 이전에 등록된 리스너 및 map, arraylist 초기화
+    private fun initializeInfo() {
+        var reference : DatabaseReference
+        var listener : ChildEventListener
+
+        for (listenerInfo in LISTENER_INFO) {
+            reference = listenerInfo.reference
+            listener = listenerInfo.listener
+            reference.removeEventListener(listener)
+        }
+        MATCH_USER.clear()
+        RECEIVED_LIKE_USER.clear()
+        SEND_LIKE_USER.clear()
+        HISTORY.clear()
+        LISTENER_INFO.clear()
     }
 
     // 지도 위치 권한을 등록한 유저의 profile 세팅
@@ -132,7 +145,12 @@ class UserInformation {
                 addUserProfile(userId)
                 addUserAnimation(userId)
             }
-            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val userId = snapshot.key.toString()
+                PROFILE.remove(userId)
+                ANIMATION.remove(userId)
+                URI.remove(userId)
+            }
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
@@ -145,7 +163,11 @@ class UserInformation {
                 MAP_USER.add(userId)
                 addUserLocation(userId)
             }
-            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val userId = snapshot.key.toString()
+                MAP_USER.remove(userId)
+                RECOMMEND.remove(userId)
+            }
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
@@ -155,8 +177,7 @@ class UserInformation {
     // 현재 로그인한 유저의 매칭된 유저들의 uid 저장
     private fun addAllMatchUsers() {
         userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match")
-
-        userDB.addChildEventListener(object : ChildEventListener {
+        val matchListener = userDB.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val matchUserId = snapshot.key.toString()
                 MATCH_USER[matchUserId]=true
@@ -169,41 +190,58 @@ class UserInformation {
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
         })
+        LISTENER_INFO.add(Listener(userDB, matchListener))
     }
 
-    // 현재 로그인한 유저에게 like를 보낸 유저의 uid 저장
-    private fun addAllReceivedLikeUsers() {
+    // 현재 로그인한 유저에게 like 를 받거나 보낸 유저들의 uid 저장
+    private fun addAllLikeUsers() {
         userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("receivedLike")
-        userDB.addChildEventListener(object : ChildEventListener {
+        val receiveListener = userDB.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val receivedUserId = snapshot.key.toString()
-                RECEIVEDLIKE_USER[receivedUserId]=true
+                RECEIVED_LIKE_USER[receivedUserId]=true
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val receivedUserId= snapshot.key.toString()
-                RECEIVEDLIKE_USER.remove(receivedUserId)
+                RECEIVED_LIKE_USER.remove(receivedUserId)
             }
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
         })
-    }
+        LISTENER_INFO.add(Listener(userDB, receiveListener))
 
-    // 현재 로그인한 유저에게 like를 보낸 유저의 uid 저장
-    private fun addAllSendLikeUsers() {
         userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike")
-        userDB.addChildEventListener(object : ChildEventListener {
+        val sendListener = userDB.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val sendUserId = snapshot.key.toString()
-                SENDLIKE_USER[sendUserId]=true
+                SEND_LIKE_USER[sendUserId]=true
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val sendUserId = snapshot.key.toString()
-                SENDLIKE_USER.remove(sendUserId)
+                SEND_LIKE_USER.remove(sendUserId)
             }
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
         })
+        LISTENER_INFO.add(Listener(userDB, sendListener))
+    }
+
+    // 현재 유저의 history 를 저장
+    private fun addUserHistory() {
+        userDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
+        val historyListener = userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                if (snapshot.getValue(History::class.java) != null) {
+                    HISTORY.add(snapshot.getValue(History::class.java) as History)
+                }
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
+        LISTENER_INFO.add(Listener(userDB, historyListener))
     }
 }

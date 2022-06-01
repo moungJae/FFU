@@ -3,6 +3,7 @@ package com.example.ffu.recommend
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -18,9 +20,14 @@ import com.bumptech.glide.Glide
 import com.example.ffu.R
 import com.example.ffu.UserInformation
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
-import com.example.ffu.UserInformation.Companion.RECEIVEDLIKE_USER
-import com.example.ffu.UserInformation.Companion.SENDLIKE_USER
+import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.UserInformation.Companion.RECEIVED_LIKE_USER
+import com.example.ffu.UserInformation.Companion.SEND_LIKE_USER
 import com.example.ffu.databinding.FragmentBottomsheetBinding
+import com.example.ffu.utils.History
+import com.example.ffu.utils.History.Companion.RECEIVE_TYPE
+import com.example.ffu.utils.History.Companion.SEND_TYPE
+import com.example.ffu.utils.RecommendArticle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -30,6 +37,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import de.hdodenhof.circleimageview.CircleImageView
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFragment() {
@@ -40,7 +49,7 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
     }
-    private val recommendUserList = mutableListOf<RecommendArticleModel>()
+    private val recommendUserList = mutableListOf<RecommendArticle>()
 
     // user View
     private var binding: FragmentBottomsheetBinding? = null
@@ -59,6 +68,7 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
         return view
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -71,7 +81,6 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
 
         recommendAdapter = RecommendAdapter(onItemClicked = { RecommendArticleModel->
             showUserInformation(RecommendArticleModel)
-
         })
 
 
@@ -129,19 +138,20 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
 
     private fun addRecommendUserList(){
         for(userId in recommendUsers){
-            if(CURRENT_USERID!=userId && SENDLIKE_USER[userId]!=true &&  RECEIVEDLIKE_USER[userId]!=true){
+            if(CURRENT_USERID!=userId && SEND_LIKE_USER[userId]!=true &&  RECEIVED_LIKE_USER[userId]!=true){
                 val nickname = UserInformation.PROFILE[userId]?.nickname ?: ""
                 val gender = UserInformation.PROFILE[userId]?.gender ?: ""
                 val birth = UserInformation.PROFILE[userId]?.birth ?: ""
                 val imageUri = UserInformation.URI[userId]?:""
-                recommendUserList.add(RecommendArticleModel(userId,nickname,gender,birth,imageUri))
+                recommendUserList.add(RecommendArticle(userId,nickname,gender,birth,imageUri))
                 recommendAdapter.submitList(recommendUserList)
             }
 
         }
     }
 
-    private fun showUserInformation(recommendArticleModel: RecommendArticleModel) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showUserInformation(recommendArticleModel: RecommendArticle) {
 
 
         val userId = recommendArticleModel.Id
@@ -160,14 +170,14 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
         val smoke: TextView = mView.findViewById(R.id.dialog_userinformation_smoke)
         val like : Button = mView.findViewById(R.id.dialog_userinformation_like)
 
-        age.text="나이 : "+UserInformation.PROFILE[userId]?.age
-        birth.text="생일 : "+UserInformation.PROFILE[userId]?.birth
-        drinking.text="음주여부 : "+UserInformation.PROFILE[userId]?.drinking
-        hobby.text="취미 : "+UserInformation.PROFILE[userId]?.hobby
-        job.text="직업 : "+UserInformation.PROFILE[userId]?.job
-        mbti.text="mbti : "+UserInformation.PROFILE[userId]?.mbti
-        personality.text="성격 : "+UserInformation.PROFILE[userId]?.personality
-        smoke.text="흡연여부 : "+UserInformation.PROFILE[userId]?.smoke
+        age.text = "나이 : " + PROFILE[userId]?.age
+        birth.text = "생일 : " + PROFILE[userId]?.birth
+        drinking.text = "음주여부 : " + PROFILE[userId]?.drinking
+        hobby.text = "취미 : " + PROFILE[userId]?.hobby
+        job.text = "직업 : " + PROFILE[userId]?.job
+        mbti.text = "mbti : " + PROFILE[userId]?.mbti
+        personality.text = "성격 : " + PROFILE[userId]?.personality
+        smoke.text = "흡연여부 : " + PROFILE[userId]?.smoke
 
         Glide.with(this)
             .load(recommendArticleModel.imageUrl)
@@ -183,6 +193,29 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
             val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike").child(userId)
             receivedLikeDB.setValue("")
             sendLikeDB.setValue("")
+
+            val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
+            val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val formatted = current.format(formatter).toString()
+
+            val sendHistoryItem = History(
+                name = PROFILE[userId]?.nickname!!,
+                time = formatted!!,
+                type = SEND_TYPE
+            )
+
+            val receiveHistoryItem = History(
+                name = PROFILE[CURRENT_USERID]?.nickname!!,
+                time = formatted!!,
+                type = RECEIVE_TYPE
+            )
+
+            userHistoryDB.push().setValue(sendHistoryItem)
+            otherHistoryDB.push().setValue(receiveHistoryItem)
+
+
             dialog.dismiss()
             dialog.cancel()
         }

@@ -37,7 +37,7 @@ import com.metagalactic.dotprogressbar.DotProgressBar
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.*
 import java.net.Socket
-import java.security.AccessController.getContext
+import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import java.text.SimpleDateFormat
 
 
@@ -46,7 +46,6 @@ class ProfileSettingActivity : AppCompatActivity() {
     private lateinit var userDB: DatabaseReference
     private lateinit var auth : FirebaseAuth
     private lateinit var storage: FirebaseStorage
-    private lateinit var userID : String
 
     private val ip = "59.9.212.155"
     private val port = 30000
@@ -114,7 +113,6 @@ class ProfileSettingActivity : AppCompatActivity() {
         val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
 
         auth = Firebase.auth
-        userID = auth.uid.toString()
         storage = FirebaseStorage.getInstance()
         progressBar = findViewById<DotProgressBar>(R.id.profile_setting_progressbar)
 
@@ -123,27 +121,27 @@ class ProfileSettingActivity : AppCompatActivity() {
             gender = intent.getStringExtra("gender").toString()
         }
 
-        findViewById<EditText>(R.id.profile_setting_inputNickname).setText(PROFILE[userID]?.nickname)
-        findViewById<EditText>(R.id.profile_setting_inputJob).setText(PROFILE[userID]?.job)
-        findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(PROFILE[userID]?.introMe)
+        findViewById<EditText>(R.id.profile_setting_inputNickname).setText(PROFILE[CURRENT_USERID]?.nickname)
+        findViewById<EditText>(R.id.profile_setting_inputJob).setText(PROFILE[CURRENT_USERID]?.job)
+        findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(PROFILE[CURRENT_USERID]?.introMe)
 
-        when(PROFILE[userID]?.smoke) {
+        when(PROFILE[CURRENT_USERID]?.smoke) {
             "비흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1).isChecked = true
             "흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2).isChecked = true
         }
-        when(PROFILE[userID]?.drinking) {
+        when(PROFILE[CURRENT_USERID]?.drinking) {
             "비음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1).isChecked = true
             "음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2).isChecked = true
         }
 
-        mbti = PROFILE[userID]?.mbti ?: ""
-        religion = PROFILE[userID]?.religion ?: ""
-        personalities = setPersonalities(PROFILE[userID]?.personality ?: "")
-        hobbies = setHobbies(PROFILE[userID]?.hobby ?: "")
+        mbti = PROFILE[CURRENT_USERID]?.mbti ?: ""
+        religion = PROFILE[CURRENT_USERID]?.religion ?: ""
+        personalities = setPersonalities(PROFILE[CURRENT_USERID]?.personality ?: "")
+        hobbies = setHobbies(PROFILE[CURRENT_USERID]?.hobby ?: "")
 
-        if (URI[userID] != null) {
+        if (URI[CURRENT_USERID] != null) {
             Glide.with(this@ProfileSettingActivity)
-                .load(UserInformation.URI[userID])
+                .load(URI[CURRENT_USERID])
                 .into(image)
         }
     }
@@ -199,32 +197,29 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
     }
 
-    // 3개 이상 출력 시 줄바꿈
+    // 3개 이상 출력 시 줄바꿈 처리
     private fun changeLine(List : List<String>) : String{
-        val tempString = List.joinToString(",", "", "", 6)
-        val splitString = tempString.split(",")
-        var string = ""
+        val splitString = List.joinToString(",", "", "", 6).split(",")
+        var result = ""
         var i = 0
 
-        // 3개 이상 출력되면 줄 바꿈
         for (tmp in splitString) {
             if (i == 3) {
                 if (tmp.equals(splitString.last())) {
-                    string += "\n" + tmp
+                    result += "\n" + tmp
                 } else {
-                    string += "\n" + tmp + ","
+                    result += "\n" + tmp + ","
                 }
             } else {
                 if (tmp.equals(splitString.last())) {
-                    string += tmp
+                    result += tmp
                 } else {
-                    string += tmp + ","
+                    result += tmp + ","
                 }
             }
             i++
         }
-
-        return string
+        return result
     }
 
     private fun setPersonality() {
@@ -405,7 +400,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         Thread {
             val animation = mutableMapOf<String, Any>()
 
-            userDB = Firebase.database.reference.child(DB_ANIMATION).child(userID)
+            userDB = Firebase.database.reference.child(DB_ANIMATION).child(CURRENT_USERID)
             animation["request"] = false
             animation["person"] = false
             animation["permission"] = false
@@ -415,13 +410,13 @@ class ProfileSettingActivity : AppCompatActivity() {
             try {
                 socket = Socket(ip, port)
                 dos = DataOutputStream(socket.getOutputStream())
-                dos.writeUTF(userID)
+                dos.writeUTF(CURRENT_USERID)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
 
             // 2. server 에서 요청(request = true)이 올 때 까지 대기
-            while (!ANIMATION[userID]!!.request) {
+            while (!ANIMATION[CURRENT_USERID]!!.request) {
                 Thread.sleep(100)
             }
 
@@ -431,9 +426,9 @@ class ProfileSettingActivity : AppCompatActivity() {
                 transformText.text = ""
                 progressBar.visibility = View.INVISIBLE
                 Glide.with(this@ProfileSettingActivity)
-                    .load(URI[userID])
+                    .load(URI[CURRENT_USERID])
                     .into(image)
-                if (ANIMATION[userID]!!.person) {
+                if (ANIMATION[CURRENT_USERID]!!.person) {
                     Toast.makeText(this@ProfileSettingActivity,"애니메이션 변환 완료!",Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@ProfileSettingActivity,"인물사진을 넣어주세요!",Toast.LENGTH_SHORT).show()
@@ -446,7 +441,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     private fun setPhoto() {
         val photoButton = findViewById<Button>(R.id.profile_setting_image_change_button)
         val imagesRef = storage.reference
-            .child("photo/" + userID + "/real.jpg")
+            .child("photo/" + CURRENT_USERID + "/real.jpg")
 
         val getFromAlbumResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             setAllDisable()
@@ -533,7 +528,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         if (nickname.isEmpty() || job.isEmpty() || introMe.isEmpty() || smoke.isEmpty()
             || drinking.isEmpty() || mbti.isEmpty() || religion.isEmpty()
-            || personalities.size == 0 || hobbies.size == 0 || !ANIMATION[userID]!!.person)
+            || personalities.size == 0 || hobbies.size == 0 || !ANIMATION[CURRENT_USERID]!!.person)
             return false
         return true
     }
@@ -564,18 +559,18 @@ class ProfileSettingActivity : AppCompatActivity() {
                 .split("-")[0].toInt() - birth.split("/")[0].toInt() + 1
             profile = Profile(age.toString(), birth, drinking, gender,
                 hobby, introMe, job, mbti, nickname, personality,
-                religion, smoke, PROFILE[userID]?.tel, true)
+                religion, smoke, PROFILE[CURRENT_USERID]?.tel, true)
         } else {
-            profile = Profile(PROFILE[userID]?.age, PROFILE[userID]?.birth, drinking,
-                PROFILE[userID]?.gender, hobby, introMe, job, mbti, nickname, personality,
-                religion, smoke, PROFILE[userID]?.tel, true)
+            profile = Profile(PROFILE[CURRENT_USERID]?.age, PROFILE[CURRENT_USERID]?.birth, drinking,
+                PROFILE[CURRENT_USERID]?.gender, hobby, introMe, job, mbti, nickname, personality,
+                religion, smoke, PROFILE[CURRENT_USERID]?.tel, true)
         }
         animation = Animation(permission = true, person = true, request = true)
 
-        userDB = Firebase.database.reference.child(DB_PROFILE).child(userID)
+        userDB = Firebase.database.reference.child(DB_PROFILE).child(CURRENT_USERID)
         userDB.setValue(profile)
 
-        userDB = Firebase.database.reference.child(DB_ANIMATION).child(userID)
+        userDB = Firebase.database.reference.child(DB_ANIMATION).child(CURRENT_USERID)
         userDB.setValue(animation)
     }
 
@@ -601,7 +596,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         val nicknameTextView = mView.findViewById<TextView>(R.id.nickname_TextView)
 
         Glide.with(this)
-            .load(UserInformation.URI[userID])
+            .load(UserInformation.URI[CURRENT_USERID])
             .into(image)
 
         cancel.setOnClickListener {
@@ -629,7 +624,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                 showAnimationPhoto()
             }
             else {
-                if (!ANIMATION[userID]!!.person) {
+                if (!ANIMATION[CURRENT_USERID]!!.person) {
                     Toast.makeText(this, "인물 사진을 넣어주세요!", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "정보를 완벽하게 입력해주세요!", Toast.LENGTH_SHORT).show()

@@ -6,18 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ffu.R
-import com.example.ffu.UserInformation
-import com.example.ffu.chatting.ArticleAdapter
-
-import com.example.ffu.chatting.ArticleModel
 
 
 import com.example.ffu.databinding.UsersArticleBinding
+import com.example.ffu.utils.RecommendArticle
 
-class RecommendAdapter(val onItemClicked: (RecommendArticleModel) -> Unit) : ListAdapter<RecommendArticleModel, RecommendAdapter.ViewHolder>(diffUtil) {
+class RecommendAdapter(val onItemClicked: (RecommendArticle) -> Unit) : ListAdapter<RecommendArticle, RecommendAdapter.ViewHolder>(diffUtil) {
     inner class ViewHolder(private val binding: UsersArticleBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(recommendArticleModel: RecommendArticleModel) {
+        fun bind(recommendArticleModel: RecommendArticle) {
 
             binding.recommendNickname.text = recommendArticleModel.nickName
             binding.recommendAge.text = recommendArticleModel.age
@@ -44,12 +40,12 @@ class RecommendAdapter(val onItemClicked: (RecommendArticleModel) -> Unit) : Lis
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<RecommendArticleModel>() {
-            override fun areItemsTheSame(oldItem: RecommendArticleModel, newItem: RecommendArticleModel): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<RecommendArticle>() {
+            override fun areItemsTheSame(oldItem: RecommendArticle, newItem: RecommendArticle): Boolean {
                 return oldItem.nickName == newItem.nickName
             }
 
-            override fun areContentsTheSame(oldItem: RecommendArticleModel, newItem: RecommendArticleModel): Boolean {
+            override fun areContentsTheSame(oldItem: RecommendArticle, newItem: RecommendArticle): Boolean {
                 return oldItem == newItem
             }
 
