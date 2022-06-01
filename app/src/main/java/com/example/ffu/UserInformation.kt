@@ -1,17 +1,19 @@
 package com.example.ffu
 
-import android.app.Activity
-import android.util.Log
-import android.widget.Toast
-import com.example.ffu.chatdetail.ChatItem
+import com.example.ffu.utils.Animation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
+import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
+import com.example.ffu.utils.DBKey.Companion.DB_LIKEDBY
+import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
+import com.example.ffu.utils.DBKey.Companion.DB_RECOMMEND
+import com.example.ffu.utils.DBKey.Companion.DB_MATCH
+import com.example.ffu.utils.Profile
+import com.example.ffu.utils.Recommend
 
 class UserInformation {
 
@@ -26,12 +28,12 @@ class UserInformation {
         // 현재 유저의 uid
         var CURRENT_USERID : String = ""
 
-        // 지도 위치 권한을 등록한 모든 유저들의 profile, animation, recommend 정보
+        // 회원가입한 모든 유저들의 profile, animation, recommend 정보
         var PROFILE = mutableMapOf<String, Profile>()
         var ANIMATION = mutableMapOf<String, Animation>()
         var RECOMMEND = mutableMapOf<String, Recommend>()
 
-        // 지도 위치 권한을 등록한 모든 유저들의 uid(key)를 통해 imageUri(value) 저장
+        // 회원가입한 모든 유저들의 uid(key)를 통해 imageUri(value) 저장
         var URI = mutableMapOf<String, String>()
 
         // 지도 위치 권한을 등록한 모든 유저들의 정보 (위도 + 경도)
@@ -79,7 +81,7 @@ class UserInformation {
 
     // 지도 위치 권한을 등록한 유저의 profile 세팅
     private fun addUserProfile(userId : String) {
-        userDB = Firebase.database.reference.child("profile").child(userId)
+        userDB = Firebase.database.reference.child(DB_PROFILE).child(userId)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.getValue(Profile::class.java) != null) {
@@ -92,7 +94,7 @@ class UserInformation {
 
     // 지도 위치 권한을 등록한 유저의 animation 세팅
     private fun addUserAnimation(userId : String) {
-        userDB = Firebase.database.reference.child("animation").child(userId)
+        userDB = Firebase.database.reference.child(DB_ANIMATION).child(userId)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.getValue(Animation::class.java) != null) {
@@ -110,7 +112,7 @@ class UserInformation {
 
     // 지도 위치 권한을 등록한 유저의 위도, 경도 저장
     private fun addUserLocation(userId : String) {
-        userDB = Firebase.database.reference.child("recommend").child(userId)
+        userDB = Firebase.database.reference.child(DB_RECOMMEND).child(userId)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.getValue(Recommend::class.java) != null) {
@@ -123,11 +125,10 @@ class UserInformation {
 
     // 지도 위치 권한을 등록한 모든 유저들에 대한 profile, animation, location 리스너를 등록
     private fun addAllUserInformation() {
-        userDB = Firebase.database.reference.child("profile")
+        userDB = Firebase.database.reference.child(DB_PROFILE)
         userDB.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val userId = snapshot.key.toString()
-
                 addUserProfile(userId)
                 addUserAnimation(userId)
             }
@@ -137,11 +138,10 @@ class UserInformation {
             override fun onCancelled(error: DatabaseError) {}
         })
 
-        userDB = Firebase.database.reference.child("recommend")
+        userDB = Firebase.database.reference.child(DB_RECOMMEND)
         userDB.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val userId = snapshot.key.toString()
-
                 MAP_USER.add(userId)
                 addUserLocation(userId)
             }
@@ -155,6 +155,7 @@ class UserInformation {
     // 현재 로그인한 유저의 매칭된 유저들의 uid 저장
     private fun addAllMatchUsers() {
         userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match")
+
         userDB.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val matchUserId = snapshot.key.toString()

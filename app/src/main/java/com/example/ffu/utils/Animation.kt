@@ -1,4 +1,4 @@
-package com.example.ffu
+package com.example.ffu.utils
 
 data class Animation(
 

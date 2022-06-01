@@ -50,11 +50,11 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
             Glide.with(this)
                 .load(URI[userId])
                 .into(image)
-            nickname.setText(PROFILE[userId]?.nickname ?: "")
-            introMe.setText(PROFILE[userId]?.introMe ?: "")
+            nickname.setText(PROFILE[userId]?.nickname)
+            introMe.setText(PROFILE[userId]?.introMe)
         } else {
-            nickname.setText(PROFILE[userId]?.nickname ?: "")
-            introMe.setText(PROFILE[userId]?.introMe ?: "")
+            nickname.setText(PROFILE[userId]?.nickname)
+            introMe.setText(PROFILE[userId]?.introMe)
             Toast.makeText(context, "프로필을 변경해주세요!", Toast.LENGTH_SHORT).show()
         }
     }

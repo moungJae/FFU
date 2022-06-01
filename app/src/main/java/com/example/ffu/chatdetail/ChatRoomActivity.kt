@@ -3,15 +3,11 @@ import android.content.Context
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
-import android.view.View
-import android.widget.ScrollView
-import android.widget.TextView
+
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ffu.DBKey.Companion.DB_CHATS
+import com.example.ffu.utils.DBKey.Companion.DB_CHATS
 import com.example.ffu.databinding.ActivityChatroomBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -22,10 +18,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.jar.Attributes
 import com.example.ffu.UserInformation.Companion.PROFILE
-import com.example.ffu.UserInformation.Companion.ANIMATION
-
 class ChatRoomActivity : AppCompatActivity() {
 
     private val auth: FirebaseAuth by lazy {
