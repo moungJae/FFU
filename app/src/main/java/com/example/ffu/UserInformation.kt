@@ -1,5 +1,7 @@
 package com.example.ffu
 
+import com.example.ffu.chatdetail.ChatItem
+import com.example.ffu.profile.HistoryModel
 import com.example.ffu.utils.Animation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -8,10 +10,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
-import com.example.ffu.utils.DBKey.Companion.DB_LIKEDBY
 import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
 import com.example.ffu.utils.DBKey.Companion.DB_RECOMMEND
-import com.example.ffu.utils.DBKey.Companion.DB_MATCH
 import com.example.ffu.utils.Profile
 import com.example.ffu.utils.Recommend
 
@@ -48,7 +48,6 @@ class UserInformation {
         // 현재 유저가 Like를 보낸 유저들의 uid 값을 저장
         var SENDLIKE_USER = mutableMapOf<String, Boolean>()
 
-
     }
 
     init {
@@ -69,7 +68,6 @@ class UserInformation {
             RECEIVEDLIKE_USER.clear()
             addAllMatchUsers()
             addAllReceivedLikeUsers()
-            addAllSendLikeUsers()
         }
     }
 
@@ -131,6 +129,7 @@ class UserInformation {
                 val userId = snapshot.key.toString()
                 addUserProfile(userId)
                 addUserAnimation(userId)
+
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {}
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -206,4 +205,6 @@ class UserInformation {
             override fun onCancelled(error: DatabaseError) {}
         })
     }
+
+
 }
