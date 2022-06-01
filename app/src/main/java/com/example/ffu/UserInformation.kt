@@ -8,10 +8,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
-import com.example.ffu.utils.DBKey.Companion.DB_LIKEDBY
 import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
 import com.example.ffu.utils.DBKey.Companion.DB_RECOMMEND
-import com.example.ffu.utils.DBKey.Companion.DB_MATCH
 import com.example.ffu.utils.Profile
 import com.example.ffu.utils.Recommend
 
