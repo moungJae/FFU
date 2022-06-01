@@ -610,7 +610,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
 
         dialog.setView(mView)
-        nicknameTextView.setText(nickname)
+        nicknameTextView.setText(nickname + " 님")
         dialog.create()
         dialog.show()
 
