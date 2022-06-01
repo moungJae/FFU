@@ -80,13 +80,15 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
 
     private fun addArticleList(){
         for(matchId in MATCH_USER.keys){
-            val name = PROFILE[matchId]?.nickname ?: ""
-            val gender = PROFILE[matchId]?.gender ?: ""
-            val birth = PROFILE[matchId]?.birth ?: ""
-            val imageUri = URI[matchId]
+            //if(matchId!= CURRENT_USERID){ 명재 수정 부분
+                val name = PROFILE[matchId]?.nickname ?: ""
+                val gender = PROFILE[matchId]?.gender ?: ""
+                val birth = PROFILE[matchId]?.birth ?: ""
+                val imageUri = URI[matchId]
 
-            articleList.add(ArticleModel(matchId,name,gender,birth,imageUri))
-            articleAdapter.submitList(articleList)
+                articleList.add(ArticleModel(matchId,name,gender,birth,imageUri))
+                articleAdapter.submitList(articleList)
+            //}
         }
 
     }

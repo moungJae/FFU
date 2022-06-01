@@ -1,8 +1,5 @@
 package com.example.ffu.chatdetail
 
-import androidx.annotation.ColorInt
-
-
 data class ChatItem(
 
     val senderId: String?,

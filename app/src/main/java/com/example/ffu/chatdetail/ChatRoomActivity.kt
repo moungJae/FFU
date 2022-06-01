@@ -82,7 +82,7 @@ class ChatRoomActivity : AppCompatActivity() {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
             val formatted = current.format(formatter)
             val tmpMessage = binding.messageEditText.text.toString()
-            if(tmpMessage!=""){
+            if(tmpMessage!=""){ //""이면 보내지 않는다.
                 val leftChatItem = ChatItem(
                     senderId = tmpId,
                     senderName = Name,

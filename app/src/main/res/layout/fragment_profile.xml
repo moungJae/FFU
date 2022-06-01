@@ -113,7 +113,7 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recommendedUsersView"
+        android:id="@+id/fragment_profile_historyRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10sp"
@@ -121,8 +121,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_profile_history"
+        android:scrollbars="vertical"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
