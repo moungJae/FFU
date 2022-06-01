@@ -97,7 +97,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             val recommendUsersUid = ArrayList<String>()
             // 리스트에 거리 내의 사용자의 uid 넣기.
             for (uid in usersUid) {
-                if (uid == auth.uid) continue
+                if (uid == auth.uid || uid == "null") continue
                 val distance : Int =
                     getDistance(RECOMMEND[uid]?.latitude, RECOMMEND[uid]?.longitude,
                     recommendLatitude, recommendLongitude) / 1000

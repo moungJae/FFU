@@ -1,13 +1,15 @@
 package com.example.ffu.matching
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
+import android.widget.CompoundButton
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,21 +21,13 @@ import com.example.ffu.UserInformation.Companion.MATCH_USER
 import com.example.ffu.UserInformation.Companion.PROFILE
 import com.example.ffu.UserInformation.Companion.RECEIVEDLIKE_USER
 import com.example.ffu.UserInformation.Companion.URI
-import com.example.ffu.chatdetail.ChatRoomActivity
-import com.example.ffu.chatting.ArticleAdapter
-import com.example.ffu.chatting.ArticleModel
-import com.example.ffu.databinding.FragmentChattingBinding
 import com.example.ffu.databinding.FragmentMatchingBinding
-import com.example.ffu.recommend.RecommendArticleModel
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import de.hdodenhof.circleimageview.CircleImageView
+
 
 class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
@@ -86,8 +80,6 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
     }
 
     private fun showUserInformation(likeArticleModel: LikeArticleModel) {
-
-
         val userId = likeArticleModel.Id
         val dialog = AlertDialog.Builder(requireActivity()).create()
         val edialog : LayoutInflater = LayoutInflater.from(requireActivity())
@@ -102,7 +94,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         val mbti : TextView = mView.findViewById(R.id.dialog_userinformation_mbti)
         val personality : TextView = mView.findViewById(R.id.dialog_userinformation_personality)
         val smoke: TextView = mView.findViewById(R.id.dialog_userinformation_smoke)
-        val like : Button = mView.findViewById(R.id.dialog_userinformation_like)
+        val like : ToggleButton = mView.findViewById(R.id.dialog_userinformation_like)
 
         age.text="나이 : "+UserInformation.PROFILE[userId]?.age
         birth.text="생일 : "+UserInformation.PROFILE[userId]?.birth
@@ -122,7 +114,8 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             dialog.cancel()
         }
         //  완료 버튼 클릭 시
-        like.setOnClickListener {
+
+        like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
             //상대방꺼에 나를 저장
             val otherDB = Firebase.database.reference.child("likeInfo").child(userId).child("match").child(CURRENT_USERID)
             otherDB.setValue("")
@@ -130,13 +123,11 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             //나에 상대방꺼 저장
             val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
             myDB.setValue("")
-
-
             //val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
+            //dialog.dismiss()
+            //dialog.cancel()
+        })
 
-            dialog.dismiss()
-            dialog.cancel()
-        }
         dialog.setView(mView)
         dialog.create()
         dialog.show()
