@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/editTextView"
@@ -55,7 +54,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20sp"
                 android:background="@drawable/profile"
-                android:textColor="@color/main_text_color"/>
+                android:textColor="@color/main_text_color" />
 
             <Button
                 android:id="@+id/profile_setting_image_change_button"
@@ -229,55 +228,123 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/profile_setting_mbtiButton"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="30sp"
-            android:layout_marginBottom="10sp"
-            android:background="@drawable/box_id"
-            android:text="MBTI "
-            android:textColor="@color/main_text_color"
-            android:textSize="15dp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/profile_setting_personalButton"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
+            <TextView
+                android:id="@+id/mbti_textView"
+                android:layout_width="200sp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="MBTI"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/profile_setting_mbtiButton"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/box_id"
+                android:text="MBTI "
+                android:textColor="@color/main_text_color"
+                android:textSize="15dp"
+                android:textStyle="bold" />-
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10sp"
-            android:background="@drawable/box_id"
-            android:text="성격"
-            android:textColor="@color/main_text_color"
-            android:textSize="15dp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/personality_textView"
+                android:layout_width="200sp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="성격"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/profile_setting_personalButton"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/box_id"
+                android:text="성격"
+                android:textColor="@color/main_text_color"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/religion_textView"
+                android:layout_width="200sp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="종교"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/profile_setting_religionButton"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/box_id"
+                android:text="종교 "
+                android:textColor="@color/main_text_color"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
 
-        <Button
-            android:id="@+id/profile_setting_religionButton"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10sp"
-            android:background="@drawable/box_id"
-            android:text="종교 "
-            android:textColor="@color/main_text_color"
-            android:textSize="15dp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
 
-        <Button
-            android:id="@+id/profile_setting_hobbyButton"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/box_id"
-            android:text="취미"
-            android:textColor="@color/main_text_color"
-            android:textSize="15dp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/hobby_textView"
+                android:layout_width="200sp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="취미"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/profile_setting_hobbyButton"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10sp"
+                android:background="@drawable/box_id"
+                android:text="취미"
+                android:textColor="@color/main_text_color"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -312,10 +379,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            app:dpb_dotColor="@color/colorAccent"
-            app:dpb_noOfDots="4"
             android:visibility="invisible"
-            />
+            app:dpb_dotColor="@color/colorAccent"
+            app:dpb_noOfDots="4" />
 
         <TextView
             android:id="@+id/profile_setting_transform_text"

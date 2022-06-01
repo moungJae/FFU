@@ -2,11 +2,13 @@ package com.example.ffu.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.ffu.UserInformation
@@ -53,6 +55,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
                 .into(image)
             nickname.setText(PROFILE[userId]?.nickname)
             introMe.setText(PROFILE[userId]?.introMe)
+
         } else {
             nickname.setText(PROFILE[userId]?.nickname)
             introMe.setText(PROFILE[userId]?.introMe)
@@ -87,6 +90,8 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
                 val intent = Intent(context, SettingActivity::class.java)
                 startActivity(intent)
             }
+
+
         }
     }
 }

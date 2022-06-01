@@ -18,8 +18,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.ffu.BackgroundActivity
-import com.example.ffu.UserInformation
 import com.example.ffu.R
+import com.example.ffu.UserInformation
+import com.example.ffu.UserInformation.Companion.ANIMATION
+import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.UserInformation.Companion.URI
+import com.example.ffu.utils.Animation
+import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
+import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
+import com.example.ffu.utils.Profile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -30,17 +37,9 @@ import com.metagalactic.dotprogressbar.DotProgressBar
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.*
 import java.net.Socket
+import java.security.AccessController.getContext
 import java.text.SimpleDateFormat
-import com.example.ffu.UserInformation.Companion.PROFILE
-import com.example.ffu.UserInformation.Companion.ANIMATION
-import com.example.ffu.UserInformation.Companion.URI
-import com.example.ffu.utils.Animation
-import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
-import com.example.ffu.utils.DBKey.Companion.DB_LIKEDBY
-import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
-import com.example.ffu.utils.DBKey.Companion.DB_RECOMMEND
-import com.example.ffu.utils.DBKey.Companion.DB_MATCH
-import com.example.ffu.utils.Profile
+
 
 class ProfileSettingActivity : AppCompatActivity() {
 
@@ -71,6 +70,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     private lateinit var editTextArray : Array<EditText>
     private lateinit var radioButtonArray : Array<RadioButton>
     private lateinit var buttonArray : Array<Button>
+
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -159,6 +159,7 @@ class ProfileSettingActivity : AppCompatActivity() {
             findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1),
             findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2))
 
+
         buttonArray = arrayOf(findViewById<Button>(R.id.profile_setting_mbtiButton),
             findViewById<Button>(R.id.profile_setting_personalButton),
             findViewById<Button>(R.id.profile_setting_religionButton),
@@ -168,7 +169,9 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private fun setMbti() {
         val mbtiButton = findViewById<Button>(R.id.profile_setting_mbtiButton)
+        val mbtiTextView = findViewById<TextView>(R.id.mbti_textView)
 
+        mbtiTextView.setText(mbti.toString())
         mbtiButton.setOnClickListener {
             val items = arrayOf("ESTJ", "ESFJ", "ENFJ", "ENTJ",
                 "ENTP", "ENFP", "ESFP", "ESTP",
@@ -189,15 +192,47 @@ class ProfileSettingActivity : AppCompatActivity() {
                 .setTitle("자신의 MBTI를 하나 선택해주세요")
                 .setSingleChoiceItems(items, checkedItem) { dialog, which ->
                     mbti = items[which]
+                    mbtiTextView.setText(mbti.toString())
                 }
                 .setPositiveButton("선택") {dialog, which -> }
                 .show()
         }
     }
 
+    // 3개 이상 출력 시 줄바꿈
+    private fun changeLine(List : List<String>) : String{
+        val tempString = List.joinToString(",", "", "", 6)
+        val splitString = tempString.split(",")
+        var string = ""
+        var i = 0
+
+        // 3개 이상 출력되면 줄 바꿈
+        for (tmp in splitString) {
+            if (i == 3) {
+                if (tmp.equals(splitString.last())) {
+                    string += "\n" + tmp
+                } else {
+                    string += "\n" + tmp + ","
+                }
+            } else {
+                if (tmp.equals(splitString.last())) {
+                    string += tmp
+                } else {
+                    string += tmp + ","
+                }
+            }
+            i++
+        }
+
+        return string
+    }
+
     private fun setPersonality() {
         val personalityButton = findViewById<Button>(R.id.profile_setting_personalButton)
+        val personalityTextView = findViewById<TextView>(R.id.personality_textView)
+        val personality = changeLine(personalities)
 
+        personalityTextView.setText(personality)
         personalityButton.setOnClickListener {
             val items = arrayOf("활발한", "조용한", "엉뚱한", "진지한",
                 "자유로운", "즉흥적인", "꼼꼼한", "감성적인", "성실한",
@@ -234,13 +269,20 @@ class ProfileSettingActivity : AppCompatActivity() {
                     for(j in selectedItemIndex) {
                         personalities.add(items[j])
                     }
+                    val personality = changeLine(personalities)
+                    personalityTextView.setText(personality)
+
                 }
                 .show()
         }
+
     }
 
     private fun setReligion() {
         val religionButton = findViewById<Button>(R.id.profile_setting_religionButton)
+        val religionTextView = findViewById<TextView>(R.id.religion_textView)
+
+        religionTextView.setText(religion.toString())
 
         religionButton.setOnClickListener {
             val items = arrayOf("무교", "기독교", "불교", "천주교",
@@ -260,6 +302,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                 .setTitle("자신의 종교를 하나 선택해주세요")
                 .setSingleChoiceItems(items, checkedItem) { dialog, which ->
                     religion = items[which]
+                    religionTextView.setText(religion.toString())
                 }
                 .setPositiveButton("선택") {dialog, which -> }
                 .show()
@@ -268,6 +311,10 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private fun setHobby() {
         val hobbyButton = findViewById<Button>(R.id.profile_setting_hobbyButton)
+        val hobbyTextView = findViewById<TextView>(R.id.hobby_textView)
+        var hobby = changeLine(hobbies)
+
+        hobbyTextView.setText(hobby)
 
         hobbyButton.setOnClickListener {
             val items = arrayOf("영화보기", "독서하기", "맛집탐방", "운동하기",
@@ -308,6 +355,10 @@ class ProfileSettingActivity : AppCompatActivity() {
                     for(j in selectedItemIndex) {
                         hobbies.add(items[j])
                     }
+                    // 3개 이상 출력되면 줄 바꿈
+                    var hobby = changeLine(hobbies)
+                    hobbyTextView.setText(hobby)
+                    //
                 }
                 .show()
         }
@@ -468,6 +519,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         job = findViewById<EditText>(R.id.profile_setting_inputJob).text.toString()
         introMe = findViewById<EditText>(R.id.profile_setting_inputIntroduce).text.toString()
 
+
         smoke = when (smokeGroup.checkedRadioButtonId) {
             R.id.profile_setting_smoke_radioButton1 -> "비흡연"
             R.id.profile_setting_smoke_radioButton2 -> "흡연"
@@ -546,6 +598,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         val cancel : Button = mView.findViewById(R.id.dialog_check_animation_cancel)
         val save : Button = mView.findViewById(R.id.dialog_check_animation_save)
         val dialog_progressBar : DotProgressBar = mView.findViewById(R.id.dialog_check_animation_progressbar)
+        val nicknameTextView = mView.findViewById<TextView>(R.id.nickname_TextView)
 
         Glide.with(this)
             .load(UserInformation.URI[userID])
@@ -562,8 +615,10 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
 
         dialog.setView(mView)
+        nicknameTextView.setText(nickname)
         dialog.create()
         dialog.show()
+
     }
 
     private fun saveProfile() {
@@ -583,5 +638,3 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
     }
 }
-
-
