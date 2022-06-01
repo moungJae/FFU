@@ -231,3 +231,28 @@
     + DBKey 를 통해 firebase Realtime database 에 data 접근 처리
     + Map 을 이용해 key-value 형태로 update 하지 않고, 클래스를 객체화하여 update 하는 형태로 변경
 ------------
+
+### 6/2
+1. Profile UI 수정
+    + 자신의 소개글이 긴 경우, 사진과 닿는 issue 가 존재했음
+    + 따라서 사진, 닉네임, 소개글 등을 각각 가운데 정렬을 하여 해결
+    + 프로필 편집 시 MBTI, 성격, 취미 등을 선택할 때 무엇을 선택했는지 확인할 수 있는 문구를 추가
+
+2. Matching 구현
+    1. 반경 내에 존재하는 유저에게 LIKE 를 요청한다. (유저의 정보 확인 가능)
+    2. 요청을 받은 유저는 해당 유저를 선택하여 정보 확인 및 LIKE 를 수락하여 매칭이 이뤄짐 (LIKE 거절 구현이 필요)
+
+3. History 구현
+    + 총 3 가지 케이스로 프로필 화면 아래에 날짜 및 문구가 뜬다.
+        1. 상대방에게 LIKE 를 보낸 경우 : "... 님에게 like를 보냈습니다." 문구가 띄워짐
+        2. 상대방에게 LIKE 를 받은 경우 : "... 님이 like를 보냈습니다." 문구가 띄워짐
+        3. 상대방과 매칭이 이뤄진 경우 : "... 님과 match되었습니다." 문구가 띄워짐
+
+4. UserInformation 수정
+    + 로그인된 유저가 로그아웃을 하고 다른 번호로 로그인 시 이전에 존재했던 매칭 유저들이 채팅창에 띄워지는 issue 발생
+        + issue 원인 : 이전 유저의 매칭된 유저들과의 리스너가 계속해서 동작한다는 점 + 리스트, 맵에 대한 초기화 처리가 없었음
+        + issue 해결 : 이전 정보를 담고 있는 리스트, 맵을 초기화 및 이전 리스너들에 대한 제거 작업을 통해 해결
+    + fragment 에서 Profile => ... => Profile 와 같이 방문 시, History 문구가 중첩되는 issue 발생
+        + issue 원인 : fragment 에 history 리스너가 제거되지 않아 profile fragment 를 여러번 방문할 때마다 리스너 중첩으로 인해 문구가 중첩되었음
+        + issue 해결 : UserInformation 에서 현재 유저의 history 리스너를 생성하여 얻은 history 정보들을 arrayList 에 담고 fragment 방문시 listener 를 등록하는 것이 아닌 UserInformation 에서 만들어진 arrayList 를 바로 적용함으로써 해결
+------------
