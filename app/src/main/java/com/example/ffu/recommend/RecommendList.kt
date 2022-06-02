@@ -51,7 +51,6 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
         view.findViewById<Button>(R.id.returnToMap).setOnClickListener {
             dismiss()
         }
-
         return view
     }
 
@@ -59,22 +58,13 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
         super.onViewCreated(view, savedInstanceState)
 
         recommendUserList.clear()
-        //userDB = Firebase.database.reference.child(DB_PROFILE)
-
         // bottomsheet view
         val fragmentBottomsheetBinding = FragmentBottomsheetBinding.bind(view)
         binding = fragmentBottomsheetBinding
-
         recommendAdapter = RecommendAdapter()
-
         addRecommendUserList()
-
-
         fragmentBottomsheetBinding.recommendedUsersView.layoutManager = LinearLayoutManager(context)
         fragmentBottomsheetBinding.recommendedUsersView.adapter = recommendAdapter
-
-        //userDB.addChildEventListener(listener)
-
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -109,13 +99,14 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
 
     override fun onDestroy() {
         super.onDestroy()
-        //userDB.removeEventListener(listener)
     }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         recommendAdapter.notifyDataSetChanged()
     }
+
     companion object {
         const val TAG = "RecommendList"
     }
@@ -130,8 +121,6 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
                 recommendUserList.add(RecommendArticleModel(nickname,gender,birth,imageUri))
                 recommendAdapter.submitList(recommendUserList)
             }
-
         }
-
     }
 }

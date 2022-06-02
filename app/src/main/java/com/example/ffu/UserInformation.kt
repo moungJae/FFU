@@ -1,5 +1,6 @@
 package com.example.ffu
 
+import android.util.Log
 import com.example.ffu.utils.Animation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -104,6 +105,7 @@ class UserInformation {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.getValue(Recommend::class.java) != null) {
                     RECOMMEND[userId] = snapshot.getValue(Recommend::class.java) as Recommend
+                    Log.d("check recommend => ", userId + " = > " + RECOMMEND[userId]!!.longitude.toString())
                 }
             }
             override fun onCancelled(error: DatabaseError) { }
@@ -131,6 +133,7 @@ class UserInformation {
                 val userId = snapshot.key.toString()
                 MAP_USER.add(userId)
                 addUserLocation(userId)
+                Log.d("check ~!!!!!!!", userId)
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {}
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}

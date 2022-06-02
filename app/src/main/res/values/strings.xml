@@ -43,9 +43,9 @@
     <string name="next">다음</string>
 
     <!-- seunggyu -->
-    <string name = "confirm_text">추천 받기</string>
-    <string name = "text_move_map_set_location">지도를 움직여 위치를 설정하세요</string>
-
+    <string name="confirm_text">추천 받기</string>
+    <string name="text_move_map_set_location">지도를 움직여 위치를 설정하세요</string>
+    <string name="init">초기화</string>
 
     <!-- youngin -->
     <string name="menu_dashboard">Dashboard</string>
@@ -54,5 +54,6 @@
     <string name="menu_profile">Profile</string>
     <string name="Success">Success</string>
     <string name="Loading">Loading..</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>
