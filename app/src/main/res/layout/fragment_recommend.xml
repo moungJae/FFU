@@ -163,7 +163,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn_confirm"
+            android:id="@+id/recommendButton"
             android:layout_width="0dp"
             android:layout_height="32dp"
             android:layout_marginStart="140dp"
