@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -33,7 +33,27 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="10sp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="nickname"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:id="@+id/nickname_TextView"
+            />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:layout_gravity="center"
         android:orientation="horizontal">
 

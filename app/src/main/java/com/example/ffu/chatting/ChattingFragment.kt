@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ffu.R
+import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.example.ffu.UserInformation.Companion.MATCH_USER
 import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.chatdetail.ChatRoomActivity
@@ -19,15 +20,16 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.utils.Article
 
-public class ChattingFragment: Fragment(R.layout.fragment_chatting) {
+class ChattingFragment: Fragment(R.layout.fragment_chatting) {
     private lateinit var userDB: DatabaseReference
     private lateinit var articleAdapter: ArticleAdapter
     private lateinit var storage: FirebaseStorage
     private lateinit var pathReference : StorageReference
     private lateinit var userId : String
 
-    private val articleList = mutableListOf<ArticleModel>()
+    private val articleList = mutableListOf<Article>()
 
     private var binding: FragmentChattingBinding? = null
     private val auth: FirebaseAuth by lazy {
@@ -41,7 +43,6 @@ public class ChattingFragment: Fragment(R.layout.fragment_chatting) {
         binding = fragmentHomeBinding
         articleList.clear()
         userDB = Firebase.database.reference
-        userId = getCurrentUserID(view)
         storage = FirebaseStorage.getInstance()
         pathReference = storage.reference
 
@@ -50,13 +51,14 @@ public class ChattingFragment: Fragment(R.layout.fragment_chatting) {
         articleAdapter = ArticleAdapter(onItemClicked = { articleModel ->
             if (auth.currentUser != null) {
                 // 로그인을 한 상태
-                if (userId != articleModel.Id) {
+                if (CURRENT_USERID != articleModel.Id) {
                     // 채팅방으로 이동 하는 코드
                     context?.let {
                         val intent = Intent(it, ChatRoomActivity::class.java)
                         //chatKey 수정해야됨
                         //intent.putExtra("OtherName", articleModel.Name)
                         //Log.d("OtherName",articleModel.Name!!)
+                        intent.putExtra("OtherName", articleModel.Name)
                         intent.putExtra("OtherId", articleModel.Id)
                         startActivity(intent)
                     }
@@ -78,14 +80,16 @@ public class ChattingFragment: Fragment(R.layout.fragment_chatting) {
     }
 
     private fun addArticleList(){
-        for(matchId in MATCH_USER){
-            val name = PROFILE[matchId]?.nickname ?: ""
-            val gender = PROFILE[matchId]?.gender ?: ""
-            val birth = PROFILE[matchId]?.birth ?: ""
-            val imageUri = URI[matchId]
+        for(matchId in MATCH_USER.keys){
+            //if(matchId!= CURRENT_USERID){ 명재 수정 부분
+                val name = PROFILE[matchId]?.nickname ?: ""
+                val gender = PROFILE[matchId]?.gender ?: ""
+                val birth = PROFILE[matchId]?.birth ?: ""
+                val imageUri = URI[matchId]
 
-            articleList.add(ArticleModel(matchId,name,gender,birth,imageUri))
-            articleAdapter.submitList(articleList)
+                articleList.add(Article(matchId,name,gender,birth,imageUri))
+                articleAdapter.submitList(articleList)
+            //}
         }
 
     }

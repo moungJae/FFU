@@ -195,6 +195,7 @@ class PhoneVerificationActivity : AppCompatActivity() {
             setPhoneDisable()
             setVerificationDisable()
             progressBar.visibility = View.VISIBLE
+            joinButton.isEnabled = false
             Thread(Runnable {
                 Thread.sleep(2000)
                 Handler(Looper.getMainLooper()).post {

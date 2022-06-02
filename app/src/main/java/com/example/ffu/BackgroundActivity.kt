@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.ffu.chatting.ChattingFragment
+import com.example.ffu.matching.MatchingFragment
 import com.example.ffu.profile.ProfileFragment
 import com.example.ffu.recommend.RecommendFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -16,6 +17,7 @@ import com.google.firebase.ktx.Firebase
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
 import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
+import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 
 class BackgroundActivity : AppCompatActivity() {
 
@@ -28,6 +30,7 @@ class BackgroundActivity : AppCompatActivity() {
 
         val bottomNavigationView = findViewById<ChipNavigationBar>(R.id.bottomNavigationView)
         val recommendFragment = RecommendFragment()
+        val matchingFragment = MatchingFragment()
         val profileFragment = ProfileFragment()
         val chattingFragment = ChattingFragment()
 
@@ -39,6 +42,7 @@ class BackgroundActivity : AppCompatActivity() {
         bottomNavigationView.setOnItemSelectedListener {
             when(it){
                 R.id.recommend-> replaceFragment(recommendFragment)
+                R.id.matching-> replaceFragment(matchingFragment)
                 R.id.profile-> replaceFragment(profileFragment)
                 R.id.chatting->replaceFragment(chattingFragment)
             }
@@ -51,7 +55,7 @@ class BackgroundActivity : AppCompatActivity() {
         var animationFlag = 0
         var profileFlag = 0
 
-        userDB = Firebase.database.reference.child(DB_ANIMATION).child(auth.uid.toString())
+        userDB = Firebase.database.reference.child(DB_ANIMATION).child(CURRENT_USERID)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 animationFlag++
@@ -62,7 +66,7 @@ class BackgroundActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
 
-        userDB = Firebase.database.reference.child(DB_PROFILE).child(auth.uid.toString())
+        userDB = Firebase.database.reference.child(DB_PROFILE).child(CURRENT_USERID)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 profileFlag++

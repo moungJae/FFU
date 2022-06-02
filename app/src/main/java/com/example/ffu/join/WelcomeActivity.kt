@@ -85,9 +85,11 @@ class WelcomeActivity : AppCompatActivity() {
         loadButton.text = "입장"
         loadButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE
+            loadButton.isEnabled = false
             Thread(Runnable {
                 Thread.sleep(3000)
                 Handler(Looper.getMainLooper()).post {
+                    loadButton.isEnabled = true
                     checkJoin()
                 }
             }).start()

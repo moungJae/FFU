@@ -7,7 +7,7 @@
 
     <Button
         android:id="@+id/activity_setting_signOutButton"
-        android:text="로그아웃 하기"
+        android:text="로그아웃"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="0dp"

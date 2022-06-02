@@ -18,8 +18,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.ffu.BackgroundActivity
-import com.example.ffu.UserInformation
 import com.example.ffu.R
+import com.example.ffu.UserInformation
+import com.example.ffu.UserInformation.Companion.ANIMATION
+import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.UserInformation.Companion.URI
+import com.example.ffu.utils.Animation
+import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
+import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
+import com.example.ffu.utils.Profile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -30,24 +37,15 @@ import com.metagalactic.dotprogressbar.DotProgressBar
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.*
 import java.net.Socket
+import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import java.text.SimpleDateFormat
-import com.example.ffu.UserInformation.Companion.PROFILE
-import com.example.ffu.UserInformation.Companion.ANIMATION
-import com.example.ffu.UserInformation.Companion.URI
-import com.example.ffu.utils.Animation
-import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
-import com.example.ffu.utils.DBKey.Companion.DB_LIKEDBY
-import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
-import com.example.ffu.utils.DBKey.Companion.DB_RECOMMEND
-import com.example.ffu.utils.DBKey.Companion.DB_MATCH
-import com.example.ffu.utils.Profile
+
 
 class ProfileSettingActivity : AppCompatActivity() {
 
     private lateinit var userDB: DatabaseReference
     private lateinit var auth : FirebaseAuth
     private lateinit var storage: FirebaseStorage
-    private lateinit var userID : String
 
     private val ip = "59.9.212.155"
     private val port = 30000
@@ -71,6 +69,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     private lateinit var editTextArray : Array<EditText>
     private lateinit var radioButtonArray : Array<RadioButton>
     private lateinit var buttonArray : Array<Button>
+
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,7 +113,6 @@ class ProfileSettingActivity : AppCompatActivity() {
         val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
 
         auth = Firebase.auth
-        userID = auth.uid.toString()
         storage = FirebaseStorage.getInstance()
         progressBar = findViewById<DotProgressBar>(R.id.profile_setting_progressbar)
 
@@ -123,27 +121,27 @@ class ProfileSettingActivity : AppCompatActivity() {
             gender = intent.getStringExtra("gender").toString()
         }
 
-        findViewById<EditText>(R.id.profile_setting_inputNickname).setText(PROFILE[userID]?.nickname)
-        findViewById<EditText>(R.id.profile_setting_inputJob).setText(PROFILE[userID]?.job)
-        findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(PROFILE[userID]?.introMe)
+        findViewById<EditText>(R.id.profile_setting_inputNickname).setText(PROFILE[CURRENT_USERID]?.nickname)
+        findViewById<EditText>(R.id.profile_setting_inputJob).setText(PROFILE[CURRENT_USERID]?.job)
+        findViewById<EditText>(R.id.profile_setting_inputIntroduce).setText(PROFILE[CURRENT_USERID]?.introMe)
 
-        when(PROFILE[userID]?.smoke) {
+        when(PROFILE[CURRENT_USERID]?.smoke) {
             "비흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton1).isChecked = true
             "흡연" -> findViewById<RadioButton>(R.id.profile_setting_smoke_radioButton2).isChecked = true
         }
-        when(PROFILE[userID]?.drinking) {
+        when(PROFILE[CURRENT_USERID]?.drinking) {
             "비음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1).isChecked = true
             "음주" -> findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2).isChecked = true
         }
 
-        mbti = PROFILE[userID]?.mbti ?: ""
-        religion = PROFILE[userID]?.religion ?: ""
-        personalities = setPersonalities(PROFILE[userID]?.personality ?: "")
-        hobbies = setHobbies(PROFILE[userID]?.hobby ?: "")
+        mbti = PROFILE[CURRENT_USERID]?.mbti ?: ""
+        religion = PROFILE[CURRENT_USERID]?.religion ?: ""
+        personalities = setPersonalities(PROFILE[CURRENT_USERID]?.personality ?: "")
+        hobbies = setHobbies(PROFILE[CURRENT_USERID]?.hobby ?: "")
 
-        if (URI[userID] != null) {
+        if (URI[CURRENT_USERID] != null) {
             Glide.with(this@ProfileSettingActivity)
-                .load(UserInformation.URI[userID])
+                .load(URI[CURRENT_USERID])
                 .into(image)
         }
     }
@@ -159,6 +157,7 @@ class ProfileSettingActivity : AppCompatActivity() {
             findViewById<RadioButton>(R.id.profile_setting_drink_radioButton1),
             findViewById<RadioButton>(R.id.profile_setting_drink_radioButton2))
 
+
         buttonArray = arrayOf(findViewById<Button>(R.id.profile_setting_mbtiButton),
             findViewById<Button>(R.id.profile_setting_personalButton),
             findViewById<Button>(R.id.profile_setting_religionButton),
@@ -168,7 +167,9 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private fun setMbti() {
         val mbtiButton = findViewById<Button>(R.id.profile_setting_mbtiButton)
+        val mbtiTextView = findViewById<TextView>(R.id.mbti_textView)
 
+        mbtiTextView.setText(mbti.toString())
         mbtiButton.setOnClickListener {
             val items = arrayOf("ESTJ", "ESFJ", "ENFJ", "ENTJ",
                 "ENTP", "ENFP", "ESFP", "ESTP",
@@ -189,15 +190,44 @@ class ProfileSettingActivity : AppCompatActivity() {
                 .setTitle("자신의 MBTI를 하나 선택해주세요")
                 .setSingleChoiceItems(items, checkedItem) { dialog, which ->
                     mbti = items[which]
+                    mbtiTextView.setText(mbti.toString())
                 }
                 .setPositiveButton("선택") {dialog, which -> }
                 .show()
         }
     }
 
+    // 3개 이상 출력 시 줄바꿈 처리
+    private fun changeLine(List : List<String>) : String{
+        val splitString = List.joinToString(",", "", "", 6).split(",")
+        var result = ""
+        var i = 0
+
+        for (tmp in splitString) {
+            if (i == 3) {
+                if (tmp.equals(splitString.last())) {
+                    result += "\n" + tmp
+                } else {
+                    result += "\n" + tmp + ","
+                }
+            } else {
+                if (tmp.equals(splitString.last())) {
+                    result += tmp
+                } else {
+                    result += tmp + ","
+                }
+            }
+            i++
+        }
+        return result
+    }
+
     private fun setPersonality() {
         val personalityButton = findViewById<Button>(R.id.profile_setting_personalButton)
+        val personalityTextView = findViewById<TextView>(R.id.personality_textView)
+        val personality = changeLine(personalities)
 
+        personalityTextView.setText(personality)
         personalityButton.setOnClickListener {
             val items = arrayOf("활발한", "조용한", "엉뚱한", "진지한",
                 "자유로운", "즉흥적인", "꼼꼼한", "감성적인", "성실한",
@@ -234,13 +264,20 @@ class ProfileSettingActivity : AppCompatActivity() {
                     for(j in selectedItemIndex) {
                         personalities.add(items[j])
                     }
+                    val personality = changeLine(personalities)
+                    personalityTextView.setText(personality)
+
                 }
                 .show()
         }
+
     }
 
     private fun setReligion() {
         val religionButton = findViewById<Button>(R.id.profile_setting_religionButton)
+        val religionTextView = findViewById<TextView>(R.id.religion_textView)
+
+        religionTextView.setText(religion.toString())
 
         religionButton.setOnClickListener {
             val items = arrayOf("무교", "기독교", "불교", "천주교",
@@ -260,6 +297,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                 .setTitle("자신의 종교를 하나 선택해주세요")
                 .setSingleChoiceItems(items, checkedItem) { dialog, which ->
                     religion = items[which]
+                    religionTextView.setText(religion.toString())
                 }
                 .setPositiveButton("선택") {dialog, which -> }
                 .show()
@@ -268,6 +306,10 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private fun setHobby() {
         val hobbyButton = findViewById<Button>(R.id.profile_setting_hobbyButton)
+        val hobbyTextView = findViewById<TextView>(R.id.hobby_textView)
+        var hobby = changeLine(hobbies)
+
+        hobbyTextView.setText(hobby)
 
         hobbyButton.setOnClickListener {
             val items = arrayOf("영화보기", "독서하기", "맛집탐방", "운동하기",
@@ -308,6 +350,10 @@ class ProfileSettingActivity : AppCompatActivity() {
                     for(j in selectedItemIndex) {
                         hobbies.add(items[j])
                     }
+                    // 3개 이상 출력되면 줄 바꿈
+                    var hobby = changeLine(hobbies)
+                    hobbyTextView.setText(hobby)
+                    //
                 }
                 .show()
         }
@@ -354,7 +400,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         Thread {
             val animation = mutableMapOf<String, Any>()
 
-            userDB = Firebase.database.reference.child(DB_ANIMATION).child(userID)
+            userDB = Firebase.database.reference.child(DB_ANIMATION).child(CURRENT_USERID)
             animation["request"] = false
             animation["person"] = false
             animation["permission"] = false
@@ -364,13 +410,13 @@ class ProfileSettingActivity : AppCompatActivity() {
             try {
                 socket = Socket(ip, port)
                 dos = DataOutputStream(socket.getOutputStream())
-                dos.writeUTF(userID)
+                dos.writeUTF(CURRENT_USERID)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
 
             // 2. server 에서 요청(request = true)이 올 때 까지 대기
-            while (!ANIMATION[userID]!!.request) {
+            while (!ANIMATION[CURRENT_USERID]!!.request) {
                 Thread.sleep(100)
             }
 
@@ -380,9 +426,9 @@ class ProfileSettingActivity : AppCompatActivity() {
                 transformText.text = ""
                 progressBar.visibility = View.INVISIBLE
                 Glide.with(this@ProfileSettingActivity)
-                    .load(URI[userID])
+                    .load(URI[CURRENT_USERID])
                     .into(image)
-                if (ANIMATION[userID]!!.person) {
+                if (ANIMATION[CURRENT_USERID]!!.person) {
                     Toast.makeText(this@ProfileSettingActivity,"애니메이션 변환 완료!",Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this@ProfileSettingActivity,"인물사진을 넣어주세요!",Toast.LENGTH_SHORT).show()
@@ -395,7 +441,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     private fun setPhoto() {
         val photoButton = findViewById<Button>(R.id.profile_setting_image_change_button)
         val imagesRef = storage.reference
-            .child("photo/" + userID + "/real.jpg")
+            .child("photo/" + CURRENT_USERID + "/real.jpg")
 
         val getFromAlbumResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             setAllDisable()
@@ -468,6 +514,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         job = findViewById<EditText>(R.id.profile_setting_inputJob).text.toString()
         introMe = findViewById<EditText>(R.id.profile_setting_inputIntroduce).text.toString()
 
+
         smoke = when (smokeGroup.checkedRadioButtonId) {
             R.id.profile_setting_smoke_radioButton1 -> "비흡연"
             R.id.profile_setting_smoke_radioButton2 -> "흡연"
@@ -481,7 +528,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         if (nickname.isEmpty() || job.isEmpty() || introMe.isEmpty() || smoke.isEmpty()
             || drinking.isEmpty() || mbti.isEmpty() || religion.isEmpty()
-            || personalities.size == 0 || hobbies.size == 0 || !ANIMATION[userID]!!.person)
+            || personalities.size == 0 || hobbies.size == 0 || !ANIMATION[CURRENT_USERID]!!.person)
             return false
         return true
     }
@@ -512,18 +559,18 @@ class ProfileSettingActivity : AppCompatActivity() {
                 .split("-")[0].toInt() - birth.split("/")[0].toInt() + 1
             profile = Profile(age.toString(), birth, drinking, gender,
                 hobby, introMe, job, mbti, nickname, personality,
-                religion, smoke, PROFILE[userID]?.tel, true)
+                religion, smoke, PROFILE[CURRENT_USERID]?.tel, true)
         } else {
-            profile = Profile(PROFILE[userID]?.age, PROFILE[userID]?.birth, drinking,
-                PROFILE[userID]?.gender, hobby, introMe, job, mbti, nickname, personality,
-                religion, smoke, PROFILE[userID]?.tel, true)
+            profile = Profile(PROFILE[CURRENT_USERID]?.age, PROFILE[CURRENT_USERID]?.birth, drinking,
+                PROFILE[CURRENT_USERID]?.gender, hobby, introMe, job, mbti, nickname, personality,
+                religion, smoke, PROFILE[CURRENT_USERID]?.tel, true)
         }
         animation = Animation(permission = true, person = true, request = true)
 
-        userDB = Firebase.database.reference.child(DB_PROFILE).child(userID)
+        userDB = Firebase.database.reference.child(DB_PROFILE).child(CURRENT_USERID)
         userDB.setValue(profile)
 
-        userDB = Firebase.database.reference.child(DB_ANIMATION).child(userID)
+        userDB = Firebase.database.reference.child(DB_ANIMATION).child(CURRENT_USERID)
         userDB.setValue(animation)
     }
 
@@ -546,9 +593,10 @@ class ProfileSettingActivity : AppCompatActivity() {
         val cancel : Button = mView.findViewById(R.id.dialog_check_animation_cancel)
         val save : Button = mView.findViewById(R.id.dialog_check_animation_save)
         val dialog_progressBar : DotProgressBar = mView.findViewById(R.id.dialog_check_animation_progressbar)
+        val nicknameTextView = mView.findViewById<TextView>(R.id.nickname_TextView)
 
         Glide.with(this)
-            .load(UserInformation.URI[userID])
+            .load(UserInformation.URI[CURRENT_USERID])
             .into(image)
 
         cancel.setOnClickListener {
@@ -562,8 +610,10 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
 
         dialog.setView(mView)
+        nicknameTextView.setText(nickname + " 님")
         dialog.create()
         dialog.show()
+
     }
 
     private fun saveProfile() {
@@ -574,7 +624,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                 showAnimationPhoto()
             }
             else {
-                if (!ANIMATION[userID]!!.person) {
+                if (!ANIMATION[CURRENT_USERID]!!.person) {
                     Toast.makeText(this, "인물 사진을 넣어주세요!", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "정보를 완벽하게 입력해주세요!", Toast.LENGTH_SHORT).show()
@@ -583,5 +633,3 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
     }
 }
-
-

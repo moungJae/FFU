@@ -8,14 +8,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ffu.databinding.ItemArticleBinding
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
+import com.example.ffu.utils.Article
 
 
-class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<ArticleModel, ArticleAdapter.ViewHolder>(diffUtil) {
+class ArticleAdapter(val onItemClicked: (Article) -> Unit) : ListAdapter<Article, ArticleAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(private val binding: ItemArticleBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(articleModel: ArticleModel){
+        fun bind(articleModel: Article){
             binding.itemArticleName.text=articleModel.Name
             binding.itemArticleGender.text=articleModel.Gender
             binding.itemArticleBirth.text=articleModel.Birth
@@ -23,27 +22,6 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
             Glide.with(binding.root)
                 .load(articleModel.imageUri)
                 .into(binding.thumbnailImageView)
-
-            /*
-            storage = FirebaseStorage.getInstance()
-            pathReference = storage.reference
-            pathReference.child("photo/${articleModel.Id}/real.jpg").downloadUrl.addOnCompleteListener{ task ->
-                if (task.isSuccessful) {
-                    Glide.with(binding.root)
-                        .load(task.result)
-                        .into(binding.thumbnailImageView)
-                }
-            }*/
-            /*
-            Glide.with(binding.thumbnailImageView)
-                .load(articleModel.imageUrl.toString())
-                .into(binding.thumbnailImageView)
-            */
-            /*
-            Glide.with(binding.thumbnailImageView)
-                .load(articleModel.imageUrl)
-                .into(binding.thumbnailImageView)
-            */
             binding.root.setOnClickListener {
                 onItemClicked(articleModel)
             }
@@ -60,12 +38,12 @@ class ArticleAdapter(val onItemClicked: (ArticleModel) -> Unit) : ListAdapter<Ar
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<ArticleModel>() {
-            override fun areItemsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<Article>() {
+            override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
                 return oldItem.Id == newItem.Id
             }
 
-            override fun areContentsTheSame(oldItem: ArticleModel, newItem: ArticleModel): Boolean {
+            override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
                 return oldItem == newItem
             }
         }
