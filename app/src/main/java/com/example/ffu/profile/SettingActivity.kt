@@ -14,7 +14,9 @@ import com.example.ffu.join.CheckLoginActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class SettingActivity :AppCompatActivity(){
+
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)

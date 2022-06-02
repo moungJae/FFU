@@ -20,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.utils.Article
 
 class ChattingFragment: Fragment(R.layout.fragment_chatting) {
     private lateinit var userDB: DatabaseReference
@@ -28,7 +29,7 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
     private lateinit var pathReference : StorageReference
     private lateinit var userId : String
 
-    private val articleList = mutableListOf<ArticleModel>()
+    private val articleList = mutableListOf<Article>()
 
     private var binding: FragmentChattingBinding? = null
     private val auth: FirebaseAuth by lazy {
@@ -80,13 +81,15 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
 
     private fun addArticleList(){
         for(matchId in MATCH_USER.keys){
-            val name = PROFILE[matchId]?.nickname ?: ""
-            val gender = PROFILE[matchId]?.gender ?: ""
-            val birth = PROFILE[matchId]?.birth ?: ""
-            val imageUri = URI[matchId]
+            //if(matchId!= CURRENT_USERID){ 명재 수정 부분
+                val name = PROFILE[matchId]?.nickname ?: ""
+                val gender = PROFILE[matchId]?.gender ?: ""
+                val birth = PROFILE[matchId]?.birth ?: ""
+                val imageUri = URI[matchId]
 
-            articleList.add(ArticleModel(matchId,name,gender,birth,imageUri))
-            articleAdapter.submitList(articleList)
+                articleList.add(Article(matchId,name,gender,birth,imageUri))
+                articleAdapter.submitList(articleList)
+            //}
         }
 
     }

@@ -1,6 +1,6 @@
-package com.example.ffu.matching
+package com.example.ffu.utils
 
-data class LikeArticleModel(
+data class LikeArticle (
     val Id:String,
     val nickName: String,
     val age: String,

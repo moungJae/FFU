@@ -1,6 +1,6 @@
-package com.example.ffu.recommend
+package com.example.ffu.utils
 
-data class RecommendArticleModel(
+data class RecommendArticle(
     val Id:String,
     val nickName: String,
     val age: String,
