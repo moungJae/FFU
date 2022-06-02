@@ -112,7 +112,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initializeButtons(view : View) {
-        recommendButton = view.findViewById(R.id.btn_confirm)
+        recommendButton = view.findViewById(R.id.recommendButton)
         locationMsg = view.findViewById(R.id.locationMsg)
         initButton  = view.findViewById(R.id.selectInit)
 //        distanceButton  = view.findViewById(R.id.selectKm)

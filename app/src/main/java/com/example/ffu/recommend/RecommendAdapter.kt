@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ffu.UserInformation
 
-import com.example.ffu.chatting.ArticleModel
 
 
 import com.example.ffu.databinding.UsersArticleBinding
