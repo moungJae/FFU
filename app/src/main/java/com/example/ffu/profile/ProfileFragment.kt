@@ -1,12 +1,23 @@
 package com.example.ffu.profile
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.ffu.UserInformation
@@ -20,7 +31,12 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.example.ffu.UserInformation.Companion.PROFILE
 import com.example.ffu.UserInformation.Companion.ANIMATION
+import com.example.ffu.UserInformation.Companion.CURRENT_USERID
+import com.example.ffu.UserInformation.Companion.RECOMMEND
 import com.example.ffu.UserInformation.Companion.URI
+import com.google.android.gms.location.*
+import com.google.firebase.database.ktx.database
+import com.naver.maps.map.util.FusedLocationSource
 
 class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
