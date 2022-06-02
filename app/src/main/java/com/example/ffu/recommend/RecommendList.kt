@@ -9,6 +9,10 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
+import android.widget.*
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -16,7 +20,6 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-
 import com.example.ffu.R
 import com.example.ffu.UserInformation
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
@@ -152,8 +155,6 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun showUserInformation(recommendArticleModel: RecommendArticle) {
-
-
         val userId = recommendArticleModel.Id
         val dialog = AlertDialog.Builder(requireActivity()).create()
         val edialog : LayoutInflater = LayoutInflater.from(requireActivity())
@@ -168,7 +169,22 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
         val mbti : TextView = mView.findViewById(R.id.dialog_userinformation_mbti)
         val personality : TextView = mView.findViewById(R.id.dialog_userinformation_personality)
         val smoke: TextView = mView.findViewById(R.id.dialog_userinformation_smoke)
-        val like : Button = mView.findViewById(R.id.dialog_userinformation_like)
+        val like : ToggleButton = mView.findViewById(R.id.dialog_userinformation_like)
+        var scaleAnimation: ScaleAnimation = ScaleAnimation(
+            0.7f,
+            1.0f,
+            0.7f,
+            1.0f,
+            Animation.RELATIVE_TO_SELF,
+            0.7f,
+            Animation.RELATIVE_TO_SELF,
+            0.7f
+        )
+        var bounceInterpolator: BounceInterpolator = BounceInterpolator()
+
+        scaleAnimation.duration = 500
+        scaleAnimation.interpolator = bounceInterpolator
+
 
         age.text = "나이 : " + PROFILE[userId]?.age
         birth.text = "생일 : " + PROFILE[userId]?.birth
@@ -188,7 +204,10 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
             dialog.cancel()
         }
         //  완료 버튼 클릭 시
-        like.setOnClickListener {
+        like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
+            compoundButton.startAnimation(
+                scaleAnimation
+            )
             val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike").child(CURRENT_USERID)
             val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike").child(userId)
             receivedLikeDB.setValue("")
@@ -216,9 +235,14 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
             otherHistoryDB.push().setValue(receiveHistoryItem)
 
 
-            dialog.dismiss()
-            dialog.cancel()
-        }
+            //dialog.dismiss()
+            //dialog.cancel()
+
+            //dialog.dismiss()
+            //dialog.cancel()
+        })
+
+
         dialog.setView(mView)
         dialog.create()
         dialog.show()

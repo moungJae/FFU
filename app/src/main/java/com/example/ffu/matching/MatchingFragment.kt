@@ -4,9 +4,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
+import android.widget.CompoundButton
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -29,6 +33,7 @@ import com.google.firebase.ktx.Firebase
 import de.hdodenhof.circleimageview.CircleImageView
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+
 
 class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
@@ -81,8 +86,6 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun showUserInformation(likeArticleModel: LikeArticle) {
-
-
         val userId = likeArticleModel.Id
         val dialog = AlertDialog.Builder(requireActivity()).create()
         val edialog : LayoutInflater = LayoutInflater.from(requireActivity())
@@ -97,16 +100,16 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         val mbti : TextView = mView.findViewById(R.id.dialog_userinformation_mbti)
         val personality : TextView = mView.findViewById(R.id.dialog_userinformation_personality)
         val smoke: TextView = mView.findViewById(R.id.dialog_userinformation_smoke)
-        val like : Button = mView.findViewById(R.id.dialog_userinformation_like)
+        val like : ToggleButton = mView.findViewById(R.id.dialog_userinformation_like)
 
-        age.text="나이 : "+UserInformation.PROFILE[userId]?.age
-        birth.text="생일 : "+UserInformation.PROFILE[userId]?.birth
-        drinking.text="음주여부 : "+UserInformation.PROFILE[userId]?.drinking
-        hobby.text="취미 : "+UserInformation.PROFILE[userId]?.hobby
-        job.text="직업 : "+UserInformation.PROFILE[userId]?.job
-        mbti.text="mbti : "+UserInformation.PROFILE[userId]?.mbti
-        personality.text="성격 : "+UserInformation.PROFILE[userId]?.personality
-        smoke.text="흡연여부 : "+UserInformation.PROFILE[userId]?.smoke
+        age.text="나이 : "+ PROFILE[userId]?.age
+        birth.text="생일 : "+ PROFILE[userId]?.birth
+        drinking.text="음주여부 : "+ PROFILE[userId]?.drinking
+        hobby.text="취미 : "+ PROFILE[userId]?.hobby
+        job.text="직업 : "+ PROFILE[userId]?.job
+        mbti.text="mbti : "+ PROFILE[userId]?.mbti
+        personality.text="성격 : "+ PROFILE[userId]?.personality
+        smoke.text="흡연여부 : "+ PROFILE[userId]?.smoke
 
         Glide.with(this)
             .load(likeArticleModel.imageUrl)
@@ -117,7 +120,8 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             dialog.cancel()
         }
         //  완료 버튼 클릭 시
-        like.setOnClickListener {
+
+        like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
             //상대방꺼에 나를 저장
             val otherDB = Firebase.database.reference.child("likeInfo").child(userId).child("match").child(CURRENT_USERID)
             otherDB.setValue("")
@@ -147,12 +151,11 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             userHistoryDB.push().setValue(matchUserHistoryItem)
             otherHistoryDB.push().setValue(matchOtherUserHistoryItem)
 
-
             //val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
+            //dialog.dismiss()
+            //dialog.cancel()
+        })
 
-            dialog.dismiss()
-            dialog.cancel()
-        }
         dialog.setView(mView)
         dialog.create()
         dialog.show()
