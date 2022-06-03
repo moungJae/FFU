@@ -136,8 +136,8 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
-//            for (mbti in mbtiMatched)
-//                Log.d("mbitMatched", "$mbti")
+            for (mbti in mbtiMatched)
+                Log.d("mbitMatched", "$mbti")
 //            for (hobby in hobbyMatched.keys)
 //                Log.d("hobbyMatched", "$hobby, ${hobbyMatched[hobby]}")
             for (personality in personalityMatched.keys)

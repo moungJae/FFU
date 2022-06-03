@@ -87,7 +87,7 @@ class BottomSheetMBTI : BottomSheetDialogFragment() {
             if (isChecked) {
                 when (buttonView.id) {
                     R.id.checkAllMBTI -> {
-                        checkAllMBTI.text = "전체 선택"
+                        checkAllMBTI.text = "전체 해제"
                         checkESTJ.isChecked = true
                         checkESFJ.isChecked = true
                         checkENFJ.isChecked = true
@@ -127,7 +127,7 @@ class BottomSheetMBTI : BottomSheetDialogFragment() {
             else {
                 when(buttonView.id) {
                     R.id.checkAllMBTI -> {
-                        checkAllMBTI.text = "전체 해제"
+                        checkAllMBTI.text = "전체 선택"
                         checkESTJ.isChecked = false
                         checkESFJ.isChecked = false
                         checkENFJ.isChecked = false
