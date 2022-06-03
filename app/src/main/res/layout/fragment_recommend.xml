@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,19 +9,139 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:elevation="0dp"
+            android:fitsSystemWindows="false"
+
+            android:gravity="center"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <View
+            android:id="@+id/divisionLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_horizon"
+            android:elevation="0dp"
+            android:fitsSystemWindows="false"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+
+        <LinearLayout
+            android:id="@+id/selectList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/btn_rec"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <Button
+                android:id="@+id/selectKm"
+                android:layout_width="65dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/round_button2"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:text="500m"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/selectMBTI"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/round_button2"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:text="MBTI"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/selectHobby"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/round_button2"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:text="취미"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/selectPersonality"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/round_button2"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:text="성격"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/selectSmoking"
+                android:layout_width="65dp"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/round_button2"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:text="흡연"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divisionLine2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_horizon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selectList" />
+
         <com.naver.maps.map.MapView
             android:id="@+id/mapView"
             android:name="com.naver.maps.map.MapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="67dp"
+            tools:layout_editor_absoluteX="-16dp"
+            tools:layout_editor_absoluteY="130dp" />
 
         <TextView
+            android:id="@+id/locationMsg"
             android:layout_width="188dp"
             android:layout_height="30dp"
-            android:layout_marginTop="100dp"
-            android:background="@drawable/rect_round_white_radius_30"
+            android:layout_marginTop="130dp"
+            android:background="@drawable/round_button2"
             android:gravity="center"
-            android:id="@+id/locationMsg"
             android:text="@string/text_move_map_set_location"
             android:textColor="@color/black_2d2d2d"
             android:textSize="12dp"
@@ -30,19 +149,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--<androidx.appcompat.widget.AppCompatButton -->
         <Button
-            android:id="@+id/btn_confirm"
+            android:id="@+id/recommendButton"
             android:layout_width="0dp"
             android:layout_height="32dp"
             android:layout_marginStart="140dp"
             android:layout_marginEnd="140dp"
             android:layout_marginBottom="60dp"
-            android:background="@drawable/rect_round_ffd464_radius_8"
+            android:background="@drawable/round_button"
             android:text="@string/confirm_text"
             android:textColor="@color/black"
-            android:textSize="14dp"
-            android:textStyle="bold"
+            android:textSize="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.85"

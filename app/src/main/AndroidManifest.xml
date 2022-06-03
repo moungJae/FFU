@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ffu"
     xmlns:tools="http://schemas.android.com/tools"
-
-    >
+    package="com.example.ffu">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <!-- 위치 권한 요청 관련-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 위치 권한 요청 관련 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
@@ -25,9 +20,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        tools:replace="android:icon"
-        android:theme="@style/Theme.FFU">
-
+        android:theme="@style/Theme.FFU"
+        tools:replace="android:icon">
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.FFU" />
         <!-- naver map API auth info -->
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
@@ -45,10 +44,10 @@
         <activity android:name=".join.WelcomeActivity" />
         <activity android:name=".join.PhoneVerificationActivity" />
         <activity android:name=".join.JoinActivity" />
-        <activity android:name=".BackgroundActivity"/>
+        <activity android:name=".BackgroundActivity" />
         <activity android:name=".profile.ProfileSettingActivity" />
-        <activity android:name=".chatdetail.ChatRoomActivity"/>
-        <activity android:name=".profile.SettingActivity"/>
+        <activity android:name=".chatdetail.ChatRoomActivity" />
+        <activity android:name=".profile.SettingActivity" />
     </application>
 
 </manifest>
