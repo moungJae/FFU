@@ -98,6 +98,8 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             val mbtiMatched = ArrayList<String>()
             val hobbyMatched =  mutableMapOf<String, Int>()
             val personalityMatched = mutableMapOf<String, Int>()
+            val finalMatched = mutableMapOf<String, Int>()
+
             for (mbti in RecommendData.MBTIList) {
                 for (uid in recommendUsersUid) {
                     if (PROFILE[uid]?.mbti?.contains(mbti) == true) {
@@ -127,11 +129,15 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                     }
                 }
             }
-            if (RecommendData.smokingCheck == false) {
+
+            if (RecommendData.smokingCheck) {
                 for (uid in personalityMatched.keys) {
-                    if (PROFILE[uid]?.smoke?.equals("흡연") == true) {
-                        personalityMatched.remove(uid)
-                        Log.d("흡연", uid)
+                    finalMatched[uid] = personalityMatched[uid]!!
+                }
+            } else {
+                for (uid in personalityMatched.keys) {
+                    if (PROFILE[uid]?.smoke?.equals("흡연") == false) {
+                        finalMatched[uid] = personalityMatched[uid]!!
                     }
                 }
             }
@@ -144,7 +150,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 Log.d("personalityMatched", "$personality, ${personalityMatched[personality]}")
 
             // button 누르면 bottomSheet (추천 List) 띄우기.
-            val bottomSheet = RecommendList(personalityMatched)
+            val bottomSheet = RecommendList(finalMatched)
             bottomSheet.show(childFragmentManager, RecommendList.TAG)
         }
     }
@@ -212,7 +218,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 //        Log.d("location", "${RECOMMEND[CURRENT_USERID]!!.latitude.toString()}, ${RECOMMEND[CURRENT_USERID]!!.longitude.toString()}")
 //        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(RECOMMEND[CURRENT_USERID]!!.latitude, RECOMMEND[CURRENT_USERID]!!.longitude)))
 
-        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(37.5509, 126.9410)))
+        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(RECOMMEND[CURRENT_USERID]!!.latitude, RECOMMEND[CURRENT_USERID]!!.longitude)))
         // 현재 위치 설정
         RecommendData.naverMap.uiSettings.isLocationButtonEnabled = true
 

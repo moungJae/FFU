@@ -23,6 +23,7 @@ import com.example.ffu.UserInformation.Companion.HISTORY
 import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.chatting.HistoryAdapter
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
+import com.example.ffu.recommend.RecommendData
 
 class ProfileFragment :Fragment(R.layout.fragment_profile) {
 

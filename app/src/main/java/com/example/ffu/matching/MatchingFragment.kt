@@ -27,6 +27,7 @@ import com.example.ffu.UserInformation.Companion.PROFILE
 import com.example.ffu.UserInformation.Companion.RECEIVED_LIKE_USER
 import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.databinding.FragmentMatchingBinding
+import com.example.ffu.recommend.RecommendData
 import com.example.ffu.utils.History
 import com.example.ffu.utils.LikeArticle
 import com.google.firebase.auth.FirebaseAuth
@@ -53,6 +54,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         super.onViewCreated(view, savedInstanceState)
 
         val fragmentMatchingBinding = FragmentMatchingBinding.bind(view)
+
         binding = fragmentMatchingBinding
         likeArticleList.clear()
 
