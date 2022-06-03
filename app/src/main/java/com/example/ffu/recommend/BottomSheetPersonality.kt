@@ -111,7 +111,7 @@ class BottomSheetPersonality : BottomSheetDialogFragment() {
             if (isChecked) {
                 when (buttonView.id) {
                     R.id.checkAllPersonality -> {
-                        checkAllPersonality.text = "전체 선택"
+                        checkAllPersonality.text = "전체 해제"
                         personalityActive.isChecked = true
                         personalityQuiet.isChecked = true
                         personalityZany.isChecked = true
@@ -166,7 +166,7 @@ class BottomSheetPersonality : BottomSheetDialogFragment() {
             else {
                 when(buttonView.id) {
                     R.id.checkAllPersonality -> {
-                        checkAllPersonality.text = "전체 해제"
+                        checkAllPersonality.text = "전체 선택"
                         personalityActive.isChecked = false
                         personalityQuiet.isChecked = false
                         personalityZany.isChecked = false
