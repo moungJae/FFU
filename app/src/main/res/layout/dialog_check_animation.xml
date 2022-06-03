@@ -101,26 +101,26 @@
 
         <Button
             android:id="@+id/dialog_check_animation_save"
-            android:layout_width="50sp"
+            android:layout_width="80sp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:text="@string/save"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:background="#3F51B5"
+            android:background="@drawable/rect_round_purple_radius_10"
             app:layout_constraintTop_toBottomOf="@id/dialog_check_animation_photo" />
 
         <Button
             android:id="@+id/dialog_check_animation_cancel"
-            android:layout_width="50sp"
+            android:layout_width="80sp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:text="@string/cancel"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:background="#3F51B5"
+            android:background="@drawable/rect_round_purple_radius_10"
             tools:ignore="MissingConstraints" />
 
     </LinearLayout>

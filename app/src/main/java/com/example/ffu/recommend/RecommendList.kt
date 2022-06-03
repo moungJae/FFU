@@ -3,12 +3,15 @@ package com.example.ffu.recommend
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
@@ -160,7 +163,6 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
         val edialog : LayoutInflater = LayoutInflater.from(requireActivity())
         val mView : View = edialog.inflate(R.layout.dialog_userinformation,null)
         val image : CircleImageView = mView.findViewById(R.id.dialog_userinformation_photo)
-        val cancel : ImageButton = mView.findViewById(R.id.dialog_userinformation_cancel)
         val age : TextView = mView.findViewById(R.id.dialog_userinformation_age)
         val birth : TextView = mView.findViewById(R.id.dialog_userinformation_birth)
         val drinking : TextView = mView.findViewById(R.id.dialog_userinformation_drinking)
@@ -198,11 +200,7 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
         Glide.with(this)
             .load(recommendArticleModel.imageUrl)
             .into(image)
-        //  취소 버튼 클릭 시
-        cancel.setOnClickListener {
-            dialog.dismiss()
-            dialog.cancel()
-        }
+
         //  완료 버튼 클릭 시
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
             compoundButton.startAnimation(
@@ -242,7 +240,8 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
             //dialog.cancel()
         })
 
-
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setView(mView)
         dialog.create()
         dialog.show()

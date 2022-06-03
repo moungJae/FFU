@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_radius_background"
+    android:layout_gravity="center"
+    android:paddingVertical="10dp">
+
+    <TextView
+        android:id="@+id/dialog_religion_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:text="자신의 종교를 하나 선택해주세요"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_horizon"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_religion_title" />
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content">
+
+        <RadioGroup
+            android:id="@+id/dialog_profile_religion1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/dialog_profile_non_religion"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/check_box"
+                android:padding="10dp"
+                android:button="@null"
+                android:text="무교"/>
+            <RadioButton
+                android:id="@+id/dialog_profile_christianity"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/check_box"
+                android:padding="10dp"
+                android:button="@null"
+                android:text="기독교"/>
+            <RadioButton
+                android:id="@+id/dialog_profile_buddhism"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/check_box"
+                android:padding="10dp"
+                android:button="@null"
+                android:text="불교"/>
+
+            <RadioButton
+                android:id="@+id/dialog_profile_catholic"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/check_box"
+                android:gravity="center"
+                android:padding="10dp"
+                android:button="@null"
+                android:text="천주교"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content">
+
+        <RadioGroup
+            android:id="@+id/dialog_profile_religion2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/dialog_profile_islam"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/check_box"
+                android:padding="10dp"
+                android:button="@null"
+                android:text="이슬람교"/>
+
+            <RadioButton
+                android:id="@+id/dialog_profile_hindu"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/check_box"
+                android:gravity="center"
+                android:padding="10dp"
+                android:button="@null"
+                android:text="힌두교"/>
+
+            <RadioButton
+                android:id="@+id/dialog_profile_protestantism"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/check_box"
+                android:padding="10dp"
+                android:button="@null"
+                android:text="개신교"/>
+
+            <RadioButton
+                android:id="@+id/dialog_profile_etc"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:textColor="@drawable/selector_text_color"
+                android:background="@drawable/check_box"
+                android:gravity="center"
+                android:padding="10dp"
+                android:button="@null"
+                android:text="기타"/>
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/dialog_profile_religion_choice"
+            android:layout_width="80sp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/choice"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:background="@drawable/rect_round_purple_radius_10" />
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

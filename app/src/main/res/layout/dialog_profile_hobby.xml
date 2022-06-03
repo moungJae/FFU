@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_radius_background"
+    android:layout_gravity="center"
+    android:paddingVertical="10dp">
+
+    <TextView
+        android:id="@+id/dialog_hobby_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:text="자신의 취미를 여러개 선택해주세요"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/gray_horizon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_hobby_title" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyMovie"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="영화"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyReading"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="독서"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyEating"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="맛집 탐방"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyWorkOut"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="운동"
+            android:textColor="@drawable/selector_text_color" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyCamping"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="캠핑"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyCoding"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="코딩"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyCafe"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="카페"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyHiking"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="등산"
+            android:textColor="@drawable/selector_text_color" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyBeer"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="맥주"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyTrip"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="여행"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyShopping"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="쇼핑"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyWalking"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="산책"
+            android:textColor="@drawable/selector_text_color" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyTalking"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="수다"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyBaseball"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="야구 보기"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyRunning"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="러닝"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyClimbing"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="클라이밍"
+            android:textColor="@drawable/selector_text_color" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyInstrument"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="악기 연주"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyDriving"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="드라이브"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyInvest"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="재테크"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyPhoto"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="사진 찍기"
+            android:textColor="@drawable/selector_text_color" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyCook"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="요리"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyGame"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="게임"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbySing"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="코인노래방"
+            android:textColor="@drawable/selector_text_color" />
+
+        <CheckBox
+            android:id="@+id/dialog_profile_hobbyRiding"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/check_box"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="라이딩"
+            android:textColor="@drawable/selector_text_color" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/dialog_profile_hobby_choice"
+            android:layout_width="80sp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/choice"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:background="@drawable/rect_round_purple_radius_10" />
+
+    </LinearLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
