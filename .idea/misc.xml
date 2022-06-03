@@ -7,22 +7,35 @@
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/menu_recommend.xml" value="0.1815" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/rect_round_ffd464_radius_8.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/rect_round_white_radius_30.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/check_box.xml" value="0.186" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/check_box2.xml" value="0.143" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/check_box3.xml" value="0.143" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/checked.xml" value="0.186" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/round_button.xml" value="0.1375" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/round_button2.xml" value="0.1375" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/round_button3.xml" value="0.143" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/seek_mark.xml" value="0.14" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/seek_thumb.xml" value="0.14" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/selector_text_color.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/drawable/unchecked.xml" value="0.186" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/font/font.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_chatroom.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_setting.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/background.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/bottom_sheet.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/checkpn.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_distance.xml" value="0.16" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_distance.xml" value="0.264" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_hobby.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_mbti.xml" value="0.264" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_personality.xml" value="0.264" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_smoking.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_check_animation.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_datepicker.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_userinformation.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_bottomsheet.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_chatting.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_profile.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_recommend.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_recommend.xml" value="0.264" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_recommend_bottomsheet.xml" value="0.25" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/home.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/item_article.xml" value="0.25364583333333335" />

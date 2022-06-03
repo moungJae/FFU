@@ -16,8 +16,8 @@ import com.bumptech.glide.Glide
 import com.example.ffu.R
 import com.example.ffu.UserInformation
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
+import com.example.ffu.UserInformation.Companion.PROFILE
 import com.example.ffu.UserInformation.Companion.RECOMMEND
-import com.example.ffu.databinding.FragmentRecommendBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -37,11 +37,8 @@ import kotlin.math.pow
 
 class RecommendFragment : Fragment(), OnMapReadyCallback {
 
-    // 지도 조작
-
     private lateinit var mapView: MapView
 
-    // 좌표 조작
     private val radius = 6372.8 * 1000
     private var recommendLatitude : Double = 0.0
     private var recommendLongitude : Double = 0.0
@@ -50,28 +47,18 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private lateinit var locationMsg : TextView
 
     // 사용자 선택
-    private lateinit var initButton : Button
-    //    private lateinit var distanceButton : Button
     private lateinit var MBTIButton : Button
     private lateinit var hobbyButton : Button
     private lateinit var personalityButton : Button
     private lateinit var smokingButton : Button
 
-    lateinit var binding : FragmentRecommendBinding
-    // firebase
-    private lateinit var userDB: DatabaseReference
     private var auth : FirebaseAuth = Firebase.auth
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initializeButtons(view)     // button 초기화
-        setInit()
-        setDistance()
-        setMBTI()
-        setHobby()
-        setPersonality()
-        setSmoking()
+        bottomSheetListener()
         getMatchedUsers()           // 일치하는 사용자 가져오기
     }
     override fun onCreateView(
@@ -89,24 +76,75 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         return rootview
     }
     private fun getMatchedUsers() {
+
         recommendButton.setOnClickListener { // 클릭하면 추천 리스트 띄우는데 그때 거리 계산하고 띄우기.
             val usersUid : ArrayList<String> = UserInformation.MAP_USER
             val myRadius = RecommendData.myRadius / 1000.0
-            val recommendUsersUid = ArrayList<String>()
-            Log.d("myRadius", "$myRadius")
-            // 리스트에 거리 내의 사용자의 uid 넣기.
+            var recommendUsersUid = ArrayList<String>()
+
             for (uid in usersUid) {
                 if (uid == auth.uid || uid == "null") continue
                 val distance : Double =
                     getDistance(RECOMMEND[uid]?.latitude, RECOMMEND[uid]?.longitude,
                         recommendLatitude, recommendLongitude) / 1000.0
+
                 if (distance < myRadius) {
                     recommendUsersUid.add(uid)
+                    RecommendData.distanceUsers[uid] = distance * 1000.0
                 }
                 Log.d("distance", "$distance")
             }
+
+            val mbtiMatched = ArrayList<String>()
+            val hobbyMatched =  mutableMapOf<String, Int>()
+            val personalityMatched = mutableMapOf<String, Int>()
+            for (mbti in RecommendData.MBTIList) {
+                for (uid in recommendUsersUid) {
+                    if (PROFILE[uid]?.mbti?.contains(mbti) == true) {
+                        mbtiMatched.add(uid)
+                        hobbyMatched[uid] = 0
+                        Log.d("mbti true", "$uid, $mbti")
+                    }
+                }
+            }
+
+            for (hobby in RecommendData.hobbyList) {
+                for (uid in mbtiMatched) {
+                    if (PROFILE[uid]?.hobby?.contains(hobby) == true) {
+                        hobbyMatched[uid] = hobbyMatched[uid]!! + 1
+                        personalityMatched[uid] = hobbyMatched[uid]!!
+                        Log.d("hobby true", "$uid, $hobby")
+                    }
+                }
+            }
+
+            for (personality in RecommendData.personalityList) {
+                Log.d("personality list", personality)
+                for (uid in hobbyMatched.keys) {
+                    if (PROFILE[uid]?.personality?.contains(personality) == true) {
+                        personalityMatched[uid] = personalityMatched[uid]!! + 1
+                        Log.d("personality true", "$uid, $personality")
+                    }
+                }
+            }
+            if (RecommendData.smokingCheck == false) {
+                for (uid in personalityMatched.keys) {
+                    if (PROFILE[uid]?.smoke?.equals("흡연") == true) {
+                        personalityMatched.remove(uid)
+                        Log.d("흡연", uid)
+                    }
+                }
+            }
+
+//            for (mbti in mbtiMatched)
+//                Log.d("mbitMatched", "$mbti")
+//            for (hobby in hobbyMatched.keys)
+//                Log.d("hobbyMatched", "$hobby, ${hobbyMatched[hobby]}")
+            for (personality in personalityMatched.keys)
+                Log.d("personalityMatched", "$personality, ${personalityMatched[personality]}")
+
             // button 누르면 bottomSheet (추천 List) 띄우기.
-            val bottomSheet = RecommendList(recommendUsersUid)
+            val bottomSheet = RecommendList(personalityMatched)
             bottomSheet.show(childFragmentManager, RecommendList.TAG)
         }
     }
@@ -114,8 +152,6 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private fun initializeButtons(view : View) {
         recommendButton = view.findViewById(R.id.recommendButton)
         locationMsg = view.findViewById(R.id.locationMsg)
-        initButton  = view.findViewById(R.id.selectInit)
-//        distanceButton  = view.findViewById(R.id.selectKm)
         RecommendData.distanceButton = view.findViewById(R.id.selectKm)
         MBTIButton  = view.findViewById(R.id.selectMBTI)
         hobbyButton  = view.findViewById(R.id.selectHobby)
@@ -123,32 +159,34 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         smokingButton  = view.findViewById(R.id.selectSmoking)
     }
 
-    private fun setInit() {
-
-    }
-
-    private fun setDistance() {
+    private fun bottomSheetListener() {
         val distanceFrag = BottomSheetDistance()
+        val MBTIFrag = BottomSheetMBTI()
+        val hobbyFrag = BottomSheetHobby()
+        val personalityFrag = BottomSheetPersonality()
+        val SmokingFrag = BottomSheetSmoking()
 
         RecommendData.distanceButton.setOnClickListener{
             distanceFrag.show(childFragmentManager, distanceFrag.tag )
         }
+
+        MBTIButton.setOnClickListener{
+            MBTIFrag.show(childFragmentManager, MBTIFrag.tag)
+        }
+
+        hobbyButton.setOnClickListener {
+            hobbyFrag.show(childFragmentManager, hobbyFrag.tag)
+        }
+
+        personalityButton.setOnClickListener {
+            personalityFrag.show(childFragmentManager, personalityFrag.tag)
+        }
+
+        smokingButton.setOnClickListener {
+            SmokingFrag.show(childFragmentManager, SmokingFrag.tag)
+        }
     }
 
-    private fun setMBTI() {
-
-    }
-    private fun setHobby() {
-
-    }
-    private fun setPersonality() {
-
-    }
-    private fun setSmoking() {
-
-    }
-
-    /* ======================== 사용자 거리 계산 하여 일치하는 사용자 넣기========================*/
 
     fun getDistance(lat1: Double?, lon1: Double?, lat2: Double, lon2: Double): Double {
         val dLat = Math.toRadians(lat2 - lat1!!)
@@ -158,8 +196,6 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         return (radius * c)
     }
 
-    /* ========================지도 생성======================== */
-    // 지도 화면에 생성
     override fun onMapReady(nMap: NaverMap) {
         RecommendData.naverMap = nMap
         val circle = CircleOverlay()
@@ -277,7 +313,6 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         private const val REQUEST_ACCESS_LOCATION_PERMISSIONS = 100
-        private const val REQUEST_BACKGROUND_ACCESS_LOCATION_PERMISSIONS = 101
-    }
 
+    }
 }

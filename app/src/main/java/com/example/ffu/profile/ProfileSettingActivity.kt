@@ -229,12 +229,18 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         personalityTextView.setText(personality)
         personalityButton.setOnClickListener {
-            val items = arrayOf("활발한", "조용한", "엉뚱한", "진지한",
-                "자유로운", "즉흥적인", "꼼꼼한", "감성적인", "성실한",
-                "논리적인", "침착한", "자신감이 넘치는", "애교가 넘치는")
+            val items = arrayOf(
+                "적극적인", "조용한", "엉뚱한", "진지한",
+                "자유로운", "즉흥적인", "꼼꼼한", "감성적인",
+                "성실한", "논리적인", "침착한", "자신감있는",
+                "애교있는", "어른스러운", "예의 바른", "유머러스한",
+                "허세 없는", "지적인", "소심한", "쿨한",
+                "또라이같은", "친절한", "계획적인", "당당한")
             val checkedItems = booleanArrayOf(false, false, false, false,
-                false, false, false, false, false,
-                false, false, false, false)
+                false, false, false, false,
+                false, false, false, false,
+                false, false, false, false,
+                false, false, false, false,)
             val selectedItemIndex = ArrayList<Int>()
 
             for (personality in personalities) {
@@ -312,15 +318,20 @@ class ProfileSettingActivity : AppCompatActivity() {
         hobbyTextView.setText(hobby)
 
         hobbyButton.setOnClickListener {
-            val items = arrayOf("영화보기", "독서하기", "맛집탐방", "운동하기",
-                "캠핑하기", "코딩하기", "카페가기", "등산하기", "춤추기",
-                "여행하기","쇼핑하기","산책하기","수다떨기","잠자기",
-                "바둑하기", "수영하기", "악기연주", "그림그리기",
-                "글쓰기", "노래하기", "요리하기", "게임하기")
-            val checkedItems = booleanArrayOf(false, false, false, false, false,
-                false, false, false, false, false, false,
-                false, false, false, false, false, false,
-                false, false, false, false, false)
+            val items = arrayOf(
+                "영화", "독서", "맛집 탐방", "운동",
+                "캠핑", "코딩", "카페", "등산",
+                "맥주", "여행","쇼핑","산책",
+                "수다", "야구 보기", "러닝", "클라이밍",
+                "악기 연주", "드라이브", "재테크", "사진 찍기",
+                "요리", "게임", "코인노래방", "라이딩",)
+            val checkedItems = booleanArrayOf(
+                false, false, false, false,
+                false, false, false, false,
+                false, false, false, false,
+                false, false, false, false,
+                false, false, false, false,
+                false, false, false, false,)
             val selectedItemIndex = ArrayList<Int>()
 
             for (hobby in hobbies) {

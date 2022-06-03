@@ -44,7 +44,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFragment() {
+class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDialogFragment() {
 
     private val recommendUsers = recommendUsersUid // 거리에 매치되는 user 리스트
     // firebase
@@ -140,7 +140,7 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
     }
 
     private fun addRecommendUserList(){
-        for(userId in recommendUsers){
+        for(userId in recommendUsers.keys){
             if(CURRENT_USERID!=userId && SEND_LIKE_USER[userId]!=true &&  RECEIVED_LIKE_USER[userId]!=true){
                 val nickname = UserInformation.PROFILE[userId]?.nickname ?: ""
                 val gender = UserInformation.PROFILE[userId]?.gender ?: ""
@@ -149,7 +149,6 @@ class RecommendList(recommendUsersUid: ArrayList<String>) : BottomSheetDialogFra
                 recommendUserList.add(RecommendArticle(userId,nickname,gender,birth,imageUri))
                 recommendAdapter.submitList(recommendUserList)
             }
-
         }
     }
 

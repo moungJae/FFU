@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="440dp"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="440dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <TextView
+        android:id="@+id/mbti_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:text="선호하는 상대의 MBTI를 선택해주세요~"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <View
+        android:id="@+id/divisionLineMBTI"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_horizon"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mbti_title" />
+
+    <CheckBox
+        android:id="@+id/checkAllMBTI"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:textColor="@drawable/selector_text_color"
+        android:background="@drawable/check_box"
+        android:padding="10dp"
+        android:button="@null"
+        android:text="전체 선택"/>
+
+    <LinearLayout
+
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/MBTILine1"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+
+        android:layout_width="wrap_content">
+
+        <CheckBox
+            android:id="@+id/checkESTJ"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ESTJ"/>
+        <CheckBox
+            android:id="@+id/checkESFJ"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ESFJ"/>
+        <CheckBox
+            android:id="@+id/checkENFJ"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ENFJ"/>
+        <CheckBox
+            android:id="@+id/checkENTJ"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ENTJ"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/MBTILine2"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content">
+
+        <CheckBox
+            android:id="@+id/checkENTP"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ENTP"/>
+
+        <CheckBox
+            android:id="@+id/checkENFP"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:gravity="center"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ENFP"/>
+        <CheckBox
+            android:id="@+id/checkESFP"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:gravity="center"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ESFP"/>
+        <CheckBox
+            android:id="@+id/checkESTP"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ESTP"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/MBTILine3"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content">
+
+        <CheckBox
+            android:id="@+id/checkINTP"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+
+            android:padding="10dp"
+            android:button="@null"
+            android:text="INTP"/>
+
+        <CheckBox
+            android:id="@+id/checkINFP"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:gravity="center"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="INFP"/>
+        <CheckBox
+            android:id="@+id/checkISFP"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:gravity="center"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ISFP"/>
+        <CheckBox
+            android:id="@+id/checkISTP"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ISTP"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/MBTILine4"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content">
+
+        <CheckBox
+            android:id="@+id/checkISTJ"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ISTJ"/>
+
+        <CheckBox
+            android:id="@+id/checkISFJ"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:gravity="center"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="ISFJ"/>
+        <CheckBox
+            android:id="@+id/checkINFJ"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:gravity="center"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="INFJ"/>
+        <CheckBox
+            android:id="@+id/checkINTJ"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@drawable/selector_text_color"
+            android:background="@drawable/check_box"
+            android:padding="10dp"
+            android:button="@null"
+            android:text="INTJ"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/gray_horizon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/MBTILine4" />
+</androidx.appcompat.widget.LinearLayoutCompat>
