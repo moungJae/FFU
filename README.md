@@ -254,5 +254,15 @@
         + issue 해결 : 이전 정보를 담고 있는 리스트, 맵을 초기화 및 이전 리스너들에 대한 제거 작업을 통해 해결
     + fragment 에서 Profile => ... => Profile 와 같이 방문 시, History 문구가 중첩되는 issue 발생
         + issue 원인 : fragment 에 history 리스너가 제거되지 않아 profile fragment 를 여러번 방문할 때마다 리스너 중첩으로 인해 문구가 중첩되었음
-        + issue 해결 : UserInformation 에서 현재 유저의 history 리스너를 생성하여 얻은 history 정보들을 arrayList 에 담고 fragment 방문시 listener 를 등록하는 것이 아닌 UserInformation 에서 만들어진 arrayList 를 바로 적용함으로써 해결
+        + issue 해결 : UserInformation 에서 현재 유저의 history 리스너를 생성하여 얻은 history 정보들을 arrayList 에 담았음 fragment 방문시 listener 를 등록하는 것이 아닌 UserInformation 에서 만들어진 arrayList 를 바로 적용함으로써 해결
 ------------
+
+### 6/3
+1. Dialog 모서리 부분을 둥글게 수정
+
+2. Profile Setting UI 수정
+    + 4 x 4 테이블 형태의 radiobutton 을 처리하는데 issue 발생
+        + issue 원인 : 동일한 row 에 존재하는 radiobutton 들을 하나의 radiogroup 으로 총 4개의 radiogroup 을 생성하였으며 단 하나의 radiobutton 이 선택되도록 처리하는 과정에서 check 값이 제대로 update 가 되지 않았음
+        + issue 해결 : radiobutton 들을 무조건 radiogroup 으로 처리한다는 관념을 깨뜨리고, radiobutton 을 선택할 때 리스너가 동작하게끔 하여 이전 행과 열(prevX, prevY)에 check 된 값을 false 로 update 하여 해결
+------------
+

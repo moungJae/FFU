@@ -5,12 +5,15 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.drawable.ColorDrawable
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.*
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -171,29 +174,80 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         mbtiTextView.setText(mbti.toString())
         mbtiButton.setOnClickListener {
-            val items = arrayOf("ESTJ", "ESFJ", "ENFJ", "ENTJ",
+            val dialog = AlertDialog.Builder(this).create()
+            val edialog: LayoutInflater = LayoutInflater.from(this)
+            val mView: View = edialog.inflate(R.layout.dialog_profile_mbti, null)
+            val choice: Button = mView.findViewById(R.id.dialog_profile_mbti_choice)
+            val items = arrayOf(
+                "ESTJ", "ESFJ", "ENFJ", "ENTJ",
                 "ENTP", "ENFP", "ESFP", "ESTP",
                 "INTP", "INFP", "ISFP", "ISTP",
-                "ISTJ", "ISFJ", "INFJ", "INTJ")
-            var checkedItem = -1
-            var i = 0
+                "ISTJ", "ISFJ", "INFJ", "INTJ"
+            )
+            val mbtiRadioButtons = arrayOf(
+                arrayOf(
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ESTJ),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ESFJ),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ENFJ),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ENTJ)
+                ),
+                arrayOf(
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ENTP),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ENFP),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ESFP),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ESTP)
+                ),
+                arrayOf(
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_INTP),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_INFP),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ISFP),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ISTP)
+                ),
+                arrayOf(
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ISTJ),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_ISFJ),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_INFJ),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_INTJ)
+                )
+            )
+            var checkMBTI = 0
+            var prevX = -1
+            var prevY = -1
 
             for (item in items) {
-                if (mbti.equals(item)) {
-                   checkedItem = i
-                   break
+                if (mbti == item) {
+                    mbtiRadioButtons[checkMBTI / 4][checkMBTI % 4].isChecked = true
+                    prevX = checkMBTI / 4
+                    prevY = checkMBTI % 4
+                    break
                 }
-                i++
+                checkMBTI++
+            }
+            for (curX in 0..3) {
+                for (curY in 0..3) {
+                    mbtiRadioButtons[curX][curY].setOnClickListener {
+                        if (prevX != -1 && prevY != -1)
+                            mbtiRadioButtons[prevX][prevY].isChecked = false
+                        prevX = curX
+                        prevY = curY
+                    }
+                }
             }
 
-            AlertDialog.Builder(this)
-                .setTitle("자신의 MBTI를 하나 선택해주세요")
-                .setSingleChoiceItems(items, checkedItem) { dialog, which ->
-                    mbti = items[which]
-                    mbtiTextView.setText(mbti.toString())
+            choice.setOnClickListener {
+                if (prevX != -1 && prevY != -1) {
+                    mbti = items[4 * prevX + prevY]
+                    mbtiTextView.setText(mbti)
                 }
-                .setPositiveButton("선택") {dialog, which -> }
-                .show()
+                dialog.dismiss()
+                dialog.cancel()
+            }
+
+            dialog.setView(mView)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.create()
+            dialog.show()
         }
     }
 
@@ -225,56 +279,88 @@ class ProfileSettingActivity : AppCompatActivity() {
     private fun setPersonality() {
         val personalityButton = findViewById<Button>(R.id.profile_setting_personalButton)
         val personalityTextView = findViewById<TextView>(R.id.personality_textView)
-        val personality = changeLine(personalities)
 
-        personalityTextView.setText(personality)
+        personalityTextView.setText(changeLine(personalities))
         personalityButton.setOnClickListener {
-            val items = arrayOf(
-                "적극적인", "조용한", "엉뚱한", "진지한",
+            val items = arrayOf("적극적인", "조용한", "엉뚱한", "진지한",
                 "자유로운", "즉흥적인", "꼼꼼한", "감성적인",
                 "성실한", "논리적인", "침착한", "자신감있는",
                 "애교있는", "어른스러운", "예의 바른", "유머러스한",
                 "허세 없는", "지적인", "소심한", "쿨한",
                 "또라이같은", "친절한", "계획적인", "당당한")
-            val checkedItems = booleanArrayOf(false, false, false, false,
-                false, false, false, false,
-                false, false, false, false,
-                false, false, false, false,
-                false, false, false, false,)
-            val selectedItemIndex = ArrayList<Int>()
+            val dialog = AlertDialog.Builder(this).create()
+            val edialog: LayoutInflater = LayoutInflater.from(this)
+            val mView: View = edialog.inflate(R.layout.dialog_profile_personality, null)
+            val choice: Button = mView.findViewById(R.id.dialog_profile_personality_choice)
+            val personalityCheckBoxes = arrayOf(
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityActive),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityQuiet),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityZany),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalitySerious)
+                ),
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityFreely),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityImprovised),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityDetailed),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalitySensitive)
+                ),
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityDiligent),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityLogical),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityCalm),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityConfident)
+                ),
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityCharming),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityMature),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityPolite),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityHumorous)
+                ),
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityHumble),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityIntel),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityTimid),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityCool)
+                ),
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityDdorai),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityKind),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalityPlanned),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_personalitySelfConfident)
+                )
+            )
 
             for (personality in personalities) {
                 var i = 0
                 for (item in items) {
-                    if (personality.equals(item)) {
-                        checkedItems[i] = true
-                        selectedItemIndex.add(i)
+                    if (personality == item) {
+                        personalityCheckBoxes[i / 4][i % 4].isChecked = true
                         break
                     }
                     i++
                 }
             }
 
-            AlertDialog.Builder(this)
-                .setTitle("자신의 성격을 여러개 선택해주세요")
-                .setMultiChoiceItems(items, checkedItems){ dialogInterface: DialogInterface, i: Int, b: Boolean ->
-                    if(b){
-                        checkedItems[i] = true
-                        selectedItemIndex.add(i)
-                    } else if(selectedItemIndex.contains(i)){
-                        checkedItems[i] = false
-                        selectedItemIndex.remove(i)
+            choice.setOnClickListener {
+                personalities.clear()
+                for (i in 0..5) {
+                    for (j in 0..3) {
+                        if (personalityCheckBoxes[i][j].isChecked) {
+                            personalities.add(items[4 * i + j])
+                        }
                     }
-                }.setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
-                    personalities.clear()
-                    for(j in selectedItemIndex) {
-                        personalities.add(items[j])
-                    }
-                    val personality = changeLine(personalities)
-                    personalityTextView.setText(personality)
-
                 }
-                .show()
+                personalityTextView.setText(changeLine(personalities))
+                dialog.dismiss()
+                dialog.cancel()
+            }
+
+            dialog.setView(mView)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.create()
+            dialog.show()
         }
 
     }
@@ -288,34 +374,70 @@ class ProfileSettingActivity : AppCompatActivity() {
         religionButton.setOnClickListener {
             val items = arrayOf("무교", "기독교", "불교", "천주교",
                 "이슬람교", "힌두교", "개신교", "기타")
-            var checkedItem = -1
-            var i = 0
+            val dialog = AlertDialog.Builder(this).create()
+            val edialog: LayoutInflater = LayoutInflater.from(this)
+            val mView: View = edialog.inflate(R.layout.dialog_profile_religion, null)
+            val choice: Button = mView.findViewById(R.id.dialog_profile_religion_choice)
+            val religionRadioButtons = arrayOf(
+                arrayOf(
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_non_religion),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_christianity),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_buddhism),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_catholic)
+                ),
+                arrayOf(
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_islam),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_hindu),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_protestantism),
+                    mView.findViewById<RadioButton>(R.id.dialog_profile_etc)
+                )
+            )
+            var checkReligion = 0
+            var prevX = -1
+            var prevY = -1
 
             for (item in items) {
-                if (religion.equals(item)) {
-                    checkedItem = i
+                if (religion == item) {
+                    religionRadioButtons[checkReligion / 4][checkReligion % 4].isChecked = true
+                    prevX = checkReligion / 4
+                    prevY = checkReligion % 4
                     break
                 }
-                i++
+                checkReligion++
+            }
+            for (curX in 0..1) {
+                for (curY in 0..3) {
+                    religionRadioButtons[curX][curY].setOnClickListener {
+                        if (prevX != -1 && prevY != -1)
+                            religionRadioButtons[prevX][prevY].isChecked = false
+                        prevX = curX
+                        prevY = curY
+                    }
+                }
             }
 
-            AlertDialog.Builder(this)
-                .setTitle("자신의 종교를 하나 선택해주세요")
-                .setSingleChoiceItems(items, checkedItem) { dialog, which ->
-                    religion = items[which]
-                    religionTextView.setText(religion.toString())
+            choice.setOnClickListener {
+                if (prevX != -1 && prevY != -1) {
+                    religion =  items[4 * prevX + prevY]
+                    religionTextView.setText(religion)
                 }
-                .setPositiveButton("선택") {dialog, which -> }
-                .show()
+                dialog.dismiss()
+                dialog.cancel()
+            }
+
+            dialog.setView(mView)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.create()
+            dialog.show()
         }
     }
 
     private fun setHobby() {
         val hobbyButton = findViewById<Button>(R.id.profile_setting_hobbyButton)
         val hobbyTextView = findViewById<TextView>(R.id.hobby_textView)
-        var hobby = changeLine(hobbies)
 
-        hobbyTextView.setText(hobby)
+        hobbyTextView.setText(changeLine(hobbies))
 
         hobbyButton.setOnClickListener {
             val items = arrayOf(
@@ -324,49 +446,80 @@ class ProfileSettingActivity : AppCompatActivity() {
                 "맥주", "여행","쇼핑","산책",
                 "수다", "야구 보기", "러닝", "클라이밍",
                 "악기 연주", "드라이브", "재테크", "사진 찍기",
-                "요리", "게임", "코인노래방", "라이딩",)
-            val checkedItems = booleanArrayOf(
-                false, false, false, false,
-                false, false, false, false,
-                false, false, false, false,
-                false, false, false, false,
-                false, false, false, false,
-                false, false, false, false,)
-            val selectedItemIndex = ArrayList<Int>()
+                "요리", "게임", "코인노래방", "라이딩")
+            val dialog = AlertDialog.Builder(this).create()
+            val edialog: LayoutInflater = LayoutInflater.from(this)
+            val mView: View = edialog.inflate(R.layout.dialog_profile_hobby, null)
+            val choice: Button = mView.findViewById(R.id.dialog_profile_hobby_choice)
+            val hobbyCheckBoxes = arrayOf(
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyMovie),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyReading),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyEating),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyWorkOut)
+                ),
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyCamping),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyCoding),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyCafe),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyHiking)
+                ),
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyBeer),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyTrip),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyShopping),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyWalking)
+                ),
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyTalking),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyBaseball),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyRunning),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyClimbing)
+                ),
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyInstrument),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyDriving),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyInvest),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyPhoto)
+                ),
+                arrayOf(
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyCook),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyGame),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbySing),
+                    mView.findViewById<CheckBox>(R.id.dialog_profile_hobbyRiding)
+                )
+            )
 
             for (hobby in hobbies) {
                 var i = 0
                 for (item in items) {
-                    if (hobby.equals(item)) {
-                        checkedItems[i] = true
-                        selectedItemIndex.add(i)
+                    if (hobby == item) {
+                        hobbyCheckBoxes[i / 4][i % 4].isChecked = true
                         break
                     }
                     i++
                 }
             }
 
-            AlertDialog.Builder(this)
-                .setTitle("자신의 취미를 여러개 선택해주세요")
-                .setMultiChoiceItems(items, checkedItems){ dialogInterface: DialogInterface, i: Int, b: Boolean ->
-                    if(b){
-                        checkedItems[i] = true
-                        selectedItemIndex.add(i)
-                    } else if(selectedItemIndex.contains(i)) {
-                        checkedItems[i] = false
-                        selectedItemIndex.remove(i)
+            choice.setOnClickListener {
+                hobbies.clear()
+                for (i in 0..5) {
+                    for (j in 0..3) {
+                        if (hobbyCheckBoxes[i][j].isChecked) {
+                            hobbies.add(items[4 * i + j])
+                        }
                     }
-                }.setPositiveButton("OK") { dialogInterface: DialogInterface, i: Int ->
-                    hobbies.clear()
-                    for(j in selectedItemIndex) {
-                        hobbies.add(items[j])
-                    }
-                    // 3개 이상 출력되면 줄 바꿈
-                    var hobby = changeLine(hobbies)
-                    hobbyTextView.setText(hobby)
-                    //
                 }
-                .show()
+                hobbyTextView.setText(changeLine(hobbies))
+                dialog.dismiss()
+                dialog.cancel()
+            }
+
+            dialog.setView(mView)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.create()
+            dialog.show()
         }
     }
 
@@ -621,10 +774,11 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
 
         dialog.setView(mView)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         nicknameTextView.setText(nickname + " 님")
         dialog.create()
         dialog.show()
-
     }
 
     private fun saveProfile() {
