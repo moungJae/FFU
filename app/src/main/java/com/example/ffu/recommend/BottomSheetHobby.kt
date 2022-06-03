@@ -111,7 +111,7 @@ class BottomSheetHobby : BottomSheetDialogFragment() {
             if (isChecked) {
                 when (buttonView.id) {
                     R.id.checkAllHobby -> {
-                        checkAllHobby.text = "전체 선택"
+                        checkAllHobby.text = "전체 해제"
                         hobbyMovie.isChecked = true
                         hobbyReading.isChecked = true
                         hobbyEating.isChecked = true
@@ -166,7 +166,7 @@ class BottomSheetHobby : BottomSheetDialogFragment() {
             else {
                 when(buttonView.id) {
                     R.id.checkAllHobby -> {
-                        checkAllHobby.text = "전체 해제"
+                        checkAllHobby.text = "전체 선택"
                         hobbyMovie.isChecked = false
                         hobbyReading.isChecked = false
                         hobbyEating.isChecked = false
