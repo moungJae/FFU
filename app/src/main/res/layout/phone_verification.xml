@@ -44,7 +44,7 @@
 
     <EditText
         android:id="@+id/main_editPhone"
-        android:layout_width="225dp"
+        android:layout_width="225sp"
         android:layout_height="wrap_content"
         android:hint="@string/phone_num_ex"
         android:inputType="number"

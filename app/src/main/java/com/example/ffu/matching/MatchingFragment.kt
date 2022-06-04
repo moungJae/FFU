@@ -10,10 +10,7 @@ import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.CompoundButton
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.ToggleButton
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -39,7 +36,6 @@ import java.time.format.DateTimeFormatter
 
 
 class MatchingFragment: Fragment(R.layout.fragment_matching) {
-
     private lateinit var likeArticleAdapter: LikeArticleAdapter
     private val likeArticleList = mutableListOf<LikeArticle>()
     private var binding: FragmentMatchingBinding? = null
@@ -67,9 +63,8 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
     }
 
     private fun addReceivedLikeArticleList(){
-
         for(likeId in RECEIVED_LIKE_USER.keys){
-            if(MATCH_USER[likeId]!=true){
+            if(RECEIVED_LIKE_USER[likeId]==true){
                 val name = PROFILE[likeId]?.nickname ?: ""
                 val gender = PROFILE[likeId]?.gender ?: ""
                 val birth = PROFILE[likeId]?.birth ?: ""
@@ -103,6 +98,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         val personality : TextView = mView.findViewById(R.id.dialog_userinformation_personality)
         val smoke: TextView = mView.findViewById(R.id.dialog_userinformation_smoke)
         val like : ToggleButton = mView.findViewById(R.id.dialog_userinformation_like)
+        val dislike : Button = mView.findViewById(R.id.dialog_userinformation_dislike)
 
         age.text="나이 : "+ PROFILE[userId]?.age
         birth.text="생일 : "+ PROFILE[userId]?.birth
@@ -119,13 +115,14 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
         //  완료 버튼 클릭 시
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
+            Toast.makeText(activity, "like를 보냈습니다!",Toast.LENGTH_SHORT).show()
             //상대방꺼에 나를 저장
-            val otherDB = Firebase.database.reference.child("likeInfo").child(userId).child("match").child(CURRENT_USERID)
-            otherDB.setValue("")
+            val otherMatchDB = Firebase.database.reference.child("likeInfo").child(userId).child("match").child(CURRENT_USERID)
+            otherMatchDB.setValue(true)
 
             //나에 상대방꺼 저장
-            val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
-            myDB.setValue("")
+            val myMatchDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
+            myMatchDB.setValue(true)
 
             val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
             val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
@@ -148,10 +145,23 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             userHistoryDB.push().setValue(matchUserHistoryItem)
             otherHistoryDB.push().setValue(matchOtherUserHistoryItem)
 
+
             //val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
             //dialog.dismiss()
             //dialog.cancel()
         })
+
+        dislike.setOnClickListener{
+            val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("receivedLike").child(userId)
+            receivedLikeDB.setValue(false)
+            RECEIVED_LIKE_USER[userId]=false
+            likeArticleList.clear()
+            addReceivedLikeArticleList()
+            likeArticleAdapter.notifyDataSetChanged()
+            dialog.dismiss()
+            dialog.cancel()
+        }
+
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setView(mView)

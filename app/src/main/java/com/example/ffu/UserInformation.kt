@@ -1,5 +1,7 @@
 package com.example.ffu
 
+import android.util.Log
+import android.widget.Toast
 import com.example.ffu.utils.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -186,7 +188,11 @@ class UserInformation {
                 val matchUserId = snapshot.key.toString()
                 MATCH_USER.remove(matchUserId)
             }
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                //채팅방을 나간 경우
+                val matchUserId = snapshot.key.toString()
+                MATCH_USER[matchUserId]=false
+            }
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
         })
@@ -199,7 +205,10 @@ class UserInformation {
         val receiveListener = userDB.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val receivedUserId = snapshot.key.toString()
-                RECEIVED_LIKE_USER[receivedUserId]=true
+                val receivedUserValue = snapshot.value
+                Log.d("Id",receivedUserId)
+                Log.d("value",receivedUserValue.toString())
+                RECEIVED_LIKE_USER[receivedUserId] = receivedUserValue ==true
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val receivedUserId= snapshot.key.toString()
@@ -215,7 +224,9 @@ class UserInformation {
         val sendListener = userDB.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val sendUserId = snapshot.key.toString()
-                SEND_LIKE_USER[sendUserId]=true
+                val sendUserValue = snapshot.value
+                SEND_LIKE_USER[sendUserId] = sendUserValue==true
+
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val sendUserId = snapshot.key.toString()

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ffu.UserInformation.Companion.URI
+import com.example.ffu.databinding.ItemChatCenterBinding
 import com.example.ffu.databinding.ItemChatLeftBinding
 import com.example.ffu.databinding.ItemChatRightBinding
 import com.example.ffu.utils.ChatItem
@@ -35,6 +36,11 @@ class ChatItemAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(diffUtil)
             binding.itemChatRightMessage.text = chatItem.message
         }
     }
+    inner class centerViewHolder(private var binding: ItemChatCenterBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(chatItem: ChatItem) {
+            binding.itemChatCenterText.text = chatItem.message
+        }
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):  RecyclerView.ViewHolder {
@@ -43,8 +49,11 @@ class ChatItemAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(diffUtil)
                 //view = LayoutInflater.from(parent.context).inflate(R.layout.item_chat_left, parent, false)
                 return leftViewHolder(ItemChatLeftBinding.inflate(LayoutInflater.from(parent.context), parent, false))
             }
+            ChatItem.RIGHT_TYPE ->{
+                return rightViewHolder(ItemChatRightBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            }
         }
-        return rightViewHolder(ItemChatRightBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return centerViewHolder(ItemChatCenterBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -52,6 +61,7 @@ class ChatItemAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(diffUtil)
         when (obj.type) {
             ChatItem.LEFT_TYPE ->  (holder as leftViewHolder).bind(obj)
             ChatItem.RIGHT_TYPE ->  (holder as rightViewHolder).bind(obj)
+            ChatItem.CENTER_TYPE ->  (holder as centerViewHolder).bind(obj)
         }
 
     }
