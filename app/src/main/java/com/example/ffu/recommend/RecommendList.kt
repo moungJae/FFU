@@ -17,18 +17,17 @@ import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
 import android.widget.*
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.ffu.R
-import com.example.ffu.UserInformation
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.example.ffu.UserInformation.Companion.PROFILE
 import com.example.ffu.UserInformation.Companion.RECEIVED_LIKE_USER
 import com.example.ffu.UserInformation.Companion.SEND_LIKE_USER
+import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.databinding.FragmentBottomsheetBinding
 import com.example.ffu.utils.History
 import com.example.ffu.utils.History.Companion.RECEIVE_TYPE
@@ -144,11 +143,12 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
 
     private fun addRecommendUserList(){
         for(userId in recommendUsers.keys){
-            if(CURRENT_USERID!=userId && SEND_LIKE_USER[userId]!=true &&  RECEIVED_LIKE_USER[userId]!=true){
-                val nickname = UserInformation.PROFILE[userId]?.nickname ?: ""
-                val gender = UserInformation.PROFILE[userId]?.gender ?: ""
-                val birth = UserInformation.PROFILE[userId]?.birth ?: ""
-                val imageUri = UserInformation.URI[userId]?:""
+            //이미 LIKE 또는 DISLIKE를 보내거나 받은 유저이면 recommend에 뜨지 않게 한다.
+            if(CURRENT_USERID!=userId && !SEND_LIKE_USER.containsKey(userId)&& !RECEIVED_LIKE_USER.containsKey(userId)){
+                val nickname = PROFILE[userId]?.nickname ?: ""
+                val gender = PROFILE[userId]?.gender ?: ""
+                val birth = PROFILE[userId]?.birth ?: ""
+                val imageUri = URI[userId]?:""
                 recommendUserList.add(RecommendArticle(userId,nickname,gender,birth,imageUri))
                 recommendAdapter.submitList(recommendUserList)
             }
@@ -171,6 +171,7 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         val personality : TextView = mView.findViewById(R.id.dialog_userinformation_personality)
         val smoke: TextView = mView.findViewById(R.id.dialog_userinformation_smoke)
         val like : ToggleButton = mView.findViewById(R.id.dialog_userinformation_like)
+        val dislike : Button = mView.findViewById(R.id.dialog_userinformation_dislike)
         var scaleAnimation: ScaleAnimation = ScaleAnimation(
             0.7f,
             1.0f,
@@ -200,15 +201,17 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
             .load(recommendArticleModel.imageUrl)
             .into(image)
 
-        //  완료 버튼 클릭 시
+
+        val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike").child(CURRENT_USERID)
+        val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike").child(userId)
+
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
             compoundButton.startAnimation(
                 scaleAnimation
             )
-            val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike").child(CURRENT_USERID)
-            val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike").child(userId)
-            receivedLikeDB.setValue("")
-            sendLikeDB.setValue("")
+
+            receivedLikeDB.setValue(true)
+            sendLikeDB.setValue(true)
 
             val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
             val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
@@ -238,6 +241,12 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
             //dialog.dismiss()
             //dialog.cancel()
         })
+
+        dislike.setOnClickListener{
+            //receivedLikeDB.setValue(false)
+            sendLikeDB.setValue(false)
+            dialog.dismiss()
+        }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
