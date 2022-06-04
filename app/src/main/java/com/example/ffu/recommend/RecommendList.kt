@@ -66,9 +66,9 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_bottomsheet, container, false)
-        view.findViewById<Button>(R.id.returnToMap).setOnClickListener {
-            dismiss()
-        }
+//        view.findViewById<Button>(R.id.returnToMap).setOnClickListener {
+//            dismiss()
+//        }
 
         return view
     }
