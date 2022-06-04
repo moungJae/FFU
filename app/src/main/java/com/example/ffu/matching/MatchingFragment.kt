@@ -119,12 +119,18 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
             Toast.makeText(activity, "like를 보냈습니다!",Toast.LENGTH_SHORT).show()
             //상대방꺼에 나를 저장
-            val otherMatchDB = Firebase.database.reference.child("likeInfo").child(userId).child("match").child(CURRENT_USERID)
-            otherMatchDB.setValue(true)
+            val otherMatchDB = Firebase.database.reference.child("likeInfo").child(userId).child("match")
+            val otherMatchMap = mutableMapOf<String, Boolean>()
+
+            otherMatchMap[CURRENT_USERID] = true
+            otherMatchDB.setValue(otherMatchMap)
 
             //나에 상대방꺼 저장
-            val myMatchDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
-            myMatchDB.setValue(true)
+            val myMatchDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match")
+            val myMatchMap = mutableMapOf<String, Boolean>()
+
+            myMatchMap[userId] = true
+            myMatchDB.setValue(myMatchMap)
 
             val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
             val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
@@ -147,7 +153,10 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             userHistoryDB.push().setValue(matchUserHistoryItem)
             otherHistoryDB.push().setValue(matchOtherUserHistoryItem)
 
-
+            RECEIVED_LIKE_USER[userId] = false
+            likeArticleList.clear()
+            addReceivedLikeArticleList()
+            likeArticleAdapter.notifyDataSetChanged()
             //val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
             //dialog.dismiss()
             //dialog.cancel()
@@ -160,7 +169,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             receiveLikeMap[userId] = false
             receivedLikeDB.setValue(receiveLikeMap)
 
-            RECEIVED_LIKE_USER[userId]=false
+            RECEIVED_LIKE_USER[userId] = false
             likeArticleList.clear()
             addReceivedLikeArticleList()
             likeArticleAdapter.notifyDataSetChanged()
