@@ -49,8 +49,8 @@ class BottomSheetHobby : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         makeListner()
-
         checkBoxInit(view)
+        checkAllHobby.isChecked = true
     }
     private fun checkBoxInit(view : View) {
         checkAllHobby = view.findViewById<CompoundButton>(R.id.checkAllHobby)
