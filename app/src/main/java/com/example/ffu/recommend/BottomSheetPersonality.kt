@@ -48,8 +48,8 @@ class BottomSheetPersonality : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         makeListner()
-
         checkBoxInit(view)
+        checkAllPersonality.isChecked = true
     }
     private fun checkBoxInit(view : View) {
         checkAllPersonality = view.findViewById<CompoundButton>(R.id.checkAllPersonality)

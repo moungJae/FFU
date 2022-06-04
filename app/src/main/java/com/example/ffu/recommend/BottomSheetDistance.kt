@@ -18,11 +18,12 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.CircleOverlay
 
 class BottomSheetDistance(): BottomSheetDialogFragment() {
+
     lateinit var seekbar : SeekBar
     lateinit var distanceText : TextView
     var pos = 0
     var distance = 500
-    private lateinit var zoom : CameraUpdate
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -87,7 +88,6 @@ class BottomSheetDistance(): BottomSheetDialogFragment() {
 
         RecommendData.myRadius = distance.toDouble()
         RecommendData.distanceStr = distanceStr
-        RecommendData.pastZoom = pos
     }
 
 }
