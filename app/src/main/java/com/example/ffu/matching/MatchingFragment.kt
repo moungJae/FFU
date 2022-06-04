@@ -154,8 +154,12 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         })
 
         dislike.setOnClickListener{
-            val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("receivedLike").child(userId)
-            receivedLikeDB.setValue(false)
+            val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("receivedLike")
+            val receiveLikeMap = mutableMapOf<String, Boolean>()
+
+            receiveLikeMap[userId] = false
+            receivedLikeDB.setValue(receiveLikeMap)
+
             RECEIVED_LIKE_USER[userId]=false
             likeArticleList.clear()
             addReceivedLikeArticleList()

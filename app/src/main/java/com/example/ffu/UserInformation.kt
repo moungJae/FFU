@@ -208,7 +208,7 @@ class UserInformation {
                 val receivedUserValue = snapshot.value
                 Log.d("Id",receivedUserId)
                 Log.d("value",receivedUserValue.toString())
-                RECEIVED_LIKE_USER[receivedUserId] = receivedUserValue ==true
+                RECEIVED_LIKE_USER[receivedUserId] = receivedUserValue == true
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val receivedUserId= snapshot.key.toString()

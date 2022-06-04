@@ -202,7 +202,7 @@ class ChatRoomActivity : AppCompatActivity() {
             val receivedDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("receivedLike").child(otherUserId)
             val sendDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike").child(otherUserId)
             val chatDB = Firebase.database.reference.child("Chats").child(CURRENT_USERID).child(otherUserId)
-            val otherMatchDB = Firebase.database.reference.child("likeInfo").child(otherUserId).child("match").child(CURRENT_USERID)
+            val otherMatchDB = Firebase.database.reference.child("likeInfo").child(otherUserId).child("match")
 
             //다른 사람이랑 match되있고 true인 경우 채팅창에 나갔다고 전송
             if(MATCH_USER[otherUserId]==true){
@@ -214,7 +214,11 @@ class ChatRoomActivity : AppCompatActivity() {
                     type = ChatItem.CENTER_TYPE
                 )
                 otherChatDB?.push()?.setValue(centerChatItem)
-                otherMatchDB.setValue(false)
+
+                val otherMatchMap = mutableMapOf<String, Boolean>()
+
+                otherMatchMap[CURRENT_USERID] = false
+                otherMatchDB.setValue(otherMatchMap)
             }
             //test
             //DB제거
