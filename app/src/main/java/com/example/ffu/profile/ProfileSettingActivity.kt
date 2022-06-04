@@ -718,7 +718,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
 
         if (birth.length > 0) {
-            val age = SimpleDateFormat("yyyy-MM-dd-hh-mm")
+            val age = SimpleDateFormat("yyyy-MM-dd hh:mm")
                 .format(System.currentTimeMillis())
                 .split("-")[0].toInt() - birth.split("/")[0].toInt() + 1
             profile = Profile(age.toString(), birth, drinking, gender,
