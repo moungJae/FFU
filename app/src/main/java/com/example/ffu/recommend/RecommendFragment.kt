@@ -18,14 +18,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.*
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.MapView
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.CircleOverlay
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import java.lang.Math.*
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.pow
 
 
@@ -82,9 +83,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 
             for (uid in usersUid) {
                 if (uid == auth.uid || uid == "null") continue
-                personalityMatched[uid] = 0
-                hobbyMatched[uid] = 0
-                finalMatched[uid] = 0
+
                 val distance: Double =
                     getDistance(
                         RECOMMEND[uid]?.latitude, RECOMMEND[uid]?.longitude,
@@ -92,6 +91,9 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                     ) / 1000.0
 
                 if (distance < myRadius) {
+                    personalityMatched[uid] = 0
+                    hobbyMatched[uid] = 0
+                    finalMatched[uid] = 0
                     recommendUsersUid.add(uid)
                     RecommendData.distanceUsers[uid] = distance * 1000.0
                 }
@@ -137,15 +139,14 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
-            for (uid in finalMatched.keys) {
-                Log.d("final", "$uid, ${finalMatched[uid]}")
-            }
-            val realFinal = finalMatched.toList().sortedByDescending { it.second }.toMap().toMutableMap()
-            realFinal.forEach{(k, v) -> Log.d("realfinal", "${k}: ${v}")}
+            finalMatched.forEach { (k, v) -> Log.d("finalMatched", "${k}, ${v}") }
+            val realFinal =
+                finalMatched.toList().sortedByDescending { it.second }.toMap().toMutableMap()
+            realFinal.forEach { (k, v) -> Log.d("realfinal", "${k}: ${v}") }
 
             if (realFinal.isEmpty()) {
                 Toast.makeText(requireContext(), "추천할 대상이 없습니다.", Toast.LENGTH_SHORT).show()
-            }else {
+            } else {
                 val bottomSheet = RecommendList(realFinal)
                 bottomSheet.show(childFragmentManager, RecommendList.TAG)
             }
