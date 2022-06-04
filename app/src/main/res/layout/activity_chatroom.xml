@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="제목"
+            android:text="제 목"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="25sp"
             android:textStyle="bold"
