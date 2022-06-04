@@ -62,7 +62,6 @@ class BackgroundActivity : AppCompatActivity() {
     }
 
     /* Fragment State 유지 함수 */
-    //프래그먼트 컨트롤 함수
     fun setFragment(tag: String, fragment: Fragment){
         val manager: FragmentManager = supportFragmentManager
         val ft: FragmentTransaction = manager.beginTransaction()
@@ -113,11 +112,9 @@ class BackgroundActivity : AppCompatActivity() {
                 ft.show(profile)
             }
         }
-
-        //마무리
         ft.commitAllowingStateLoss()
         //ft.commit()
-    }//seFragment함수 끝
+    }
 
     // 프로필 편집을 하게 되는 경우
     private fun checkSetProfile() {
@@ -134,7 +131,6 @@ class BackgroundActivity : AppCompatActivity() {
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-
         userDB = Firebase.database.reference.child(DB_PROFILE).child(CURRENT_USERID)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

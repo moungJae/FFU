@@ -185,6 +185,7 @@ class WelcomeActivity : AppCompatActivity() {
 
     /* ========================사용자 위치 받기======================== */
     private fun startLocationUpdates() {
+
         mLocationRequest = LocationRequest.create().apply {
             interval = 10 * 1000 // 업데이트 간격 단위, 1000밀리초 단위 (1초)
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY // 정확성
@@ -201,7 +202,6 @@ class WelcomeActivity : AppCompatActivity() {
             fusedLocationClient!!.requestLocationUpdates(
                 mLocationRequest, mLocationCallback, Looper.myLooper()!!
             )
-
         }
     }
 

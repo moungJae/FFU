@@ -44,15 +44,15 @@
             <RadioButton
                 android:id="@+id/dialog_profile_non_religion"
                 android:layout_width="80sp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10sp"
+                android:layout_height="26dp"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@drawable/selector_text_color"
+                android:layout_marginHorizontal="10sp"
                 android:background="@drawable/check_box"
-                android:padding="10sp"
                 android:button="@null"
-                android:text="무교"/>
+                android:gravity="center"
+                android:padding="10sp"
+                android:text="무교"
+                android:textColor="@drawable/selector_text_color" />
             <RadioButton
                 android:id="@+id/dialog_profile_christianity"
                 android:layout_width="80sp"

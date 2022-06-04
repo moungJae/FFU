@@ -1,12 +1,21 @@
 package com.example.ffu.profile
 
+import android.app.Activity
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.Window
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,14 +32,13 @@ import com.example.ffu.UserInformation.Companion.HISTORY
 import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.chatting.HistoryAdapter
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
-import com.example.ffu.recommend.RecommendData
 import com.example.ffu.utils.DBKey
-import com.example.ffu.utils.Profile
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.example.ffu.join.CheckLoginActivity
 
 class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
@@ -75,6 +83,10 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
     private fun editProfile(view: View) {
         val editProfileButton = view.findViewById<Button>(R.id.profile_profileedit_button)
 
@@ -91,17 +103,23 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         val settingButton = view.findViewById<Button>(R.id.settingButton)
 
         settingButton.setOnClickListener {
+            settingDialog()
+            /*
             activity?.let {
                 val intent = Intent(context, SettingActivity::class.java)
                 startActivity(intent)
-            }
+            }*/
         }
     }
 
     private fun setHistory(view : View){
-        addHistoryList()
+
         historyRecyclerView .adapter = historyAdapter
-        historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val manager = LinearLayoutManager(requireContext())
+        manager.reverseLayout=true
+        manager.stackFromEnd=true
+        historyRecyclerView.layoutManager =manager
+        addHistoryList()
     }
 
     private fun addHistoryList(){
@@ -122,6 +140,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
                     setProfile(view)
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {}
         })
 
@@ -133,7 +152,54 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
                     setProfile(view)
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {}
         })
+    }
+
+    private fun settingDialog() {
+        val dialog = AlertDialog.Builder(requireActivity()).create()
+        val edialog : LayoutInflater = LayoutInflater.from(requireActivity())
+        val mView : View = edialog.inflate(R.layout.dialog_setting,null)
+        val logout : Button = mView.findViewById(R.id.dialog_setting_logout)
+        val back : ImageButton = mView.findViewById(R.id.dialog_setting_back)
+
+        back.setOnClickListener{
+            dialog.dismiss()
+            dialog.cancel()
+        }
+
+        logout.setOnClickListener{
+            requestDialog(dialog)
+        }
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setView(mView)
+        dialog.create()
+        dialog.show()
+    }
+
+    private fun requestDialog(beforeDialog: AlertDialog){
+        val dialog = AlertDialog.Builder(requireActivity())
+        dialog.setTitle("로그아웃")
+            .setMessage("로그아웃 하시겠습니까?")
+            .setNegativeButton("예",
+                DialogInterface.OnClickListener{ dialog,id->
+                    val act = context as Activity
+                    auth.signOut()
+                    ActivityCompat.finishAffinity(act)
+                    val intent = Intent(context,  CheckLoginActivity::class.java)
+                    startActivity(intent)
+                    dialog.dismiss()
+                    dialog.cancel()
+                    beforeDialog.dismiss()
+                    beforeDialog.cancel()
+                })
+            .setPositiveButton("아니오",
+                DialogInterface.OnClickListener{dialog,id->
+                    dialog.dismiss()
+                    dialog.cancel()
+                })
+        dialog.show()
     }
 }

@@ -216,8 +216,7 @@ class ChatRoomActivity : AppCompatActivity() {
                 otherChatDB?.push()?.setValue(centerChatItem)
                 otherMatchDB.setValue(false)
             }
-
-
+            //test
             //DB제거
             matchDB.removeValue()
             receivedDB.removeValue()
@@ -229,7 +228,8 @@ class ChatRoomActivity : AppCompatActivity() {
             RECEIVED_LIKE_USER.remove(otherUserId)
             MATCH_USER.remove(otherUserId)
             SEND_LIKE_USER.remove(otherUserId)
-
+            dialog.dismiss()
+            dialog.cancel()
             finish()
         }
 
