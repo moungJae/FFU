@@ -54,7 +54,8 @@
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/recommend_bottom_sheet.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/seekbar_distance.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/users_article.xml" value="0.264" />
-        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.264" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1045" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_button.xml" value="0.1" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/box_id.xml" value="0.1" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2015" />
@@ -70,10 +71,6 @@
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/checkpn.xml" value="0.264" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_check_animation.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_datepicker.xml" value="0.264" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_hobby.xml" value="0.14402173913043478" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_mbti.xml" value="0.3037249283667622" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_personality.xml" value="0.14402173913043478" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_religion.xml" value="0.4" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_radius_background.xml" value="0.12310030395136778" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_chatting.xml" value="0.1802536231884058" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_profile.xml" value="0.23802083333333332" />

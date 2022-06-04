@@ -22,6 +22,7 @@ import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
 import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.example.ffu.databinding.BackgroundBinding
+import com.example.ffu.recommend.RecommendData
 import com.example.ffu.utils.Recommend
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 
@@ -35,10 +36,10 @@ class BackgroundActivity : AppCompatActivity() {
     private lateinit var binding: BackgroundBinding
     private lateinit var userDB: DatabaseReference
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Toast.makeText(this, "종료!!!", Toast.LENGTH_SHORT).show()
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        Toast.makeText(this, "종료!!!", Toast.LENGTH_SHORT).show()
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +49,28 @@ class BackgroundActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         setFragment(TAG_RECOMMEND, RecommendFragment())
-        // checkSetProfile()
 
+        RecommendData.MBTISet.clear()
+        RecommendData.hobbySet.clear()
+        RecommendData.personalitySet.clear()
+        RecommendData.myRadius = 500.0
+        RecommendData.smokingCheck = true
+        RecommendData.MBTISet = mutableSetOf("ESTJ", "ESFJ", "ENFJ", "ENTJ",
+            "ENTP", "ENFP", "ESFP", "ESTP",
+            "INTP", "INFP", "ISFP", "ISTP",
+            "ISTJ", "ISFJ", "INFJ", "INTJ")
+        RecommendData.hobbySet = mutableSetOf("적극적인", "조용한", "엉뚱한", "진지한",
+            "자유로운", "즉흥적인", "꼼꼼한", "감성적인",
+            "성실한", "논리적인", "침착한", "자신감있는",
+            "애교있는", "어른스러운", "예의 바른", "유머러스한",
+            "허세 없는", "지적인", "소심한", "쿨한",
+            "또라이같은", "친절한", "계획적인", "당당한")
+        RecommendData.personalitySet = mutableSetOf("적극적인", "조용한", "엉뚱한", "진지한",
+            "자유로운", "즉흥적인", "꼼꼼한", "감성적인",
+            "성실한", "논리적인", "침착한", "자신감있는",
+            "애교있는", "어른스러운", "예의 바른", "유머러스한",
+            "허세 없는", "지적인", "소심한", "쿨한",
+            "또라이같은", "친절한", "계획적인", "당당한")
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.recommend -> setFragment(TAG_RECOMMEND, RecommendFragment())
