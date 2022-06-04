@@ -3,6 +3,7 @@ package com.example.ffu.chatting
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ffu.R
@@ -64,10 +65,8 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
                         startActivity(intent)
                     }
                     //Snackbar.make(view, "채팅방이 생성되었습니다. 채팅탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
-
                 }
             }
-
         })
 
         addArticleList()
@@ -93,6 +92,7 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
     }
 
     private fun addArticleList() {
+        articleList.clear()
         for (matchId in MATCH_USER.keys) {
             val name = PROFILE[matchId]?.nickname ?: ""
             val gender = PROFILE[matchId]?.gender ?: ""

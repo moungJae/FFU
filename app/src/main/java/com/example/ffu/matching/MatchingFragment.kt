@@ -87,8 +87,9 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
     }
 
     private fun addReceivedLikeArticleList(){
+        likeArticleList.clear()
         for (likeId in RECEIVED_LIKE_USER.keys) {
-            if(RECEIVED_LIKE_USER[likeId]==true){
+            if(RECEIVED_LIKE_USER[likeId] == true) {
                 val name = PROFILE[likeId]?.nickname ?: ""
                 val gender = PROFILE[likeId]?.gender ?: ""
                 val birth = PROFILE[likeId]?.birth ?: ""
@@ -141,17 +142,17 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             Toast.makeText(activity, "like를 보냈습니다!",Toast.LENGTH_SHORT).show()
             //상대방꺼에 나를 저장
             val otherMatchDB = Firebase.database.reference.child("likeInfo").child(userId).child("match")
-            val otherMatchMap = mutableMapOf<String, Boolean>()
+            val otherMatchMap = mutableMapOf<String, Any>()
 
             otherMatchMap[CURRENT_USERID] = true
-            otherMatchDB.setValue(otherMatchMap)
+            otherMatchDB.updateChildren(otherMatchMap)
 
             //나에 상대방꺼 저장
             val myMatchDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match")
-            val myMatchMap = mutableMapOf<String, Boolean>()
+            val myMatchMap = mutableMapOf<String, Any>()
 
             myMatchMap[userId] = true
-            myMatchDB.setValue(myMatchMap)
+            myMatchDB.updateChildren(myMatchMap)
 
             val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
             val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
@@ -185,10 +186,10 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
         dislike.setOnClickListener{
             val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("receivedLike")
-            val receiveLikeMap = mutableMapOf<String, Boolean>()
+            val receiveLikeMap = mutableMapOf<String, Any>()
 
             receiveLikeMap[userId] = false
-            receivedLikeDB.setValue(receiveLikeMap)
+            receivedLikeDB.updateChildren(receiveLikeMap)
 
             RECEIVED_LIKE_USER[userId] = false
             likeArticleList.clear()

@@ -218,7 +218,7 @@ class ChatRoomActivity : AppCompatActivity() {
                 val otherMatchMap = mutableMapOf<String, Boolean>()
 
                 otherMatchMap[CURRENT_USERID] = false
-                otherMatchDB.setValue(otherMatchMap)
+                otherMatchDB.push().setValue(otherMatchMap)
             }
             //test
             //DB제거

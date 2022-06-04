@@ -191,7 +191,7 @@ class UserInformation {
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                 //채팅방을 나간 경우
                 val matchUserId = snapshot.key.toString()
-                MATCH_USER[matchUserId]=false
+                MATCH_USER[matchUserId] = false
             }
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
@@ -248,7 +248,11 @@ class UserInformation {
                 }
             }
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                if (snapshot.getValue(History::class.java) != null) {
+                    HISTORY.remove(snapshot.getValue(History::class.java) as History)
+                }
+            }
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
         })
