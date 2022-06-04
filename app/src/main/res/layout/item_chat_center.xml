@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:gravity="center"
+    android:padding="3dp">
+
+    <TextView
+        android:id="@+id/item_chat_center_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "test"
+        android:textSize="13dp"
+        android:textColor="@color/chat_center_color"
+        android:background="@color/chat_center_backgroudcolor"/>
+
+
+</LinearLayout>

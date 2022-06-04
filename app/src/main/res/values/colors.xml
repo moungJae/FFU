@@ -39,4 +39,8 @@
     <color name="heart_primary_color">#da4439</color>
     <color name="heart_secondary_color">#8a098c</color>
 
+    <color name="red">#ff0000</color>
+    <color name="chat_center_color">#37373A</color>
+    <color name="chat_center_backgroudcolor">#8E8E9C</color>
+
 </resources>

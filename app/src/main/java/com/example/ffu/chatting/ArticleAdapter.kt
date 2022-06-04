@@ -37,6 +37,7 @@ class ArticleAdapter(val onItemClicked: (Article) -> Unit) : ListAdapter<Article
         holder.bind(currentList[position])
     }
 
+
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Article>() {
             override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {

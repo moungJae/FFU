@@ -23,13 +23,14 @@ import com.example.ffu.UserInformation.Companion.PROFILE
 import com.example.ffu.utils.Article
 
 class ChattingFragment: Fragment(R.layout.fragment_chatting) {
+    companion object {
+        val articleList = mutableListOf<Article>()
+    }
     private lateinit var userDB: DatabaseReference
     private lateinit var articleAdapter: ArticleAdapter
     private lateinit var storage: FirebaseStorage
     private lateinit var pathReference : StorageReference
-    private lateinit var userId : String
 
-    private val articleList = mutableListOf<Article>()
 
     private var binding: FragmentChattingBinding? = null
     private val auth: FirebaseAuth by lazy {
@@ -45,7 +46,6 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
         userDB = Firebase.database.reference
         storage = FirebaseStorage.getInstance()
         pathReference = storage.reference
-
 
 
         articleAdapter = ArticleAdapter(onItemClicked = { articleModel ->
@@ -65,10 +65,6 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
                     //Snackbar.make(view, "채팅방이 생성되었습니다. 채팅탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
 
                 }
-                Snackbar.make(view, "눌렸습니다", Snackbar.LENGTH_LONG).show()
-            } else {
-                // 로그인을 안한 상태
-                Snackbar.make(view, "로그인 후 사용해주세요", Snackbar.LENGTH_LONG).show()
             }
 
         })
@@ -94,14 +90,10 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
 
     }
 
-    private fun getCurrentUserID(view: View): String{
-        if(auth.currentUser==null){
-            Snackbar.make(view, "로그인되지 않았습니다", Snackbar.LENGTH_LONG).show()
-        }
-        return auth.currentUser?.uid.orEmpty()
-    }
     override fun onResume() {
         super.onResume()
+        articleList.clear()
+        addArticleList()
         articleAdapter.notifyDataSetChanged()
     }
 }
