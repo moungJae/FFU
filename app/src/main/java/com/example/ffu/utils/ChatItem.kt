@@ -11,6 +11,7 @@ data class ChatItem(
     companion object {
         const val LEFT_TYPE = 0
         const val RIGHT_TYPE = 1
+        const val CENTER_TYPE = 2
     }
     constructor(): this("", "","","",-1)
 }

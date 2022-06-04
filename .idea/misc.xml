@@ -27,7 +27,7 @@
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.148" />
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/drawable/ic_menu.xml" value="0.148" />
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/drawable/ic_recommend.xml" value="0.148" />
-        <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_chatroom.xml" value="0.11428571428571428" />
+        <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_chatroom.xml" value="0.16799999999999998" />
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_setting.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/background.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/control_distance.xml" value="0.25364583333333335" />
@@ -45,6 +45,7 @@
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_chatting.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_recommend.xml" value="0.4" />
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/item_article.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/item_chat_left.xml" value="0.1" />
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/item_chat_list.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/join.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/3ylsj/AndroidStudioProjects/FFU/app/src/main/res/layout/loading.xml" value="0.12335359675785208" />
