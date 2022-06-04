@@ -216,8 +216,7 @@ class ChatRoomActivity : AppCompatActivity() {
                 otherChatDB?.push()?.setValue(centerChatItem)
                 otherMatchDB.setValue(false)
             }
-
-
+            //test
             //DB제거
             matchDB.removeValue()
             receivedDB.removeValue()
