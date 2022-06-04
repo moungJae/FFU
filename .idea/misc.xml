@@ -25,14 +25,18 @@
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/bottom_sheet.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/checkpn.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_distance.xml" value="0.264" />
-        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_hobby.xml" value="0.1" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_hobby.xml" value="0.264" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_mbti.xml" value="0.264" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_personality.xml" value="0.264" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/control_smoking.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_check_animation.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_datepicker.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_hobby.xml" value="0.4" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_mbti.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_personality.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_religion.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_userinformation.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_bottomsheet.xml" value="0.264" />
+        <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_bottomsheet.xml" value="0.1" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_chatting.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_profile.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Park/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_recommend.xml" value="0.264" />
