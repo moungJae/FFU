@@ -9,7 +9,7 @@
         android:id="@+id/editTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:text="프로필 편집"
         android:textColor="@color/main_text_color"
         android:textSize="20dp"

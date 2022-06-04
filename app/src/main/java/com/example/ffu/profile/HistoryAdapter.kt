@@ -19,13 +19,13 @@ class HistoryAdapter() : ListAdapter<History, HistoryAdapter.ViewHolder>(diffUti
 
             when(historyModel.type){
                 SEND_TYPE->{
-                    binding.itemHistoryMessage.text=historyModel.name+"님에게 like를 보냈습니다."
+                    binding.itemHistoryMessage.text=historyModel.name+"님에게 like 를 보냈습니다."
                 }
                 RECEIVE_TYPE->{
-                    binding.itemHistoryMessage.text=historyModel.name+"님이 like를 보냈습니다."
+                    binding.itemHistoryMessage.text=historyModel.name+"님이 like 를 보냈습니다."
                 }
                 MATCH_TYPE->{
-                    binding.itemHistoryMessage.text=historyModel.name+"님과 match되었습니다."
+                    binding.itemHistoryMessage.text=historyModel.name+"님과 match 되었습니다."
                 }
             }
             binding.itemHistoryDate.text=historyModel.time

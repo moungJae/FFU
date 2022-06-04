@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
+    android:layout_width="300sp"
     android:layout_height="wrap_content"
     android:gravity="center"
     android:background="@drawable/dialog_radius_background"
@@ -10,7 +10,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:paddingTop="20dp"
+        android:paddingTop="20sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -20,25 +20,25 @@
         <NumberPicker
             android:id="@+id/dialog_datePicker_year"
             android:layout_width="wrap_content"
-            android:layout_height="250dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="250sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
             android:theme="@style/NumberPicker"/>
 
         <NumberPicker
             android:id="@+id/dialog_datePicker_month"
             android:layout_width="wrap_content"
-            android:layout_height="250dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="250sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
             android:theme="@style/NumberPicker"/>
 
         <NumberPicker
             android:id="@+id/dialog_datePicker_day"
             android:layout_width="wrap_content"
-            android:layout_height="250dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="250sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
             android:theme="@style/NumberPicker"/>
 
     </LinearLayout>
@@ -46,16 +46,16 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="20sp"
+        android:paddingBottom="20sp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/dialog_datePicker_save"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_width="100sp"
+            android:layout_height="40sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
             android:text="@string/save"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
@@ -64,10 +64,10 @@
 
         <Button
             android:id="@+id/dialog_datePicker_cancel"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_width="100sp"
+            android:layout_height="40sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
             android:text="@string/cancel"
             android:textColor="#FFFFFF"
             android:textStyle="bold"

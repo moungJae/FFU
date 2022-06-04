@@ -12,12 +12,12 @@ import com.example.ffu.utils.Article
 
 
 class ArticleAdapter(val onItemClicked: (Article) -> Unit) : ListAdapter<Article, ArticleAdapter.ViewHolder>(diffUtil) {
-
     inner class ViewHolder(private val binding: ItemArticleBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(articleModel: Article){
             binding.itemArticleName.text=articleModel.Name
             binding.itemArticleGender.text=articleModel.Gender
             binding.itemArticleBirth.text=articleModel.Birth
+
 
             Glide.with(binding.root)
                 .load(articleModel.imageUri)
@@ -36,6 +36,7 @@ class ArticleAdapter(val onItemClicked: (Article) -> Unit) : ListAdapter<Article
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
+
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Article>() {

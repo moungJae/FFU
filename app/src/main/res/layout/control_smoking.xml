@@ -3,18 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="200sp"
     android:orientation="vertical"
     app:behavior_hideable="true"
-    app:behavior_peekHeight="230dp"
+    app:behavior_peekHeight="230sp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <TextView
         android:id="@+id/smokingTitle"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_height="50sp"
+        android:layout_marginTop="15sp"
+        android:layout_marginBottom="15sp"
         android:gravity="center"
         android:text="담배피는 사람 어때요?"
         android:textStyle="bold"
@@ -23,9 +23,9 @@
     <View
         android:id="@+id/divisionLineSmoking"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="1sp"
         android:background="@color/gray_horizon"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/smokingTitle" />
@@ -36,43 +36,43 @@
         android:orientation="horizontal"
         android:id="@+id/smokingGroup"
         android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
 
         android:layout_width="wrap_content">
 
         <RadioButton
             android:id="@+id/smokingYes"
-            android:layout_width="85dp"
+            android:layout_width="85sp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="10sp"
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@drawable/selector_text_color"
             android:background="@drawable/check_box"
-            android:padding="10dp"
+            android:padding="10sp"
             android:button="@null"
-            android:text="상관없어용"/>
+            android:text="상관없어요"/>
         <RadioButton
             android:id="@+id/smokingNO"
-            android:layout_width="85dp"
+            android:layout_width="85sp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="10sp"
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@drawable/selector_text_color"
             android:background="@drawable/check_box"
-            android:padding="10dp"
+            android:padding="10sp"
             android:button="@null"
-            android:text="절대안됨"/>
+            android:text="절대 안됨"/>
 
 
     </RadioGroup>
 
     <View
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="32sp"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="0sp"
         android:background="@color/gray_horizon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

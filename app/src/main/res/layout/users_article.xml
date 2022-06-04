@@ -3,40 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="16dp">
-<!--    android:layout_marginBottom="60dp"-->
+    android:paddingStart="16sp"
+    android:paddingEnd="16sp"
+    android:paddingTop="16sp">
+<!--    android:layout_marginBottom="60sp"-->
 <!--    val nickName : String,-->
 <!--    val age : Int,-->
 <!--    val imageUrl: String-->
     <ImageView
         android:id="@+id/recommendUserImage"
-        android:layout_width="110dp"
+        android:layout_width="110sp"
         android:scaleType="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
-        android:layout_height="110dp"/>
+        android:layout_marginBottom="16sp"
+        android:layout_height="110sp"/>
     <TextView
         android:maxLines="1"
         android:textSize="16sp"
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="16sp"
         app:layout_constraintStart_toEndOf="@id/recommendUserImage"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/recommendNickname"
-        android:layout_width="0dp"
+        android:layout_width="0sp"
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/recommendAge"
-        android:layout_width="0dp"
+        android:layout_width="0sp"
         app:layout_constraintTop_toBottomOf="@id/recommendNickname"
         app:layout_constraintStart_toStartOf="@id/recommendNickname"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="6sp"
         android:layout_height="wrap_content"/>
     <TextView
         app:layout_constraintStart_toStartOf="@id/recommendNickname"
@@ -44,10 +44,10 @@
         app:layout_constraintTop_toBottomOf="@id/recommendAge"
         android:textStyle="bold"
         android:textSize="15sp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="6sp"
         android:textColor="@color/black"
         android:id="@+id/recommendMbti"
-        android:layout_width="0dp"
+        android:layout_width="0sp"
         android:layout_height="wrap_content"/>
 <!--    <TextView-->
 <!--        android:layout_width="wrap_content"-->
@@ -60,6 +60,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/btn_rec"
-        android:layout_width="0dp"
-        android:layout_height="1dp"/>
+        android:layout_width="0sp"
+        android:layout_height="1sp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
