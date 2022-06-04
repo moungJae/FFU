@@ -149,9 +149,12 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             for (personality in personalityMatched.keys)
                 Log.d("personalityMatched", "$personality, ${personalityMatched[personality]}")
 
-            // button 누르면 bottomSheet (추천 List) 띄우기.
-            val bottomSheet = RecommendList(finalMatched)
-            bottomSheet.show(childFragmentManager, RecommendList.TAG)
+            if (finalMatched.isEmpty()) {
+                Toast.makeText(requireContext(), "추천할 대상이 없습니다.", Toast.LENGTH_SHORT).show()
+            }else {
+                val bottomSheet = RecommendList(finalMatched)
+                bottomSheet.show(childFragmentManager, RecommendList.TAG)
+            }
         }
     }
 

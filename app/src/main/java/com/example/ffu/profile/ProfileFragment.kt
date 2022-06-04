@@ -24,10 +24,18 @@ import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.chatting.HistoryAdapter
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.example.ffu.recommend.RecommendData
+import com.example.ffu.utils.DBKey
+import com.example.ffu.utils.Profile
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 
 class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
     private lateinit var auth : FirebaseAuth
+    private lateinit var userDB: DatabaseReference
     private lateinit var storage: FirebaseStorage
     private lateinit var pathReference : StorageReference
     private val historyAdapter = HistoryAdapter()
@@ -45,6 +53,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         setHistory(view)
         editProfile(view)
         settingButton(view)
+        checkSetProfile(view)
     }
 
     fun setProfile(view: View) {
@@ -62,7 +71,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         } else {
             nickname.setText(PROFILE[CURRENT_USERID]?.nickname)
             introMe.setText(PROFILE[CURRENT_USERID]?.introMe)
-            Toast.makeText(context, "프로필을 변경해주세요!", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(context, "프로필을 변경해주세요!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -99,5 +108,32 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         historyAdapter.submitList(HISTORY)
         historyAdapter.notifyDataSetChanged()
         historyRecyclerView.scrollToPosition(historyAdapter.itemCount - 1)
+    }
+
+    private fun checkSetProfile(view : View) {
+        var profileFlag = 0
+        var animationFlag = 0
+
+        userDB = Firebase.database.reference.child(DBKey.DB_ANIMATION).child(CURRENT_USERID)
+        userDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                animationFlag++
+                if (animationFlag > 1) {
+                    setProfile(view)
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
+        userDB = Firebase.database.reference.child(DBKey.DB_PROFILE).child(CURRENT_USERID)
+        userDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                profileFlag++
+                if (profileFlag > 1) {
+                    setProfile(view)
+                }
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 }

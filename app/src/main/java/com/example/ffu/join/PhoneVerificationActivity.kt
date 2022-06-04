@@ -170,15 +170,19 @@ class PhoneVerificationActivity : AppCompatActivity() {
             setVerificationDisable()
             checkVerificationButton.startLoading()
             myVerification = verificationEditText.text.toString()
-            phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, myVerification)
-            auth.signInWithCredential(phoneAuthCredential)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        successVerification()
-                    } else {
-                        failVerification()
+            if (myVerification.length == 0) {
+                failVerification()
+            } else {
+                phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, myVerification)
+                auth.signInWithCredential(phoneAuthCredential)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            successVerification()
+                        } else {
+                            failVerification()
+                        }
                     }
-                }
+            }
         }
     }
 

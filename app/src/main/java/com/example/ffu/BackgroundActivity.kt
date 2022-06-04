@@ -32,18 +32,17 @@ private const val TAG_CHATTING = "fragment_chatting"
 class BackgroundActivity : AppCompatActivity() {
 
     private lateinit var binding: BackgroundBinding
-
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var userDB: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = BackgroundBinding.inflate(layoutInflater)
+
         val view = binding.root
         setContentView(view)
-        checkSetProfile()
         setFragment(TAG_RECOMMEND, RecommendFragment())
+        // checkSetProfile()
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
@@ -141,13 +140,4 @@ class BackgroundActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
     }
-
-    private fun replaceFragment(fragment : Fragment){
-        supportFragmentManager.beginTransaction()
-            .apply{
-                replace(R.id.fragmentContainer,fragment)
-                commit()
-            }
-    }
-
 }
