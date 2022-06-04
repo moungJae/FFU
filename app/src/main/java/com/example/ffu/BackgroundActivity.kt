@@ -33,8 +33,6 @@ private const val TAG_CHATTING = "fragment_chatting"
 class BackgroundActivity : AppCompatActivity() {
 
     private lateinit var binding: BackgroundBinding
-
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var userDB: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +56,6 @@ class BackgroundActivity : AppCompatActivity() {
     }
 
     /* Fragment State 유지 함수 */
-    //프래그먼트 컨트롤 함수
     fun setFragment(tag: String, fragment: Fragment){
         val manager: FragmentManager = supportFragmentManager
         val ft: FragmentTransaction = manager.beginTransaction()
@@ -109,11 +106,9 @@ class BackgroundActivity : AppCompatActivity() {
                 ft.show(profile)
             }
         }
-
-        //마무리
         ft.commitAllowingStateLoss()
         //ft.commit()
-    }//seFragment함수 끝
+    }
 
     // 프로필 편집을 하게 되는 경우
     private fun checkSetProfile() {
@@ -130,7 +125,6 @@ class BackgroundActivity : AppCompatActivity() {
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-
         userDB = Firebase.database.reference.child(DB_PROFILE).child(CURRENT_USERID)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -142,12 +136,13 @@ class BackgroundActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
     }
-
+    /*
     private fun replaceFragment(fragment : Fragment){
         supportFragmentManager.beginTransaction()
             .apply{
                 replace(R.id.fragmentContainer,fragment)
                 commit()
             }
-    }
+    }*/
+
 }

@@ -44,6 +44,7 @@ class BottomSheetMBTI : BottomSheetDialogFragment() {
 
         makeListner()
         checkBoxInit(view)
+        checkAllMBTI.isChecked = true
     }
     private fun checkBoxInit(view : View) {
         checkAllMBTI = view.findViewById<CompoundButton>(R.id.checkAllMBTI)
