@@ -1,6 +1,7 @@
 package com.example.ffu
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -135,4 +136,13 @@ class BackgroundActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
     }
+    /*
+    private fun replaceFragment(fragment : Fragment){
+        supportFragmentManager.beginTransaction()
+            .apply{
+                replace(R.id.fragmentContainer,fragment)
+                commit()
+            }
+    }*/
+
 }
