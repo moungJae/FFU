@@ -201,7 +201,6 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
             .load(recommendArticleModel.imageUrl)
             .into(image)
 
-
         val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike")
         val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike")
 

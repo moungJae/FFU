@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -29,6 +30,10 @@ import com.example.ffu.utils.History
 import com.example.ffu.utils.LikeArticle
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import de.hdodenhof.circleimageview.CircleImageView
@@ -40,6 +45,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
     private lateinit var likeArticleAdapter: LikeArticleAdapter
     private val likeArticleList = mutableListOf<LikeArticle>()
     private var binding: FragmentMatchingBinding? = null
+    private lateinit var userDB: DatabaseReference
 
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
@@ -59,13 +65,29 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         })
 
         addReceivedLikeArticleList()
+        receivedLikeListener()
 
         fragmentMatchingBinding.matchingRecyclerView.layoutManager = LinearLayoutManager(context)
         fragmentMatchingBinding.matchingRecyclerView.adapter = likeArticleAdapter
     }
 
+    private fun receivedLikeListener() {
+        userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("receivedLike")
+        userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                addReceivedLikeArticleList()
+            }
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                addReceivedLikeArticleList()
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
     private fun addReceivedLikeArticleList(){
-        for(likeId in RECEIVED_LIKE_USER.keys){
+        for (likeId in RECEIVED_LIKE_USER.keys) {
             if(RECEIVED_LIKE_USER[likeId]==true){
                 val name = PROFILE[likeId]?.nickname ?: ""
                 val gender = PROFILE[likeId]?.gender ?: ""
@@ -76,7 +98,6 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
                 likeArticleAdapter.submitList(likeArticleList)
             }
         }
-
     }
 
     override fun onResume() {
@@ -119,12 +140,18 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
             Toast.makeText(activity, "like를 보냈습니다!",Toast.LENGTH_SHORT).show()
             //상대방꺼에 나를 저장
-            val otherMatchDB = Firebase.database.reference.child("likeInfo").child(userId).child("match").child(CURRENT_USERID)
-            otherMatchDB.setValue(true)
+            val otherMatchDB = Firebase.database.reference.child("likeInfo").child(userId).child("match")
+            val otherMatchMap = mutableMapOf<String, Boolean>()
+
+            otherMatchMap[CURRENT_USERID] = true
+            otherMatchDB.setValue(otherMatchMap)
 
             //나에 상대방꺼 저장
-            val myMatchDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
-            myMatchDB.setValue(true)
+            val myMatchDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match")
+            val myMatchMap = mutableMapOf<String, Boolean>()
+
+            myMatchMap[userId] = true
+            myMatchDB.setValue(myMatchMap)
 
             val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
             val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
@@ -147,7 +174,10 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             userHistoryDB.push().setValue(matchUserHistoryItem)
             otherHistoryDB.push().setValue(matchOtherUserHistoryItem)
 
-
+            RECEIVED_LIKE_USER[userId] = false
+            likeArticleList.clear()
+            addReceivedLikeArticleList()
+            likeArticleAdapter.notifyDataSetChanged()
             //val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
             //dialog.dismiss()
             //dialog.cancel()
@@ -160,7 +190,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             receiveLikeMap[userId] = false
             receivedLikeDB.setValue(receiveLikeMap)
 
-            RECEIVED_LIKE_USER[userId]=false
+            RECEIVED_LIKE_USER[userId] = false
             likeArticleList.clear()
             addReceivedLikeArticleList()
             likeArticleAdapter.notifyDataSetChanged()
