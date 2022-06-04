@@ -66,9 +66,9 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_bottomsheet, container, false)
-        view.findViewById<Button>(R.id.returnToMap).setOnClickListener {
-            dismiss()
-        }
+//        view.findViewById<Button>(R.id.returnToMap).setOnClickListener {
+//            dismiss()
+//        }
 
         return view
     }
@@ -200,7 +200,6 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         Glide.with(this)
             .load(recommendArticleModel.imageUrl)
             .into(image)
-
 
         val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike")
         val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike")

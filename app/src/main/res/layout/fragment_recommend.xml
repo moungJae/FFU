@@ -27,7 +27,7 @@
         <View
             android:id="@+id/divisionLine"
             android:layout_width="match_parent"
-            android:layout_height="1sp"
+            android:layout_height="1dp"
             android:background="@color/gray_horizon"
             android:elevation="0sp"
             android:fitsSystemWindows="false"
@@ -58,7 +58,7 @@
                 android:background="@drawable/round_button2"
                 android:paddingLeft="6sp"
                 android:paddingRight="6sp"
-                android:text="500m"
+                android:text="거리"
                 android:textSize="14sp" />
 
             <Button

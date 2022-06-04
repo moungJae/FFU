@@ -16,9 +16,10 @@ class RecommendData {
         var curLongitude: Double = 0.0
 
         var distanceUsers = mutableMapOf<String, Double>()
-        var MBTIList = ArrayList<String>()
-        var hobbyList = ArrayList<String>()
-        var personalityList = ArrayList<String>()
+
+        var MBTISet = mutableSetOf<String>()
+        var hobbySet = mutableSetOf<String>()
+        var personalitySet = mutableSetOf<String>()
         var smokingCheck : Boolean = true
     }
 }

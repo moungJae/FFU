@@ -25,6 +25,8 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import java.lang.Math.*
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.pow
 
 
@@ -70,9 +72,14 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private fun getMatchedUsers() {
 
         recommendButton.setOnClickListener {
+
             val usersUid: ArrayList<String> = UserInformation.MAP_USER
             val myRadius = RecommendData.myRadius / 1000.0
             val recommendUsersUid = ArrayList<String>()
+            val mbtiMatched = ArrayList<String>()
+            val hobbyMatched = mutableMapOf<String, Int>()
+            val personalityMatched = mutableMapOf<String, Int>()
+            val finalMatched = mutableMapOf<String, Int>()
 
             for (uid in usersUid) {
                 if (uid == auth.uid || uid == "null") continue
@@ -83,25 +90,22 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                     ) / 1000.0
 
                 if (distance < myRadius) {
+                    personalityMatched[uid] = 0
+                    hobbyMatched[uid] = 0
+                    finalMatched[uid] = 0
                     recommendUsersUid.add(uid)
-                    // RecommendData.distanceUsers[uid] = distance * 1000.0
                 }
             }
 
-            val mbtiMatched = ArrayList<String>()
-            val hobbyMatched = mutableMapOf<String, Int>()
-            val personalityMatched = mutableMapOf<String, Int>()
-
-            for (mbti in RecommendData.MBTIList) {
+            for (mbti in RecommendData.MBTISet) {
                 for (uid in recommendUsersUid) {
                     if (PROFILE[uid]?.mbti?.contains(mbti) == true) {
                         mbtiMatched.add(uid)
-                        hobbyMatched[uid] = 0
                     }
                 }
             }
 
-            for (hobby in RecommendData.hobbyList) {
+            for (hobby in RecommendData.hobbySet) {
                 for (uid in mbtiMatched) {
                     if (PROFILE[uid]?.hobby?.contains(hobby) == true) {
                         hobbyMatched[uid] = hobbyMatched[uid]!! + 1
@@ -110,7 +114,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
-            for (personality in RecommendData.personalityList) {
+            for (personality in RecommendData.personalitySet) {
                 for (uid in hobbyMatched.keys) {
                     if (PROFILE[uid]?.personality?.contains(personality) == true) {
                         personalityMatched[uid] = personalityMatched[uid]!! + 1
@@ -118,23 +122,26 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
-            val finalMatched = mutableMapOf<String, Int>()
             if (RecommendData.smokingCheck) {
                 for (uid in personalityMatched.keys) {
-                    finalMatched[uid] = personalityMatched[uid]!!
+                    if (personalityMatched[uid]!! > 0)
+                        finalMatched[uid] = personalityMatched[uid]!!
                 }
             } else {
                 for (uid in personalityMatched.keys) {
                     if (PROFILE[uid]?.smoke?.equals("흡연") == false) {
-                        finalMatched[uid] = personalityMatched[uid]!!
+                        if (personalityMatched[uid]!! > 0)
+                            finalMatched[uid] = personalityMatched[uid]!!
                     }
                 }
             }
 
-            if (finalMatched.isEmpty()) {
+            val realFinal = finalMatched.toList().sortedByDescending { it.second }.toMap().toMutableMap()
+
+            if (realFinal.isEmpty()) {
                 Toast.makeText(requireContext(), "추천할 대상이 없습니다.", Toast.LENGTH_SHORT).show()
             }else {
-                val bottomSheet = RecommendList(finalMatched)
+                val bottomSheet = RecommendList(realFinal)
                 bottomSheet.show(childFragmentManager, RecommendList.TAG)
             }
         }
@@ -198,7 +205,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         RecommendData.naverMap.maxZoom = 14.0
 
         RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(RECOMMEND[CURRENT_USERID]!!.latitude, RECOMMEND[CURRENT_USERID]!!.longitude)))
-        // 현재 위치 설정
+        // RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(37.5509, 126.9410)))
         RecommendData.naverMap.uiSettings.isLocationButtonEnabled = true
         RecommendData.naverMap.locationSource =
             FusedLocationSource(this@RecommendFragment, REQUEST_ACCESS_LOCATION_PERMISSIONS)

@@ -49,7 +49,6 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
         storage = FirebaseStorage.getInstance()
         pathReference = storage.reference
 
-
         articleAdapter = ArticleAdapter(onItemClicked = { articleModel ->
             if (auth.currentUser != null) {
                 // 로그인을 한 상태
@@ -72,24 +71,37 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
         })
 
         addArticleList()
+        chattingListener()
 
         fragmentHomeBinding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         fragmentHomeBinding.articleRecyclerView.adapter = articleAdapter
     }
 
-    private fun addArticleList(){
-        for(matchId in MATCH_USER.keys){
-            //if(matchId!= CURRENT_USERID){ 명재 수정 부분
-                val name = PROFILE[matchId]?.nickname ?: ""
-                val gender = PROFILE[matchId]?.gender ?: ""
-                val birth = PROFILE[matchId]?.birth ?: ""
-                val imageUri = URI[matchId]
+    private fun chattingListener() {
+        userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match")
+        userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                addArticleList()
+            }
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                addArticleList()
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
 
-                articleList.add(Article(matchId,name,gender,birth,imageUri))
-                articleAdapter.submitList(articleList)
-            //}
+    private fun addArticleList() {
+        for (matchId in MATCH_USER.keys) {
+            val name = PROFILE[matchId]?.nickname ?: ""
+            val gender = PROFILE[matchId]?.gender ?: ""
+            val birth = PROFILE[matchId]?.birth ?: ""
+            val imageUri = URI[matchId]
+
+            articleList.add(Article(matchId,name,gender,birth,imageUri))
+            articleAdapter.submitList(articleList)
         }
-
     }
 
     override fun onResume() {
