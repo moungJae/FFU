@@ -20,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.recommend.RecommendData
 import com.example.ffu.utils.Article
 
 class ChattingFragment: Fragment(R.layout.fragment_chatting) {
@@ -41,6 +42,7 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
         super.onViewCreated(view, savedInstanceState)
 
         val fragmentHomeBinding = FragmentChattingBinding.bind(view)
+
         binding = fragmentHomeBinding
         articleList.clear()
         userDB = Firebase.database.reference

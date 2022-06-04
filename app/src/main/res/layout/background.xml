@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-
     tools:context=".join.PhoneVerificationActivity">
 
     <FrameLayout
@@ -19,7 +18,6 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:background="@color/white"
         app:menu="@menu/bottom_navigation_menu" />
 

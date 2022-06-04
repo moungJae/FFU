@@ -202,16 +202,22 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
             .into(image)
 
 
-        val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike").child(CURRENT_USERID)
-        val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike").child(userId)
+        val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike")
+        val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike")
 
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
             compoundButton.startAnimation(
                 scaleAnimation
             )
 
-            receivedLikeDB.setValue(true)
-            sendLikeDB.setValue(true)
+            val receiveLikeMap = mutableMapOf<String, Boolean>()
+            val sendLikeMap = mutableMapOf<String, Boolean>()
+
+            receiveLikeMap[CURRENT_USERID] = true
+            sendLikeMap[userId] = true
+
+            receivedLikeDB.setValue(receiveLikeMap)
+            sendLikeDB.setValue(sendLikeMap)
 
             val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
             val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
@@ -243,8 +249,10 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         })
 
         dislike.setOnClickListener{
-            //receivedLikeDB.setValue(false)
-            sendLikeDB.setValue(false)
+            val sendLikeMap = mutableMapOf<String, Boolean>()
+
+            sendLikeMap[userId] = false
+            sendLikeDB.setValue(sendLikeMap)
             dialog.dismiss()
         }
 

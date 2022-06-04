@@ -1,6 +1,7 @@
 package com.example.ffu.profile
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
@@ -731,19 +732,20 @@ class ProfileSettingActivity : AppCompatActivity() {
         }
         animation = Animation(permission = true, person = true, request = true)
 
-        userDB = Firebase.database.reference.child(DB_PROFILE).child(CURRENT_USERID)
-        userDB.setValue(profile)
-
         userDB = Firebase.database.reference.child(DB_ANIMATION).child(CURRENT_USERID)
         userDB.setValue(animation)
+
+        userDB = Firebase.database.reference.child(DB_PROFILE).child(CURRENT_USERID)
+        userDB.setValue(profile)
     }
 
-    private fun completeProfileSetting() {
+    private fun completeProfileSetting(dialog : AlertDialog) {
         insertProfileInformation()
         Thread {
             Thread.sleep(2000)
             Handler(Looper.getMainLooper()).post {
-                startActivity(Intent(this@ProfileSettingActivity, BackgroundActivity::class.java))
+                dialog.dismiss()
+                dialog.cancel()
                 finish()
             }
         }.start()
@@ -770,7 +772,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         save.setOnClickListener {
             dialog_progressBar.visibility = View.VISIBLE
-            completeProfileSetting()
+            completeProfileSetting(dialog)
         }
 
         dialog.setView(mView)

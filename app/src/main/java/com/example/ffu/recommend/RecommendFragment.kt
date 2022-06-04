@@ -91,6 +91,8 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             val mbtiMatched = ArrayList<String>()
             val hobbyMatched = mutableMapOf<String, Int>()
             val personalityMatched = mutableMapOf<String, Int>()
+            val finalMatched = mutableMapOf<String, Int>()
+
             for (mbti in RecommendData.MBTIList) {
                 for (uid in recommendUsersUid) {
                     if (PROFILE[uid]?.mbti?.contains(mbti) == true) {
@@ -116,7 +118,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                     }
                 }
             }
-            val finalMatched = mutableMapOf<String, Int>()
+
             if (RecommendData.smokingCheck) {
                 for (uid in personalityMatched.keys) {
                     finalMatched[uid] = personalityMatched[uid]!!
@@ -135,7 +137,6 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 val bottomSheet = RecommendList(finalMatched)
                 bottomSheet.show(childFragmentManager, RecommendList.TAG)
             }
-
         }
     }
 
@@ -197,7 +198,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         RecommendData.naverMap.maxZoom = 14.0
 
         RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(RECOMMEND[CURRENT_USERID]!!.latitude, RECOMMEND[CURRENT_USERID]!!.longitude)))
-//        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(37.5509, 126.9410)))
+        // 현재 위치 설정
         RecommendData.naverMap.uiSettings.isLocationButtonEnabled = true
         RecommendData.naverMap.locationSource =
             FusedLocationSource(this@RecommendFragment, REQUEST_ACCESS_LOCATION_PERMISSIONS)

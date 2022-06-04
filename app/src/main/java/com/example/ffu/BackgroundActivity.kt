@@ -1,6 +1,7 @@
 package com.example.ffu
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -34,14 +35,20 @@ class BackgroundActivity : AppCompatActivity() {
     private lateinit var binding: BackgroundBinding
     private lateinit var userDB: DatabaseReference
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Toast.makeText(this, "종료!!!", Toast.LENGTH_SHORT).show()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = BackgroundBinding.inflate(layoutInflater)
+
         val view = binding.root
         setContentView(view)
-        checkSetProfile()
         setFragment(TAG_RECOMMEND, RecommendFragment())
+        // checkSetProfile()
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {

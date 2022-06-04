@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import com.example.ffu.BackgroundActivity
 import com.example.ffu.R
 import com.example.ffu.UserInformation
+import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -146,14 +147,11 @@ class WelcomeActivity : AppCompatActivity() {
             }
         }
         builder.setPositiveButton("확인", listener)
-        //builder.setNegativeButton("허용 안함", listener)
-
         builder.show()
     }
 
 
     private fun requestPermission() {
-
         // 이미 권한이 있으면 그냥 리턴
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -220,12 +218,14 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun addMyLocation(location: Location) {
-        mLastLocation = location
         val locationToFirebase = mutableMapOf<String, Any>()
+
+        mLastLocation = location
         locationToFirebase["latitude"] = mLastLocation.latitude
         locationToFirebase["longitude"] = mLastLocation.longitude
-        userDB = Firebase.database.reference.child("recommend").child(auth?.uid.toString())
-        userDB.updateChildren(locationToFirebase)
-        Log.d("addMyLocation", locationToFirebase.toString())
+        if (auth.uid != null) {
+            userDB = Firebase.database.reference.child("recommend").child(auth.uid.toString())
+            userDB.updateChildren(locationToFirebase)
+        }
     }
 }

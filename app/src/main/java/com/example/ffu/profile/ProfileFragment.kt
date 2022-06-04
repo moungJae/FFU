@@ -1,12 +1,21 @@
 package com.example.ffu.profile
 
+import android.app.Activity
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.view.Window
+import android.view.animation.Animation
+import android.view.animation.BounceInterpolator
+import android.view.animation.ScaleAnimation
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,10 +32,19 @@ import com.example.ffu.UserInformation.Companion.HISTORY
 import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.chatting.HistoryAdapter
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
+import com.example.ffu.utils.DBKey
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.example.ffu.join.CheckLoginActivity
+import com.example.ffu.recommend.RecommendData
 
 class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
     private lateinit var auth : FirebaseAuth
+    private lateinit var userDB: DatabaseReference
     private lateinit var storage: FirebaseStorage
     private lateinit var pathReference : StorageReference
     private val historyAdapter = HistoryAdapter()
@@ -44,6 +62,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         setHistory(view)
         editProfile(view)
         settingButton(view)
+        checkSetProfile(view)
     }
 
     fun setProfile(view: View) {
@@ -61,8 +80,12 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         } else {
             nickname.setText(PROFILE[CURRENT_USERID]?.nickname)
             introMe.setText(PROFILE[CURRENT_USERID]?.introMe)
-            Toast.makeText(context, "프로필을 변경해주세요!", Toast.LENGTH_SHORT).show()
+            // Toast.makeText(context, "프로필을 변경해주세요!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
     }
 
     private fun editProfile(view: View) {
@@ -81,22 +104,108 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         val settingButton = view.findViewById<Button>(R.id.settingButton)
 
         settingButton.setOnClickListener {
+            settingDialog()
+            /*
             activity?.let {
                 val intent = Intent(context, SettingActivity::class.java)
                 startActivity(intent)
-            }
+            }*/
         }
     }
 
     private fun setHistory(view : View){
-        addHistoryList()
+
         historyRecyclerView .adapter = historyAdapter
-        historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val manager = LinearLayoutManager(requireContext())
+        manager.reverseLayout=true
+        manager.stackFromEnd=true
+        historyRecyclerView.layoutManager =manager
+        addHistoryList()
     }
 
     private fun addHistoryList(){
         historyAdapter.submitList(HISTORY)
         historyAdapter.notifyDataSetChanged()
         historyRecyclerView.scrollToPosition(historyAdapter.itemCount - 1)
+    }
+
+    private fun checkSetProfile(view : View) {
+        var profileFlag = 0
+        var animationFlag = 0
+
+        userDB = Firebase.database.reference.child(DBKey.DB_ANIMATION).child(CURRENT_USERID)
+        userDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                animationFlag++
+                if (animationFlag > 1) {
+                    setProfile(view)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
+        userDB = Firebase.database.reference.child(DBKey.DB_PROFILE).child(CURRENT_USERID)
+        userDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                profileFlag++
+                if (profileFlag > 1) {
+                    setProfile(view)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
+
+    private fun settingDialog() {
+        val dialog = AlertDialog.Builder(requireActivity()).create()
+        val edialog : LayoutInflater = LayoutInflater.from(requireActivity())
+        val mView : View = edialog.inflate(R.layout.dialog_setting,null)
+        val logout : Button = mView.findViewById(R.id.dialog_setting_logout)
+        val back : ImageButton = mView.findViewById(R.id.dialog_setting_back)
+
+        back.setOnClickListener{
+            dialog.dismiss()
+            dialog.cancel()
+        }
+
+        logout.setOnClickListener{
+            requestDialog(dialog)
+        }
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setView(mView)
+        dialog.create()
+        dialog.show()
+    }
+
+    private fun requestDialog(beforeDialog: AlertDialog){
+        val dialog = AlertDialog.Builder(requireActivity())
+        dialog.setTitle("로그아웃")
+            .setMessage("로그아웃 하시겠습니까?")
+            .setNegativeButton("예",
+                DialogInterface.OnClickListener{ dialog,id->
+                    val act = context as Activity
+                    RecommendData.myRadius = 500.0
+                    RecommendData.MBTIList.clear()
+                    RecommendData.personalityList.clear()
+                    RecommendData.hobbyList.clear()
+                    RecommendData.smokingCheck = true
+                    auth.signOut()
+                    ActivityCompat.finishAffinity(act)
+                    val intent = Intent(context,  CheckLoginActivity::class.java)
+                    startActivity(intent)
+                    dialog.dismiss()
+                    dialog.cancel()
+                    beforeDialog.dismiss()
+                    beforeDialog.cancel()
+                })
+            .setPositiveButton("아니오",
+                DialogInterface.OnClickListener{dialog,id->
+                    dialog.dismiss()
+                    dialog.cancel()
+                })
+        dialog.show()
     }
 }

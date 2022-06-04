@@ -16,7 +16,7 @@
         android:layout_marginTop="15sp"
         android:layout_marginBottom="15sp"
         android:gravity="center"
-        android:text="자신의 MBTI를 하나 선택해주세요"
+        android:text="자신의 MBTI를 하나 선택하세요"
         android:textStyle="bold"
         android:textSize="20sp" />
 
