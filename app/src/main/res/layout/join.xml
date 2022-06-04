@@ -64,7 +64,7 @@
         android:text="@string/choice"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="15sp"
         android:background="#3F51B5"
         app:layout_constraintLeft_toRightOf="@id/join_Birth"
         app:layout_constraintTop_toBottomOf="@id/guideline5"
@@ -76,9 +76,9 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textColor="@color/black"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="20sp"
         app:layout_constraintLeft_toRightOf="@id/join_yearMonth_button"
         app:layout_constraintTop_toBottomOf="@id/guideline5"
         app:layout_constraintBottom_toTopOf="@id/guideline6" />
@@ -189,7 +189,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="462dp" />
+        app:layout_constraintGuide_begin="462sp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline11"

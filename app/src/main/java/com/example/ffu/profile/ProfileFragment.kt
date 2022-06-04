@@ -139,7 +139,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         }
 
         logout.setOnClickListener{
-            requestDialog()
+            requestDialog(dialog)
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -148,7 +148,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         dialog.show()
     }
 
-    private fun requestDialog(){
+    private fun requestDialog(beforeDialog: AlertDialog){
         val dialog = AlertDialog.Builder(requireActivity())
         dialog.setTitle("로그아웃")
             .setMessage("로그아웃 하시겠습니까?")
@@ -159,8 +159,10 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
                     ActivityCompat.finishAffinity(act)
                     val intent = Intent(context,  CheckLoginActivity::class.java)
                     startActivity(intent)
-                    //startActivity(Intent(this, CheckLoginActivity::class.java))
-                    //finish(context)
+                    dialog.dismiss()
+                    dialog.cancel()
+                    beforeDialog.dismiss()
+                    beforeDialog.cancel()
                 })
             .setPositiveButton("아니오",
                 DialogInterface.OnClickListener{dialog,id->

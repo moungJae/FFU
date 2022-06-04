@@ -229,7 +229,8 @@ class ChatRoomActivity : AppCompatActivity() {
             RECEIVED_LIKE_USER.remove(otherUserId)
             MATCH_USER.remove(otherUserId)
             SEND_LIKE_USER.remove(otherUserId)
-
+            dialog.dismiss()
+            dialog.cancel()
             finish()
         }
 
