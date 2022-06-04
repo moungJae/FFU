@@ -72,11 +72,15 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private fun getMatchedUsers() {
 
         recommendButton.setOnClickListener {
+            RecommendData.MBTISet.forEach { v -> Log.d("MBTISet", "${v}") }
+            RecommendData.hobbySet.forEach { v -> Log.d("hobbySet", "${v}") }
+            RecommendData.personalitySet.forEach { v -> Log.d("personalitySet", "${v}") }
 
             val usersUid: ArrayList<String> = UserInformation.MAP_USER
             val myRadius = RecommendData.myRadius / 1000.0
             val recommendUsersUid = ArrayList<String>()
-            val mbtiMatched = ArrayList<String>()
+            val matchedUsers = mutableMapOf<String, Int>()
+            val mbtiMatched = mutableMapOf<String, Int>()
             val hobbyMatched = mutableMapOf<String, Int>()
             val personalityMatched = mutableMapOf<String, Int>()
             val finalMatched = mutableMapOf<String, Int>()
@@ -91,25 +95,24 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                     ) / 1000.0
 
                 if (distance < myRadius) {
-                    personalityMatched[uid] = 0
                     hobbyMatched[uid] = 0
+                    personalityMatched[uid] = 0
                     finalMatched[uid] = 0
                     recommendUsersUid.add(uid)
                     RecommendData.distanceUsers[uid] = distance * 1000.0
                 }
             }
-
-
+                //
             for (mbti in RecommendData.MBTISet) {
                 for (uid in recommendUsersUid) {
                     if (PROFILE[uid]?.mbti?.contains(mbti) == true) {
-                        mbtiMatched.add(uid)
+                        mbtiMatched[uid] = 1
                     }
                 }
             }
 
             for (hobby in RecommendData.hobbySet) {
-                for (uid in mbtiMatched) {
+                for (uid in mbtiMatched.keys) {
                     if (PROFILE[uid]?.hobby?.contains(hobby) == true) {
                         hobbyMatched[uid] = hobbyMatched[uid]!! + 1
                         personalityMatched[uid] = hobbyMatched[uid]!!
