@@ -10,10 +10,7 @@ import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.BounceInterpolator
 import android.view.animation.ScaleAnimation
-import android.widget.CompoundButton
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.ToggleButton
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -39,7 +36,6 @@ import java.time.format.DateTimeFormatter
 
 
 class MatchingFragment: Fragment(R.layout.fragment_matching) {
-
     private lateinit var likeArticleAdapter: LikeArticleAdapter
     private val likeArticleList = mutableListOf<LikeArticle>()
     private var binding: FragmentMatchingBinding? = null
@@ -119,6 +115,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
         //  완료 버튼 클릭 시
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
+            Toast.makeText(activity, "like를 보냈습니다!",Toast.LENGTH_SHORT).show()
             //상대방꺼에 나를 저장
             val otherDB = Firebase.database.reference.child("likeInfo").child(userId).child("match").child(CURRENT_USERID)
             otherDB.setValue("")
@@ -147,6 +144,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
             userHistoryDB.push().setValue(matchUserHistoryItem)
             otherHistoryDB.push().setValue(matchOtherUserHistoryItem)
+
 
             //val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
             //dialog.dismiss()
