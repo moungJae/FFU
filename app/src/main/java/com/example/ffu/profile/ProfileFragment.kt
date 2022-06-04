@@ -33,13 +33,10 @@ import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.chatting.HistoryAdapter
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.example.ffu.utils.DBKey
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.example.ffu.join.CheckLoginActivity
 import com.example.ffu.recommend.RecommendData
+import com.google.firebase.database.*
 
 class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
@@ -58,11 +55,27 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
         historyRecyclerView = view.findViewById<RecyclerView>(R.id.fragment_profile_historyRecyclerView)
 
+        historyListener()
         setProfile(view)
         setHistory(view)
         editProfile(view)
         settingButton(view)
         checkSetProfile(view)
+    }
+
+    private fun historyListener() {
+        userDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
+        userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                addHistoryList()
+            }
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                addHistoryList()
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 
     fun setProfile(view: View) {

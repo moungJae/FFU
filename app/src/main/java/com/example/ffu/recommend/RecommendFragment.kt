@@ -89,7 +89,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                         recommendLatitude, recommendLongitude
                     ) / 1000.0
 
-                if (distance < myRadius) {
+                if (distance < 10000.0) {
                     personalityMatched[uid] = 0
                     hobbyMatched[uid] = 0
                     finalMatched[uid] = 0
