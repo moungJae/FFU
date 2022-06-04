@@ -84,14 +84,13 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 
                 if (distance < myRadius) {
                     recommendUsersUid.add(uid)
-                    RecommendData.distanceUsers[uid] = distance * 1000.0
+                    // RecommendData.distanceUsers[uid] = distance * 1000.0
                 }
             }
 
             val mbtiMatched = ArrayList<String>()
             val hobbyMatched = mutableMapOf<String, Int>()
             val personalityMatched = mutableMapOf<String, Int>()
-            val finalMatched = mutableMapOf<String, Int>()
 
             for (mbti in RecommendData.MBTIList) {
                 for (uid in recommendUsersUid) {
@@ -119,6 +118,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 }
             }
 
+            val finalMatched = mutableMapOf<String, Int>()
             if (RecommendData.smokingCheck) {
                 for (uid in personalityMatched.keys) {
                     finalMatched[uid] = personalityMatched[uid]!!

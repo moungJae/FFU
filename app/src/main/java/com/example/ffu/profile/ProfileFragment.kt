@@ -187,11 +187,6 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
             .setNegativeButton("예",
                 DialogInterface.OnClickListener{ dialog,id->
                     val act = context as Activity
-                    RecommendData.myRadius = 500.0
-                    RecommendData.MBTIList.clear()
-                    RecommendData.personalityList.clear()
-                    RecommendData.hobbyList.clear()
-                    RecommendData.smokingCheck = true
                     auth.signOut()
                     ActivityCompat.finishAffinity(act)
                     val intent = Intent(context,  CheckLoginActivity::class.java)

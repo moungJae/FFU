@@ -33,12 +33,6 @@ private const val TAG_CHATTING = "fragment_chatting"
 class BackgroundActivity : AppCompatActivity() {
 
     private lateinit var binding: BackgroundBinding
-    private lateinit var userDB: DatabaseReference
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Toast.makeText(this, "종료!!!", Toast.LENGTH_SHORT).show()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +42,6 @@ class BackgroundActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         setFragment(TAG_RECOMMEND, RecommendFragment())
-        // checkSetProfile()
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
@@ -114,32 +107,5 @@ class BackgroundActivity : AppCompatActivity() {
         }
         ft.commitAllowingStateLoss()
         //ft.commit()
-    }
-
-    // 프로필 편집을 하게 되는 경우
-    private fun checkSetProfile() {
-        var animationFlag = 0
-        var profileFlag = 0
-
-        userDB = Firebase.database.reference.child(DB_ANIMATION).child(CURRENT_USERID)
-        userDB.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                animationFlag++
-                if (animationFlag > 1) {
-                    finish()
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
-        userDB = Firebase.database.reference.child(DB_PROFILE).child(CURRENT_USERID)
-        userDB.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                profileFlag++
-                if (profileFlag > 1) {
-                    finish()
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {}
-        })
     }
 }
