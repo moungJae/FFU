@@ -37,7 +37,6 @@ import java.time.format.DateTimeFormatter
 
 
 class MatchingFragment: Fragment(R.layout.fragment_matching) {
-
     private lateinit var likeArticleAdapter: LikeArticleAdapter
     private val likeArticleList = mutableListOf<LikeArticle>()
     private var binding: FragmentMatchingBinding? = null
@@ -118,6 +117,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
         //  완료 버튼 클릭 시
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
+            Toast.makeText(activity, "like를 보냈습니다!",Toast.LENGTH_SHORT).show()
             //상대방꺼에 나를 저장
             val otherMatchDB = Firebase.database.reference.child("likeInfo").child(userId).child("match").child(CURRENT_USERID)
             otherMatchDB.setValue(true)
@@ -146,6 +146,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
             userHistoryDB.push().setValue(matchUserHistoryItem)
             otherHistoryDB.push().setValue(matchOtherUserHistoryItem)
+
 
             //val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
             //dialog.dismiss()

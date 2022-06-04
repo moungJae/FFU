@@ -7,14 +7,14 @@
     android:background="@drawable/dialog_radius_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-    android:paddingHorizontal="50dp"
-    android:paddingVertical="10dp">
+    android:paddingHorizontal="50sp"
+    android:paddingVertical="10sp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingTop="10dp"
+        android:paddingTop="10sp"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -53,7 +53,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
+        android:paddingTop="10sp"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
@@ -84,27 +84,27 @@
             android:id="@+id/dialog_check_animation_progressbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:dpb_dotColor="@color/colorAccent"
-            app:dpb_noOfDots="4"
+            android:layout_centerHorizontal="true"
             android:visibility="invisible"
-            />
+            app:dpb_dotColor="@color/colorAccent"
+            app:dpb_noOfDots="4" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="10sp"
+        android:paddingBottom="20sp"
         android:orientation="horizontal"
         android:layout_gravity="center">
 
         <Button
             android:id="@+id/dialog_check_animation_save"
             android:layout_width="80sp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="40sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
             android:text="@string/save"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
@@ -114,9 +114,9 @@
         <Button
             android:id="@+id/dialog_check_animation_cancel"
             android:layout_width="80sp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="40sp"
+            android:layout_marginStart="20sp"
+            android:layout_marginEnd="20sp"
             android:text="@string/cancel"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
