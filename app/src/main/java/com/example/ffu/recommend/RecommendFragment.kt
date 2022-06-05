@@ -95,27 +95,28 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                     ) / 1000.0
 
                 if (distance < myRadius) {
-                    hobbyMatched[uid] = 0
-                    personalityMatched[uid] = 0
-                    finalMatched[uid] = 0
                     recommendUsersUid.add(uid)
                     RecommendData.distanceUsers[uid] = distance * 1000.0
                 }
             }
-                //
+
+//            if (RecommendData.MBTISet.isEmpty() || RecommendData.hobbySet.isEmpty() || RecommendData.personalitySet.isEmpty()) {
+//                Toast.makeText(requireContext(), "추천할 대상이 없습니다.", Toast.LENGTH_SHORT).show()
+//
+//            } else {
             for (mbti in RecommendData.MBTISet) {
                 for (uid in recommendUsersUid) {
                     if (PROFILE[uid]?.mbti?.contains(mbti) == true) {
                         mbtiMatched[uid] = 1
+                        hobbyMatched[uid] = 0
                     }
                 }
             }
-
             for (hobby in RecommendData.hobbySet) {
                 for (uid in mbtiMatched.keys) {
                     if (PROFILE[uid]?.hobby?.contains(hobby) == true) {
                         hobbyMatched[uid] = hobbyMatched[uid]!! + 1
-                        personalityMatched[uid] = hobbyMatched[uid]!!
+                        personalityMatched[uid] = 0
                     }
                 }
             }
@@ -124,20 +125,19 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 for (uid in hobbyMatched.keys) {
                     if (PROFILE[uid]?.personality?.contains(personality) == true) {
                         personalityMatched[uid] = personalityMatched[uid]!! + 1
+                        finalMatched[uid] = 0
                     }
                 }
             }
 
             if (RecommendData.smokingCheck) {
                 for (uid in personalityMatched.keys) {
-                    if (personalityMatched[uid]!! > 0)
-                        finalMatched[uid] = personalityMatched[uid]!!
+                    finalMatched[uid] = personalityMatched[uid]!! + hobbyMatched[uid]!!
                 }
             } else {
                 for (uid in personalityMatched.keys) {
                     if (PROFILE[uid]?.smoke?.equals("흡연") == false) {
-                        if (personalityMatched[uid]!! > 0)
-                            finalMatched[uid] = personalityMatched[uid]!!
+                        finalMatched[uid] = personalityMatched[uid]!! + hobbyMatched[uid]!!
                     }
                 }
             }
@@ -153,7 +153,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 val bottomSheet = RecommendList(realFinal)
                 bottomSheet.show(childFragmentManager, RecommendList.TAG)
             }
-
+//            }
         }
     }
 
