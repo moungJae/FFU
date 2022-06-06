@@ -1,11 +1,9 @@
 package com.example.ffu.recommend
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.CompoundButton
 import com.example.ffu.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -44,6 +42,7 @@ class BottomSheetMBTI : BottomSheetDialogFragment() {
 
         makeListner()
         checkBoxInit(view)
+        checkAllMBTI.isChecked = true
     }
     private fun checkBoxInit(view : View) {
         checkAllMBTI = view.findViewById<CompoundButton>(R.id.checkAllMBTI)
@@ -105,23 +104,23 @@ class BottomSheetMBTI : BottomSheetDialogFragment() {
                         checkINFJ.isChecked = true
                         checkINTJ.isChecked = true
                     }
-                    R.id.checkESTJ -> RecommendData.MBTIList.add("ESTJ")
-                    R.id.checkESFJ -> RecommendData.MBTIList.add("ESFJ")
-                    R.id.checkENFJ -> RecommendData.MBTIList.add("ENFJ")
-                    R.id.checkENTJ -> RecommendData.MBTIList.add("ENTJ")
-                    R.id.checkENTP -> RecommendData.MBTIList.add("ENTP")
-                    R.id.checkENFP -> RecommendData.MBTIList.add("ENFP")
-                    R.id.checkESFP -> RecommendData.MBTIList.add("ESFP")
-                    R.id.checkESTP -> RecommendData.MBTIList.add("ESTP")
+                    R.id.checkESTJ -> RecommendData.MBTISet.add("ESTJ")
+                    R.id.checkESFJ -> RecommendData.MBTISet.add("ESFJ")
+                    R.id.checkENFJ -> RecommendData.MBTISet.add("ENFJ")
+                    R.id.checkENTJ -> RecommendData.MBTISet.add("ENTJ")
+                    R.id.checkENTP -> RecommendData.MBTISet.add("ENTP")
+                    R.id.checkENFP -> RecommendData.MBTISet.add("ENFP")
+                    R.id.checkESFP -> RecommendData.MBTISet.add("ESFP")
+                    R.id.checkESTP -> RecommendData.MBTISet.add("ESTP")
 
-                    R.id.checkINTP -> RecommendData.MBTIList.add("INTP")
-                    R.id.checkINFP -> RecommendData.MBTIList.add("INFP")
-                    R.id.checkISFP -> RecommendData.MBTIList.add("ISFP")
-                    R.id.checkISTP -> RecommendData.MBTIList.add("ISTP")
-                    R.id.checkISTJ -> RecommendData.MBTIList.add("ISTJ")
-                    R.id.checkISFJ -> RecommendData.MBTIList.add("ISFJ")
-                    R.id.checkINFJ -> RecommendData.MBTIList.add("INFJ")
-                    R.id.checkINTJ -> RecommendData.MBTIList.add("INTJ")
+                    R.id.checkINTP -> RecommendData.MBTISet.add("INTP")
+                    R.id.checkINFP -> RecommendData.MBTISet.add("INFP")
+                    R.id.checkISFP -> RecommendData.MBTISet.add("ISFP")
+                    R.id.checkISTP -> RecommendData.MBTISet.add("ISTP")
+                    R.id.checkISTJ -> RecommendData.MBTISet.add("ISTJ")
+                    R.id.checkISFJ -> RecommendData.MBTISet.add("ISFJ")
+                    R.id.checkINFJ -> RecommendData.MBTISet.add("INFJ")
+                    R.id.checkINTJ -> RecommendData.MBTISet.add("INTJ")
                 }
             }
             else {
@@ -145,23 +144,23 @@ class BottomSheetMBTI : BottomSheetDialogFragment() {
                         checkINFJ.isChecked = false
                         checkINTJ.isChecked = false
                     }
-                    R.id.checkESTJ -> RecommendData.MBTIList.remove("ESTJ")
-                    R.id.checkESFJ -> RecommendData.MBTIList.remove("ESFJ")
-                    R.id.checkENFJ -> RecommendData.MBTIList.remove("ENFJ")
-                    R.id.checkENTJ -> RecommendData.MBTIList.remove("ENTJ")
-                    R.id.checkENTP -> RecommendData.MBTIList.remove("ENTP")
-                    R.id.checkENFP -> RecommendData.MBTIList.remove("ENFP")
-                    R.id.checkESFP -> RecommendData.MBTIList.remove("ESFP")
-                    R.id.checkESTP -> RecommendData.MBTIList.remove("ESTP")
+                    R.id.checkESTJ -> RecommendData.MBTISet.remove("ESTJ")
+                    R.id.checkESFJ -> RecommendData.MBTISet.remove("ESFJ")
+                    R.id.checkENFJ -> RecommendData.MBTISet.remove("ENFJ")
+                    R.id.checkENTJ -> RecommendData.MBTISet.remove("ENTJ")
+                    R.id.checkENTP -> RecommendData.MBTISet.remove("ENTP")
+                    R.id.checkENFP -> RecommendData.MBTISet.remove("ENFP")
+                    R.id.checkESFP -> RecommendData.MBTISet.remove("ESFP")
+                    R.id.checkESTP -> RecommendData.MBTISet.remove("ESTP")
 
-                    R.id.checkINTP -> RecommendData.MBTIList.remove("INTP")
-                    R.id.checkINFP -> RecommendData.MBTIList.remove("INFP")
-                    R.id.checkISFP -> RecommendData.MBTIList.remove("ISFP")
-                    R.id.checkISTP -> RecommendData.MBTIList.remove("ISTP")
-                    R.id.checkISTJ -> RecommendData.MBTIList.remove("ISTJ")
-                    R.id.checkISFJ -> RecommendData.MBTIList.remove("ISFJ")
-                    R.id.checkINFJ -> RecommendData.MBTIList.remove("INFJ")
-                    R.id.checkINTJ -> RecommendData.MBTIList.remove("INTJ")
+                    R.id.checkINTP -> RecommendData.MBTISet.remove("INTP")
+                    R.id.checkINFP -> RecommendData.MBTISet.remove("INFP")
+                    R.id.checkISFP -> RecommendData.MBTISet.remove("ISFP")
+                    R.id.checkISTP -> RecommendData.MBTISet.remove("ISTP")
+                    R.id.checkISTJ -> RecommendData.MBTISet.remove("ISTJ")
+                    R.id.checkISFJ -> RecommendData.MBTISet.remove("ISFJ")
+                    R.id.checkINFJ -> RecommendData.MBTISet.remove("INFJ")
+                    R.id.checkINTJ -> RecommendData.MBTISet.remove("INTJ")
                 }
             }
         }

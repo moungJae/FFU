@@ -38,6 +38,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -66,9 +69,9 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_bottomsheet, container, false)
-        view.findViewById<Button>(R.id.returnToMap).setOnClickListener {
-            dismiss()
-        }
+//        view.findViewById<Button>(R.id.returnToMap).setOnClickListener {
+//            dismiss()
+//        }
 
         return view
     }
@@ -88,14 +91,26 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
             showUserInformation(RecommendArticleModel)
         })
 
-
+        recommendListener()
         addRecommendUserList()
 
         fragmentBottomsheetBinding.recommendedUsersView.layoutManager = LinearLayoutManager(context)
         fragmentBottomsheetBinding.recommendedUsersView.adapter = recommendAdapter
 
         //userDB.addChildEventListener(listener)
+    }
 
+    private fun recommendListener() {
+        userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike")
+        userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                addRecommendUserList()
+            }
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -132,6 +147,7 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         super.onDestroy()
         //userDB.removeEventListener(listener)
     }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
@@ -142,6 +158,7 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
     }
 
     private fun addRecommendUserList(){
+        recommendUserList.clear()
         for(userId in recommendUsers.keys){
             //이미 LIKE 또는 DISLIKE를 보내거나 받은 유저이면 recommend에 뜨지 않게 한다.
             if(CURRENT_USERID!=userId && !SEND_LIKE_USER.containsKey(userId)&& !RECEIVED_LIKE_USER.containsKey(userId)){
@@ -150,9 +167,10 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
                 val birth = PROFILE[userId]?.birth ?: ""
                 val imageUri = URI[userId]?:""
                 recommendUserList.add(RecommendArticle(userId,nickname,gender,birth,imageUri))
-                recommendAdapter.submitList(recommendUserList)
             }
         }
+        recommendAdapter.submitList(recommendUserList)
+        recommendAdapter.notifyDataSetChanged()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -201,17 +219,22 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
             .load(recommendArticleModel.imageUrl)
             .into(image)
 
-
-        val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike").child(CURRENT_USERID)
-        val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike").child(userId)
+        val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike")
+        val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike")
 
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
             compoundButton.startAnimation(
                 scaleAnimation
             )
 
-            receivedLikeDB.setValue(true)
-            sendLikeDB.setValue(true)
+            val receiveLikeMap = mutableMapOf<String, Any>()
+            val sendLikeMap = mutableMapOf<String, Any>()
+
+            receiveLikeMap[CURRENT_USERID] = true
+            sendLikeMap[userId] = true
+
+            receivedLikeDB.updateChildren(receiveLikeMap)
+            sendLikeDB.updateChildren(sendLikeMap)
 
             val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
             val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
@@ -234,7 +257,6 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
             userHistoryDB.push().setValue(sendHistoryItem)
             otherHistoryDB.push().setValue(receiveHistoryItem)
 
-
             //dialog.dismiss()
             //dialog.cancel()
 
@@ -243,8 +265,10 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         })
 
         dislike.setOnClickListener{
-            //receivedLikeDB.setValue(false)
-            sendLikeDB.setValue(false)
+            val sendLikeMap = mutableMapOf<String, Any>()
+
+            sendLikeMap[userId] = false
+            sendLikeDB.updateChildren(sendLikeMap)
             dialog.dismiss()
         }
 

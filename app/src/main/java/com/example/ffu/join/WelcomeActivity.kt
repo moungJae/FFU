@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat
 import com.example.ffu.BackgroundActivity
 import com.example.ffu.R
 import com.example.ffu.UserInformation
+import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -40,7 +41,6 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var mLastLocation: Location // 현재 위치 가지고 있는 객체
 
     private lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개 변수 저장
-    private lateinit var locationSource: FusedLocationSource
     private lateinit var fusedLocationClient: FusedLocationProviderClient // 현재 위치 가져오기 위한 변수
     private lateinit var userDB: DatabaseReference
 
@@ -118,7 +118,6 @@ class WelcomeActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION,
             ), 2
         )
-        //startLocationUpdates()
     }
 
     private fun backgroundDeniedPermission() {
@@ -132,8 +131,6 @@ class WelcomeActivity : AppCompatActivity() {
         var listener = DialogInterface.OnClickListener { _, p1 ->
             when (p1) {
                 DialogInterface.BUTTON_POSITIVE -> finish()
-//                DialogInterface.BUTTON_POSITIVE ->
-//                    backgroundPermission()
             }
         }
         builder.setPositiveButton("넹", listener)
@@ -151,19 +148,14 @@ class WelcomeActivity : AppCompatActivity() {
             when (p1) {
                 DialogInterface.BUTTON_POSITIVE ->
                     backgroundPermission()
-//                DialogInterface.BUTTON_POSITIVE ->
-//                    backgroundDeniedPermission()
             }
         }
         builder.setPositiveButton("확인", listener)
-        //builder.setNegativeButton("허용 안함", listener)
-
         builder.show()
     }
 
 
     private fun requestPermission() {
-
         // 이미 권한이 있으면 그냥 리턴
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -181,7 +173,6 @@ class WelcomeActivity : AppCompatActivity() {
                     ), 1
                 )
                 permissionDialog(this)
-                //checkPermission()
             }
             // API 23 미만 버전에서는 ACCESS_BACKGROUND_LOCATION X
             else {
@@ -198,9 +189,6 @@ class WelcomeActivity : AppCompatActivity() {
 
     /* ========================사용자 위치 받기======================== */
     private fun startLocationUpdates() {
-        // init my location
-//        mLastLocation.latitude = 0.0
-//        mLastLocation.longitude = 0.0
 
         mLocationRequest = LocationRequest.create().apply {
             interval = 10 * 1000 // 업데이트 간격 단위, 1000밀리초 단위 (1초)
@@ -218,10 +206,6 @@ class WelcomeActivity : AppCompatActivity() {
             fusedLocationClient!!.requestLocationUpdates(
                 mLocationRequest, mLocationCallback, Looper.myLooper()!!
             )
-
-        } else {
-            // 위치 권한 설정 안되어 있는 경우.
-            //Toast.makeText(this, "위치 권한 거부", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -234,19 +218,18 @@ class WelcomeActivity : AppCompatActivity() {
                     addMyLocation(location)
                 }
             }
-//            // 시스템에서 받은 location 정보를 onLocationChanged()에 전달
-//            mLastLocation = locationResult.lastLocation
-//            //addLocationToFirebase(locationResult.lastLocation)
         }
     }
 
     private fun addMyLocation(location: Location) {
-        mLastLocation = location
         val locationToFirebase = mutableMapOf<String, Any>()
+
+        mLastLocation = location
         locationToFirebase["latitude"] = mLastLocation.latitude
         locationToFirebase["longitude"] = mLastLocation.longitude
-        userDB = Firebase.database.reference.child("recommend").child(auth?.uid.toString())
-        userDB.updateChildren(locationToFirebase)
-        Log.d("addMyLocation", locationToFirebase.toString())
+        if (auth.uid != null) {
+            userDB = Firebase.database.reference.child("recommend").child(auth.uid.toString())
+            userDB.updateChildren(locationToFirebase)
+        }
     }
 }

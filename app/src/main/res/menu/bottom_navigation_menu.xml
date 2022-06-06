@@ -21,7 +21,4 @@
         android:icon="@drawable/ic_person"
         android:title="Profile"
         app:cnb_iconColor="@color/settings" />
-
-
-
 </menu>

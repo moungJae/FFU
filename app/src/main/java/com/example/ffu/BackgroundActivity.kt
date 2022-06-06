@@ -1,6 +1,7 @@
 package com.example.ffu
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -21,6 +22,7 @@ import com.example.ffu.utils.DBKey.Companion.DB_ANIMATION
 import com.example.ffu.utils.DBKey.Companion.DB_PROFILE
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.example.ffu.databinding.BackgroundBinding
+import com.example.ffu.recommend.RecommendData
 import com.example.ffu.utils.Recommend
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 
@@ -32,19 +34,43 @@ private const val TAG_CHATTING = "fragment_chatting"
 class BackgroundActivity : AppCompatActivity() {
 
     private lateinit var binding: BackgroundBinding
-
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private lateinit var userDB: DatabaseReference
+
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        Toast.makeText(this, "종료!!!", Toast.LENGTH_SHORT).show()
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = BackgroundBinding.inflate(layoutInflater)
+
         val view = binding.root
         setContentView(view)
-        checkSetProfile()
         setFragment(TAG_RECOMMEND, RecommendFragment())
 
+        RecommendData.MBTISet.clear()
+        RecommendData.hobbySet.clear()
+        RecommendData.personalitySet.clear()
+        RecommendData.myRadius = 500.0
+        RecommendData.smokingCheck = true
+        RecommendData.MBTISet = mutableSetOf("ESTJ", "ESFJ", "ENFJ", "ENTJ",
+            "ENTP", "ENFP", "ESFP", "ESTP",
+            "INTP", "INFP", "ISFP", "ISTP",
+            "ISTJ", "ISFJ", "INFJ", "INTJ")
+        RecommendData.hobbySet = mutableSetOf("적극적인", "조용한", "엉뚱한", "진지한",
+            "자유로운", "즉흥적인", "꼼꼼한", "감성적인",
+            "성실한", "논리적인", "침착한", "자신감있는",
+            "애교있는", "어른스러운", "예의 바른", "유머러스한",
+            "허세 없는", "지적인", "소심한", "쿨한",
+            "또라이같은", "친절한", "계획적인", "당당한")
+        RecommendData.personalitySet = mutableSetOf("적극적인", "조용한", "엉뚱한", "진지한",
+            "자유로운", "즉흥적인", "꼼꼼한", "감성적인",
+            "성실한", "논리적인", "침착한", "자신감있는",
+            "애교있는", "어른스러운", "예의 바른", "유머러스한",
+            "허세 없는", "지적인", "소심한", "쿨한",
+            "또라이같은", "친절한", "계획적인", "당당한")
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.recommend -> setFragment(TAG_RECOMMEND, RecommendFragment())
@@ -57,7 +83,6 @@ class BackgroundActivity : AppCompatActivity() {
     }
 
     /* Fragment State 유지 함수 */
-    //프래그먼트 컨트롤 함수
     fun setFragment(tag: String, fragment: Fragment){
         val manager: FragmentManager = supportFragmentManager
         val ft: FragmentTransaction = manager.beginTransaction()
@@ -108,11 +133,9 @@ class BackgroundActivity : AppCompatActivity() {
                 ft.show(profile)
             }
         }
-
-        //마무리
         ft.commitAllowingStateLoss()
         //ft.commit()
-    }//seFragment함수 끝
+    }
 
     // 프로필 편집을 하게 되는 경우
     private fun checkSetProfile() {
@@ -129,7 +152,6 @@ class BackgroundActivity : AppCompatActivity() {
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-
         userDB = Firebase.database.reference.child(DB_PROFILE).child(CURRENT_USERID)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -141,13 +163,4 @@ class BackgroundActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
     }
-
-    private fun replaceFragment(fragment : Fragment){
-        supportFragmentManager.beginTransaction()
-            .apply{
-                replace(R.id.fragmentContainer,fragment)
-                commit()
-            }
-    }
-
 }

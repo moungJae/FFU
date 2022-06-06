@@ -191,7 +191,7 @@ class UserInformation {
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                 //채팅방을 나간 경우
                 val matchUserId = snapshot.key.toString()
-                MATCH_USER[matchUserId]=false
+                MATCH_USER[matchUserId] = false
             }
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
@@ -208,7 +208,7 @@ class UserInformation {
                 val receivedUserValue = snapshot.value
                 Log.d("Id",receivedUserId)
                 Log.d("value",receivedUserValue.toString())
-                RECEIVED_LIKE_USER[receivedUserId] = receivedUserValue ==true
+                RECEIVED_LIKE_USER[receivedUserId] = (receivedUserValue == true)
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val receivedUserId= snapshot.key.toString()
@@ -225,8 +225,7 @@ class UserInformation {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val sendUserId = snapshot.key.toString()
                 val sendUserValue = snapshot.value
-                SEND_LIKE_USER[sendUserId] = sendUserValue==true
-
+                SEND_LIKE_USER[sendUserId] = (sendUserValue == true)
             }
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val sendUserId = snapshot.key.toString()
@@ -249,7 +248,11 @@ class UserInformation {
                 }
             }
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
-            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                if (snapshot.getValue(History::class.java) != null) {
+                    HISTORY.remove(snapshot.getValue(History::class.java) as History)
+                }
+            }
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
         })

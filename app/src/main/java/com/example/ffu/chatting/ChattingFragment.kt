@@ -3,6 +3,7 @@ package com.example.ffu.chatting
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ffu.R
@@ -20,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.example.ffu.UserInformation.Companion.PROFILE
+import com.example.ffu.recommend.RecommendData
 import com.example.ffu.utils.Article
 
 class ChattingFragment: Fragment(R.layout.fragment_chatting) {
@@ -41,12 +43,12 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
         super.onViewCreated(view, savedInstanceState)
 
         val fragmentHomeBinding = FragmentChattingBinding.bind(view)
+
         binding = fragmentHomeBinding
         articleList.clear()
         userDB = Firebase.database.reference
         storage = FirebaseStorage.getInstance()
         pathReference = storage.reference
-
 
         articleAdapter = ArticleAdapter(onItemClicked = { articleModel ->
             if (auth.currentUser != null) {
@@ -63,31 +65,43 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
                         startActivity(intent)
                     }
                     //Snackbar.make(view, "채팅방이 생성되었습니다. 채팅탭에서 확인해주세요.", Snackbar.LENGTH_LONG).show()
-
                 }
             }
-
         })
 
         addArticleList()
+        chattingListener()
 
         fragmentHomeBinding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
         fragmentHomeBinding.articleRecyclerView.adapter = articleAdapter
     }
 
-    private fun addArticleList(){
-        for(matchId in MATCH_USER.keys){
-            //if(matchId!= CURRENT_USERID){ 명재 수정 부분
-                val name = PROFILE[matchId]?.nickname ?: ""
-                val gender = PROFILE[matchId]?.gender ?: ""
-                val birth = PROFILE[matchId]?.birth ?: ""
-                val imageUri = URI[matchId]
+    private fun chattingListener() {
+        userDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match")
+        userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                addArticleList()
+            }
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                addArticleList()
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
+    }
 
-                articleList.add(Article(matchId,name,gender,birth,imageUri))
-                articleAdapter.submitList(articleList)
-            //}
+    private fun addArticleList() {
+        articleList.clear()
+        for (matchId in MATCH_USER.keys) {
+            val name = PROFILE[matchId]?.nickname ?: ""
+            val gender = PROFILE[matchId]?.gender ?: ""
+            val birth = PROFILE[matchId]?.birth ?: ""
+            val imageUri = URI[matchId]
+
+            articleList.add(Article(matchId,name,gender,birth,imageUri))
+            articleAdapter.submitList(articleList)
         }
-
     }
 
     override fun onResume() {
