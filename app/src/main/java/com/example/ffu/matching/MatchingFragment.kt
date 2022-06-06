@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -91,11 +93,13 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         for (likeId in RECEIVED_LIKE_USER.keys) {
             if(RECEIVED_LIKE_USER[likeId] == true) {
                 val name = PROFILE[likeId]?.nickname ?: ""
-                val gender = PROFILE[likeId]?.gender ?: ""
-                val birth = PROFILE[likeId]?.birth ?: ""
+                val ageJob = PROFILE[likeId]?.age+ ", "+ PROFILE[likeId]?.job
+                val introMe = PROFILE[likeId]?.introMe ?: ""
+                //val gender = PROFILE[likeId]?.gender ?: ""
+                //val birth = PROFILE[likeId]?.birth ?: ""
                 val imageUri = URI[likeId]?:""
                 //Log.d("name",name)
-                likeArticleList.add(LikeArticle(likeId,name,gender,birth,imageUri))
+                likeArticleList.add(LikeArticle(likeId,name,ageJob,introMe,imageUri))
                 likeArticleAdapter.submitList(likeArticleList)
             }
         }
@@ -114,7 +118,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         val mView : View = edialog.inflate(R.layout.dialog_userinformation,null)
         val image : CircleImageView = mView.findViewById(R.id.dialog_userinformation_photo)
         val age : TextView = mView.findViewById(R.id.dialog_userinformation_age)
-        val birth : TextView = mView.findViewById(R.id.dialog_userinformation_birth)
+        //val birth : TextView = mView.findViewById(R.id.dialog_userinformation_birth)
         val drinking : TextView = mView.findViewById(R.id.dialog_userinformation_drinking)
         val hobby : TextView = mView.findViewById(R.id.dialog_userinformation_hobby)
         val job : TextView = mView.findViewById(R.id.dialog_userinformation_job)
@@ -122,16 +126,30 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         val personality : TextView = mView.findViewById(R.id.dialog_userinformation_personality)
         val smoke: TextView = mView.findViewById(R.id.dialog_userinformation_smoke)
         val like : ToggleButton = mView.findViewById(R.id.dialog_userinformation_like)
-        val dislike : Button = mView.findViewById(R.id.dialog_userinformation_dislike)
+        val dislike : ToggleButton = mView.findViewById(R.id.dialog_userinformation_dislike)
 
-        age.text="나이 : "+ PROFILE[userId]?.age
-        birth.text="생일 : "+ PROFILE[userId]?.birth
-        drinking.text="음주여부 : "+ PROFILE[userId]?.drinking
-        hobby.text="취미 : "+ PROFILE[userId]?.hobby
-        job.text="직업 : "+ PROFILE[userId]?.job
-        mbti.text="mbti : "+ PROFILE[userId]?.mbti
-        personality.text="성격 : "+ PROFILE[userId]?.personality
-        smoke.text="흡연여부 : "+ PROFILE[userId]?.smoke
+        age.text=PROFILE[userId]?.age
+        //birth.text="생일 : "+ PROFILE[userId]?.birth
+        drinking.text= PROFILE[userId]?.drinking
+        hobby.text=PROFILE[userId]?.hobby
+        job.text= PROFILE[userId]?.job
+        mbti.text=PROFILE[userId]?.mbti
+        personality.text=PROFILE[userId]?.personality
+        smoke.text= PROFILE[userId]?.smoke
+        var scaleAnimation: ScaleAnimation = ScaleAnimation(
+            0.7f,
+            1.0f,
+            0.7f,
+            1.0f,
+            Animation.RELATIVE_TO_SELF,
+            0.7f,
+            Animation.RELATIVE_TO_SELF,
+            0.7f
+        )
+        var bounceInterpolator: BounceInterpolator = BounceInterpolator()
+
+        scaleAnimation.duration = 500
+        scaleAnimation.interpolator = bounceInterpolator
 
         Glide.with(this)
             .load(likeArticleModel.imageUrl)
@@ -139,7 +157,11 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
 
         //  완료 버튼 클릭 시
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
-            Toast.makeText(activity, "like를 보냈습니다!",Toast.LENGTH_SHORT).show()
+            compoundButton.startAnimation(
+                scaleAnimation
+            )
+            like.setBackgroundResource(R.drawable.ic_likefull)
+            Toast.makeText(activity, "matching 되었습니다!",Toast.LENGTH_SHORT).show()
             //상대방꺼에 나를 저장
             val otherMatchDB = Firebase.database.reference.child("likeInfo").child(userId).child("match")
             val otherMatchMap = mutableMapOf<String, Any>()
@@ -160,6 +182,7 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
             val formatted = current.format(formatter).toString()
 
+
             val matchUserHistoryItem = History(
                 name = PROFILE[userId]?.nickname!!,
                 time = formatted!!,
@@ -179,12 +202,20 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             likeArticleList.clear()
             addReceivedLikeArticleList()
             likeArticleAdapter.notifyDataSetChanged()
+            Handler(Looper.getMainLooper()).postDelayed({
+                //Do something
+                dialog.dismiss()
+            }, 400)
             //val myDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("match").child(userId)
             //dialog.dismiss()
             //dialog.cancel()
         })
 
-        dislike.setOnClickListener{
+        dislike.setOnCheckedChangeListener { compoundButton, isChecked ->
+            compoundButton.startAnimation(
+                scaleAnimation
+            )
+            dislike.setBackgroundResource(R.drawable.ic_dislikefull)
             val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("receivedLike")
             val receiveLikeMap = mutableMapOf<String, Any>()
 
@@ -195,8 +226,10 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             likeArticleList.clear()
             addReceivedLikeArticleList()
             likeArticleAdapter.notifyDataSetChanged()
-            dialog.dismiss()
-            dialog.cancel()
+            Handler(Looper.getMainLooper()).postDelayed({
+                //Do something
+                dialog.dismiss()
+            }, 400)
         }
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

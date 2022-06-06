@@ -11,7 +11,7 @@
 <!--    val age : Int,-->
 <!--    val imageUrl: String-->
     <ImageView
-        android:id="@+id/recommendUserImage"
+        android:id="@+id/item_chatting_article_thumbnailImageView"
         android:layout_width="110sp"
         android:scaleType="center"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,28 +25,28 @@
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="16sp"
-        app:layout_constraintStart_toEndOf="@id/recommendUserImage"
+        app:layout_constraintStart_toEndOf="@id/item_chatting_article_thumbnailImageView"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/recommendNickname"
+        android:id="@+id/item_chatting_article_name"
         android:layout_width="0sp"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/recommendAge"
+        android:id="@+id/item_chatting_article_gender"
         android:layout_width="0sp"
-        app:layout_constraintTop_toBottomOf="@id/recommendNickname"
-        app:layout_constraintStart_toStartOf="@id/recommendNickname"
+        app:layout_constraintTop_toBottomOf="@id/item_chatting_article_name"
+        app:layout_constraintStart_toStartOf="@id/item_chatting_article_name"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="6sp"
         android:layout_height="wrap_content"/>
     <TextView
-        app:layout_constraintStart_toStartOf="@id/recommendNickname"
+        app:layout_constraintStart_toStartOf="@id/item_chatting_article_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recommendAge"
+        app:layout_constraintTop_toBottomOf="@id/item_chatting_article_gender"
         android:textStyle="bold"
         android:textSize="15sp"
         android:layout_marginTop="6sp"
         android:textColor="@color/black"
-        android:id="@+id/recommendMbti"
+        android:id="@+id/item_chatting_article_mbti"
         android:layout_width="0sp"
         android:layout_height="wrap_content"/>
 <!--    <TextView-->

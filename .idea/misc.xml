@@ -106,25 +106,42 @@
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/menu/menu_profile.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/menu/menu_recommend.xml" value="0.25364583333333335" />
         <entry key="app/src/main/res/drawable-v24/box_button.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable-v24/chat_center.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/ic_baseline_home_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/ic_baseline_person_24.xml" value="0.2075" />
         <entry key="app/src/main/res/drawable-v24/selector_menu_color.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/chat_left.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/chat_right.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_ffu_2.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1065" />
+        <entry key="app/src/main/res/drawable/ic_noun_arrow_1787130.xml" value="0.182" />
         <entry key="app/src/main/res/layout/activity_chatroom.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_setting.xml" value="0.1276595744680851" />
         <entry key="app/src/main/res/layout/background.xml" value="0.2726449275362319" />
         <entry key="app/src/main/res/layout/checkpn.xml" value="0.25611419677734376" />
+        <entry key="app/src/main/res/layout/control_hobby.xml" value="0.14311043566362716" />
+        <entry key="app/src/main/res/layout/control_mbti.xml" value="0.14311043566362716" />
+        <entry key="app/src/main/res/layout/control_personality.xml" value="0.14311043566362716" />
+        <entry key="app/src/main/res/layout/dialog_check_animation.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_profile_hobby.xml" value="0.14311043566362716" />
+        <entry key="app/src/main/res/layout/dialog_setting.xml" value="0.1716485507246377" />
+        <entry key="app/src/main/res/layout/dialog_userinformation.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_bottomsheet.xml" value="0.39558976767719656" />
         <entry key="app/src/main/res/layout/fragment_chatting.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/fragment_matching.xml" value="0.10891590678824721" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_recommend.xml" value="0.1" />
         <entry key="app/src/main/res/layout/home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/ic_baseline_chat_bubble_24.xml" value="0.286231884057971" />
-        <entry key="app/src/main/res/layout/item_article.xml" value="0.1634963768115942" />
+        <entry key="app/src/main/res/layout/item_article.xml" value="0.460333229838938" />
         <entry key="app/src/main/res/layout/item_chat.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layout/item_chat_center.xml" value="0.337469482421875" />
         <entry key="app/src/main/res/layout/item_chat_left.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_chat_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_chat_right.xml" value="0.2912948608398438" />
+        <entry key="app/src/main/res/layout/item_chatting_article.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_likeinfo_article.xml" value="0.28912963867187497" />
         <entry key="app/src/main/res/layout/join.xml" value="0.20316314697265625" />
         <entry key="app/src/main/res/layout/main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/mbti.xml" value="0.15520833333333334" />
@@ -134,6 +151,7 @@
         <entry key="app/src/main/res/layout/profilesetting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/religion.xml" value="0.15520833333333334" />
         <entry key="app/src/main/res/layout/root.xml" value="0.15520833333333334" />
+        <entry key="app/src/main/res/layout/users_article.xml" value="0.1" />
         <entry key="app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_chatting.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.18888888888888888" />

@@ -10,10 +10,13 @@
         android:id="@+id/item_chat_center_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingRight="3sp"
+        android:paddingLeft="3sp"
         android:text = "test"
         android:textSize="13dp"
         android:textColor="@color/chat_center_color"
-        android:background="@color/chat_center_backgroudcolor"/>
+        android:background="@drawable/chat_center"/>
 
 
 </LinearLayout>

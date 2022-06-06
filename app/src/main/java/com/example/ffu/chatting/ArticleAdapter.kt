@@ -7,30 +7,30 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ffu.databinding.ItemArticleBinding
-import com.example.ffu.utils.Article
+import com.example.ffu.databinding.ItemChattingArticleBinding
+import com.example.ffu.utils.ChattingArticle
 
 
-class ArticleAdapter(val onItemClicked: (Article) -> Unit) : ListAdapter<Article, ArticleAdapter.ViewHolder>(diffUtil) {
-    inner class ViewHolder(private val binding: ItemArticleBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(articleModel: Article){
-            binding.itemArticleName.text=articleModel.Name
-            binding.itemArticleGender.text=articleModel.Gender
-            binding.itemArticleBirth.text=articleModel.Birth
+class ArticleAdapter(val onItemClicked: (ChattingArticle) -> Unit) : ListAdapter<ChattingArticle, ArticleAdapter.ViewHolder>(diffUtil) {
+    inner class ViewHolder(private val binding: ItemChattingArticleBinding): RecyclerView.ViewHolder(binding.root){
+        fun bind(chattingArticleModel: ChattingArticle){
+            binding.itemChattingArticleName.text=chattingArticleModel.Name
+            binding.itemChattingArticleGender.text=chattingArticleModel.gender
+            binding.itemChattingArticleMbti.text=chattingArticleModel.mbti
 
 
             Glide.with(binding.root)
-                .load(articleModel.imageUri)
-                .into(binding.thumbnailImageView)
+                .load(chattingArticleModel.imageUri)
+                .into(binding.itemChattingArticleThumbnailImageView)
             binding.root.setOnClickListener {
-                onItemClicked(articleModel)
+                onItemClicked(chattingArticleModel)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        return ViewHolder(ItemArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(ItemChattingArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -39,12 +39,12 @@ class ArticleAdapter(val onItemClicked: (Article) -> Unit) : ListAdapter<Article
 
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<Article>() {
-            override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
+        val diffUtil = object : DiffUtil.ItemCallback<ChattingArticle>() {
+            override fun areItemsTheSame(oldItem: ChattingArticle, newItem: ChattingArticle): Boolean {
                 return oldItem.Id == newItem.Id
             }
 
-            override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
+            override fun areContentsTheSame(oldItem: ChattingArticle, newItem: ChattingArticle): Boolean {
                 return oldItem == newItem
             }
         }
