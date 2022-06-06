@@ -55,17 +55,20 @@ class BackgroundActivity : AppCompatActivity() {
         RecommendData.personalitySet.clear()
         RecommendData.myRadius = 500.0
         RecommendData.smokingCheck = true
-        RecommendData.MBTISet = mutableSetOf("ESTJ", "ESFJ", "ENFJ", "ENTJ",
+        RecommendData.MBTISet = mutableSetOf(
+            "ESTJ", "ESFJ", "ENFJ", "ENTJ",
             "ENTP", "ENFP", "ESFP", "ESTP",
             "INTP", "INFP", "ISFP", "ISTP",
             "ISTJ", "ISFJ", "INFJ", "INTJ")
-        RecommendData.hobbySet = mutableSetOf("적극적인", "조용한", "엉뚱한", "진지한",
-            "자유로운", "즉흥적인", "꼼꼼한", "감성적인",
-            "성실한", "논리적인", "침착한", "자신감있는",
-            "애교있는", "어른스러운", "예의 바른", "유머러스한",
-            "허세 없는", "지적인", "소심한", "쿨한",
-            "또라이같은", "친절한", "계획적인", "당당한")
-        RecommendData.personalitySet = mutableSetOf("적극적인", "조용한", "엉뚱한", "진지한",
+        RecommendData.hobbySet = mutableSetOf(
+            "영화", "독서", "맛집 탐방", "운동",
+            "캠핑", "코딩", "카페", "등산",
+            "맥주", "여행","쇼핑","산책",
+            "수다", "야구 보기", "러닝", "클라이밍",
+            "악기 연주", "드라이브", "재테크", "사진 찍기",
+            "요리", "게임", "코인노래방", "라이딩")
+        RecommendData.personalitySet = mutableSetOf(
+            "적극적인", "조용한", "엉뚱한", "진지한",
             "자유로운", "즉흥적인", "꼼꼼한", "감성적인",
             "성실한", "논리적인", "침착한", "자신감있는",
             "애교있는", "어른스러운", "예의 바른", "유머러스한",

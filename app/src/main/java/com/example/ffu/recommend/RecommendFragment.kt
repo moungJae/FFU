@@ -12,21 +12,21 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.ffu.R
 import com.example.ffu.UserInformation
-import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.example.ffu.UserInformation.Companion.PROFILE
 import com.example.ffu.UserInformation.Companion.RECOMMEND
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.*
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.MapView
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.CircleOverlay
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 import com.naver.maps.map.util.MarkerIcons
 import java.lang.Math.*
-import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.pow
 
 
@@ -72,17 +72,22 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private fun getMatchedUsers() {
 
         recommendButton.setOnClickListener {
+            RecommendData.MBTISet.forEach { v -> Log.d("MBTISet", "${v}") }
+            RecommendData.hobbySet.forEach { v -> Log.d("hobbySet", "${v}") }
+            RecommendData.personalitySet.forEach { v -> Log.d("personalitySet", "${v}") }
 
             val usersUid: ArrayList<String> = UserInformation.MAP_USER
             val myRadius = RecommendData.myRadius / 1000.0
             val recommendUsersUid = ArrayList<String>()
-            val mbtiMatched = ArrayList<String>()
+            val matchedUsers = mutableMapOf<String, Int>()
+            val mbtiMatched = mutableMapOf<String, Int>()
             val hobbyMatched = mutableMapOf<String, Int>()
             val personalityMatched = mutableMapOf<String, Int>()
             val finalMatched = mutableMapOf<String, Int>()
 
             for (uid in usersUid) {
                 if (uid == auth.uid || uid == "null") continue
+
                 val distance: Double =
                     getDistance(
                         RECOMMEND[uid]?.latitude, RECOMMEND[uid]?.longitude,
@@ -90,26 +95,28 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                     ) / 1000.0
 
                 if (distance < myRadius) {
-                    personalityMatched[uid] = 0
-                    hobbyMatched[uid] = 0
-                    finalMatched[uid] = 0
                     recommendUsersUid.add(uid)
+                    RecommendData.distanceUsers[uid] = distance * 1000.0
                 }
             }
 
+//            if (RecommendData.MBTISet.isEmpty() || RecommendData.hobbySet.isEmpty() || RecommendData.personalitySet.isEmpty()) {
+//                Toast.makeText(requireContext(), "추천할 대상이 없습니다.", Toast.LENGTH_SHORT).show()
+//
+//            } else {
             for (mbti in RecommendData.MBTISet) {
                 for (uid in recommendUsersUid) {
                     if (PROFILE[uid]?.mbti?.contains(mbti) == true) {
-                        mbtiMatched.add(uid)
+                        mbtiMatched[uid] = 1
+                        hobbyMatched[uid] = 0
                     }
                 }
             }
-
             for (hobby in RecommendData.hobbySet) {
-                for (uid in mbtiMatched) {
+                for (uid in mbtiMatched.keys) {
                     if (PROFILE[uid]?.hobby?.contains(hobby) == true) {
                         hobbyMatched[uid] = hobbyMatched[uid]!! + 1
-                        personalityMatched[uid] = hobbyMatched[uid]!!
+                        personalityMatched[uid] = 0
                     }
                 }
             }
@@ -118,32 +125,35 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 for (uid in hobbyMatched.keys) {
                     if (PROFILE[uid]?.personality?.contains(personality) == true) {
                         personalityMatched[uid] = personalityMatched[uid]!! + 1
+                        finalMatched[uid] = 0
                     }
                 }
             }
 
             if (RecommendData.smokingCheck) {
                 for (uid in personalityMatched.keys) {
-                    if (personalityMatched[uid]!! > 0)
-                        finalMatched[uid] = personalityMatched[uid]!!
+                    finalMatched[uid] = personalityMatched[uid]!! + hobbyMatched[uid]!!
                 }
             } else {
                 for (uid in personalityMatched.keys) {
                     if (PROFILE[uid]?.smoke?.equals("흡연") == false) {
-                        if (personalityMatched[uid]!! > 0)
-                            finalMatched[uid] = personalityMatched[uid]!!
+                        finalMatched[uid] = personalityMatched[uid]!! + hobbyMatched[uid]!!
                     }
                 }
             }
 
-            val realFinal = finalMatched.toList().sortedByDescending { it.second }.toMap().toMutableMap()
+            finalMatched.forEach { (k, v) -> Log.d("finalMatched", "${k}, ${v}") }
+            val realFinal =
+                finalMatched.toList().sortedByDescending { it.second }.toMap().toMutableMap()
+            realFinal.forEach { (k, v) -> Log.d("realfinal", "${k}: ${v}") }
 
             if (realFinal.isEmpty()) {
                 Toast.makeText(requireContext(), "추천할 대상이 없습니다.", Toast.LENGTH_SHORT).show()
-            }else {
+            } else {
                 val bottomSheet = RecommendList(realFinal)
                 bottomSheet.show(childFragmentManager, RecommendList.TAG)
             }
+//            }
         }
     }
 
@@ -204,8 +214,8 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
         RecommendData.naverMap.minZoom = 7.0
         RecommendData.naverMap.maxZoom = 14.0
 
-        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(RECOMMEND[CURRENT_USERID]!!.latitude, RECOMMEND[CURRENT_USERID]!!.longitude)))
-        // RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(37.5509, 126.9410)))
+//        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(RECOMMEND[CURRENT_USERID]!!.latitude, RECOMMEND[CURRENT_USERID]!!.longitude)))
+        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(37.5509, 126.9410)))
         RecommendData.naverMap.uiSettings.isLocationButtonEnabled = true
         RecommendData.naverMap.locationSource =
             FusedLocationSource(this@RecommendFragment, REQUEST_ACCESS_LOCATION_PERMISSIONS)
