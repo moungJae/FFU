@@ -64,7 +64,7 @@
             android:background="@drawable/check_box"
             android:padding="10sp"
             android:button="@null"
-            android:text="절대 안됨"/>
+            android:text="싫어요"/>
 
 
     </RadioGroup>

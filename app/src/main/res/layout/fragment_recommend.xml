@@ -8,26 +8,36 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
 
         <TextView
             android:id="@+id/toolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="어떤 친구를 원하세요?"
-            android:textSize="20sp"
-
+            android:layout_marginTop="10dp"
+            android:text="어떤 친구를 찾으세요?"
             android:textColor="@color/black"
-            android:padding="10dp"
+            android:textSize="20sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/introMatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="blablablablablablablablablabla"
+            android:textSize="12sp"
+
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <View
             android:id="@+id/divisionLine"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@color/gray_horizon"
             android:elevation="0sp"
             android:fitsSystemWindows="false"
@@ -35,84 +45,90 @@
             app:contentInsetStart="0sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/introMatch" />
 
-
-        <LinearLayout
-            android:id="@+id/selectList"
+        <HorizontalScrollView
+            android:id="@+id/horScroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingLeft="5sp"
-            android:paddingRight="5sp"
             app:layout_constraintTop_toBottomOf="@id/divisionLine">
 
-            <Button
-                android:id="@+id/selectKm"
-                android:layout_width="65sp"
-                android:layout_height="40sp"
-                android:layout_marginHorizontal="4sp"
-                android:layout_marginTop="8sp"
-                android:layout_marginBottom="8sp"
-                android:background="@drawable/round_button2"
-                android:paddingLeft="6sp"
-                android:paddingRight="6sp"
-                android:text="거리"
-                android:textSize="14sp" />
+            <LinearLayout
+                android:id="@+id/selectList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="5sp"
+                android:paddingRight="5sp"
+                app:layout_constraintTop_toBottomOf="@id/divisionLine">
 
-            <Button
-                android:id="@+id/selectMBTI"
-                android:layout_width="65sp"
-                android:layout_height="40sp"
-                android:layout_marginHorizontal="4sp"
-                android:layout_marginTop="8sp"
-                android:layout_marginBottom="8sp"
-                android:background="@drawable/round_button2"
-                android:paddingLeft="6sp"
-                android:paddingRight="6sp"
-                android:text="MBTI"
-                android:textSize="14sp" />
+                <Button
+                    android:id="@+id/selectKm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_marginHorizontal="4sp"
+                    android:layout_marginTop="8sp"
+                    android:layout_marginBottom="8sp"
+                    android:background="@drawable/round_button2"
+                    android:paddingLeft="6sp"
+                    android:paddingRight="6sp"
+                    android:text="거리"
+                    android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/selectHobby"
-                android:layout_width="65sp"
-                android:layout_height="40sp"
-                android:layout_marginHorizontal="4sp"
-                android:layout_marginTop="8sp"
-                android:layout_marginBottom="8sp"
-                android:background="@drawable/round_button2"
-                android:paddingLeft="6sp"
-                android:paddingRight="6sp"
-                android:text="취미"
-                android:textSize="14sp" />
+                <Button
+                    android:id="@+id/selectMBTI"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_marginHorizontal="4sp"
+                    android:layout_marginTop="8sp"
+                    android:layout_marginBottom="8sp"
+                    android:background="@drawable/round_button2"
+                    android:paddingLeft="6sp"
+                    android:paddingRight="6sp"
+                    android:text="MBTI"
+                    android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/selectPersonality"
-                android:layout_width="65sp"
-                android:layout_height="40sp"
-                android:layout_marginHorizontal="4sp"
-                android:layout_marginTop="8sp"
-                android:layout_marginBottom="8sp"
-                android:background="@drawable/round_button2"
-                android:paddingLeft="6sp"
-                android:paddingRight="6sp"
-                android:text="성격"
-                android:textSize="14sp" />
+                <Button
+                    android:id="@+id/selectHobby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_marginHorizontal="4sp"
+                    android:layout_marginTop="8sp"
+                    android:layout_marginBottom="8sp"
+                    android:background="@drawable/round_button2"
+                    android:paddingLeft="6sp"
+                    android:paddingRight="6sp"
+                    android:text="취미"
+                    android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/selectSmoking"
-                android:layout_width="65sp"
-                android:layout_height="40sp"
-                android:layout_marginHorizontal="4sp"
-                android:layout_marginTop="8sp"
-                android:layout_marginBottom="8sp"
-                android:background="@drawable/round_button2"
-                android:paddingLeft="6sp"
-                android:paddingRight="6sp"
-                android:text="흡연"
-                android:textSize="14sp" />
-        </LinearLayout>
+                <Button
+                    android:id="@+id/selectPersonality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_marginHorizontal="4sp"
+                    android:layout_marginTop="8sp"
+                    android:layout_marginBottom="8sp"
+                    android:background="@drawable/round_button2"
+                    android:paddingLeft="6sp"
+                    android:paddingRight="6sp"
+                    android:text="성격"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/selectSmoking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_marginHorizontal="4sp"
+                    android:layout_marginTop="8sp"
+                    android:layout_marginBottom="8sp"
+                    android:background="@drawable/round_button2"
+                    android:paddingLeft="6sp"
+                    android:paddingRight="6sp"
+                    android:text="흡연"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <View
             android:id="@+id/divisionLine2"
@@ -121,22 +137,22 @@
             android:background="@color/gray_horizon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/selectList" />
+            app:layout_constraintTop_toBottomOf="@id/horScroll" />
 
         <com.naver.maps.map.MapView
             android:id="@+id/mapView"
             android:name="com.naver.maps.map.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="105sp"
+            android:layout_marginTop="110sp"
             tools:layout_editor_absoluteX="-16sp"
             tools:layout_editor_absoluteY="100sp" />
 
         <TextView
             android:id="@+id/locationMsg"
-            android:layout_width="188sp"
-            android:layout_height="30sp"
-            android:layout_marginTop="120sp"
+            android:layout_width="188dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/round_button2"
             android:gravity="center"
             android:text="@string/text_move_map_set_location"
@@ -144,19 +160,19 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/divisionLine2" />
 
         <Button
             android:id="@+id/recommendButton"
             android:layout_width="match_parent"
-            android:layout_height="32sp"
-            android:layout_marginStart="140sp"
-            android:layout_marginEnd="140sp"
-            android:layout_marginBottom="60sp"
+            android:layout_height="30dp"
+            android:layout_marginStart="140dp"
+            android:layout_marginEnd="140dp"
+            android:layout_marginBottom="60dp"
             android:background="@drawable/round_button"
             android:text="@string/confirm_text"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.85"

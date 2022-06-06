@@ -44,7 +44,7 @@
             <RadioButton
                 android:id="@+id/dialog_profile_non_religion"
                 android:layout_width="80sp"
-                android:layout_height="26dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="10sp"
                 android:background="@drawable/check_box"
