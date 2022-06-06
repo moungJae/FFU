@@ -6,14 +6,14 @@
     android:orientation="vertical"
     android:background="@drawable/dialog_radius_background"
     android:layout_gravity="center"
-    android:paddingVertical="10sp">
+    android:paddingVertical="10dp">
 
     <TextView
         android:id="@+id/dialog_personality_title"
         android:layout_width="match_parent"
-        android:layout_height="50sp"
-        android:layout_marginTop="15sp"
-        android:layout_marginBottom="15sp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         android:gravity="center"
         android:text="자신의 성격을 여러개 선택하세요"
         android:textSize="20sp"
@@ -21,8 +21,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1sp"
-        android:layout_marginBottom="30sp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="30dp"
         android:background="@color/gray_horizon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,60 +32,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
 
         android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityActive"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="적극적인"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityQuiet"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="조용한"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityZany"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="엉뚱한"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalitySerious"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="진지한"
             android:textColor="@drawable/selector_text_color" />
 
@@ -95,60 +95,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_marginRight="10sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityFreely"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="자유로운"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityImprovised"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="즉흥적인"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityDetailed"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="꼼꼼한"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalitySensitive"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="감성적인"
             android:textColor="@drawable/selector_text_color" />
 
@@ -158,60 +158,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_marginRight="10sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityDiligent"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="성실한"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityLogical"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="논리적인"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityCalm"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="침착한"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityConfident"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="자신감있는"
             android:textColor="@drawable/selector_text_color" />
 
@@ -223,60 +223,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_marginRight="10sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityCharming"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="애교있는"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityMature"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="어른스러운"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityPolite"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="예의 바른"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityHumorous"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="유머러스한"
             android:textColor="@drawable/selector_text_color" />
 
@@ -286,60 +286,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_marginRight="10sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityHumble"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="허세 없는"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityIntel"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="지적인"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityTimid"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="소심한"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityCool"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="쿨한"
             android:textColor="@drawable/selector_text_color" />
 
@@ -349,60 +349,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginLeft="10sp"
-        android:layout_marginTop="10sp"
-        android:layout_marginRight="10sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityDdorai"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="또라이같은"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityKind"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="친절한"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalityPlanned"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="계획적인"
             android:textColor="@drawable/selector_text_color" />
 
         <CheckBox
             android:id="@+id/dialog_profile_personalitySelfConfident"
-            android:layout_width="85sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="5sp"
+            android:layout_marginHorizontal="4dp"
             android:background="@drawable/check_box"
             android:button="@null"
             android:gravity="center"
-            android:padding="10sp"
+            android:padding="10dp"
             android:text="당당한"
             android:textColor="@drawable/selector_text_color" />
 
@@ -411,17 +411,17 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="20sp"
-        android:paddingBottom="10sp"
+        android:paddingTop="20dp"
+        android:paddingBottom="10dp"
         android:orientation="horizontal"
         android:layout_gravity="center">
 
         <Button
             android:id="@+id/dialog_profile_personality_choice"
-            android:layout_width="80sp"
-            android:layout_height="40sp"
-            android:layout_marginStart="20sp"
-            android:layout_marginEnd="20sp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:text="@string/choice"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
