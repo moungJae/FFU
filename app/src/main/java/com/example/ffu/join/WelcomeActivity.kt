@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -81,8 +82,11 @@ class WelcomeActivity : AppCompatActivity() {
     private fun processLogin() {
         val loadButton = findViewById<Button>(R.id.loading_button)
         val progressBar = findViewById<ProgressBar>(R.id.loading_progressBar)
+        val loading_textview = findViewById<TextView>(R.id.loading_textview)
 
-        loadButton.text = "입장"
+        loadButton.text = "FFU 시작하기"
+        loading_textview.setText("시작하면 서비스 이용약관, 개인 정보 보호 약관, \n 그리고 위치정보 이용약관에 동의하게 됩니다.")
+
         loadButton.setOnClickListener {
             progressBar.visibility = View.VISIBLE
             loadButton.isEnabled = false
