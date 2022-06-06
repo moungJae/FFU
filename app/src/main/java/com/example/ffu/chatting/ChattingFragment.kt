@@ -3,7 +3,6 @@ package com.example.ffu.chatting
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ffu.R
@@ -12,7 +11,6 @@ import com.example.ffu.UserInformation.Companion.MATCH_USER
 import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.chatdetail.ChatRoomActivity
 import com.example.ffu.databinding.FragmentChattingBinding
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
@@ -21,12 +19,11 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.example.ffu.UserInformation.Companion.PROFILE
-import com.example.ffu.recommend.RecommendData
-import com.example.ffu.utils.Article
+import com.example.ffu.utils.ChattingArticle
 
 class ChattingFragment: Fragment(R.layout.fragment_chatting) {
     companion object {
-        val articleList = mutableListOf<Article>()
+        val articleList = mutableListOf<ChattingArticle>()
     }
     private lateinit var userDB: DatabaseReference
     private lateinit var articleAdapter: ArticleAdapter
@@ -99,7 +96,7 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
             val birth = PROFILE[matchId]?.birth ?: ""
             val imageUri = URI[matchId]
 
-            articleList.add(Article(matchId,name,gender,birth,imageUri))
+            articleList.add(ChattingArticle(matchId,name,gender,birth,imageUri))
             articleAdapter.submitList(articleList)
         }
     }

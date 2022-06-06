@@ -7,6 +7,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -93,6 +95,7 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
 
         recommendListener()
         addRecommendUserList()
+        downListener()
 
         fragmentBottomsheetBinding.recommendedUsersView.layoutManager = LinearLayoutManager(context)
         fragmentBottomsheetBinding.recommendedUsersView.adapter = recommendAdapter
@@ -111,6 +114,12 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
             override fun onCancelled(error: DatabaseError) {}
         })
+    }
+
+    private fun downListener(){
+        binding?.fragmentBottomsheetDown?.setOnClickListener{
+            dismiss()
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -163,10 +172,12 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
             //이미 LIKE 또는 DISLIKE를 보내거나 받은 유저이면 recommend에 뜨지 않게 한다.
             if(CURRENT_USERID!=userId && !SEND_LIKE_USER.containsKey(userId)&& !RECEIVED_LIKE_USER.containsKey(userId)){
                 val nickname = PROFILE[userId]?.nickname ?: ""
-                val gender = PROFILE[userId]?.gender ?: ""
-                val birth = PROFILE[userId]?.birth ?: ""
+                val ageJob = PROFILE[userId]?.age+ ", "+ PROFILE[userId]?.job
+                val introMe = PROFILE[userId]?.introMe ?: ""
+               // val gender = PROFILE[userId]?.gender ?: ""
+                //val birth = PROFILE[userId]?.birth ?: ""
                 val imageUri = URI[userId]?:""
-                recommendUserList.add(RecommendArticle(userId,nickname,gender,birth,imageUri))
+                recommendUserList.add(RecommendArticle(userId,nickname,ageJob,introMe,imageUri))
             }
         }
         recommendAdapter.submitList(recommendUserList)
@@ -181,7 +192,6 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         val mView : View = edialog.inflate(R.layout.dialog_userinformation,null)
         val image : CircleImageView = mView.findViewById(R.id.dialog_userinformation_photo)
         val age : TextView = mView.findViewById(R.id.dialog_userinformation_age)
-        val birth : TextView = mView.findViewById(R.id.dialog_userinformation_birth)
         val drinking : TextView = mView.findViewById(R.id.dialog_userinformation_drinking)
         val hobby : TextView = mView.findViewById(R.id.dialog_userinformation_hobby)
         val job : TextView = mView.findViewById(R.id.dialog_userinformation_job)
@@ -189,7 +199,7 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         val personality : TextView = mView.findViewById(R.id.dialog_userinformation_personality)
         val smoke: TextView = mView.findViewById(R.id.dialog_userinformation_smoke)
         val like : ToggleButton = mView.findViewById(R.id.dialog_userinformation_like)
-        val dislike : Button = mView.findViewById(R.id.dialog_userinformation_dislike)
+        val dislike : ToggleButton = mView.findViewById(R.id.dialog_userinformation_dislike)
         var scaleAnimation: ScaleAnimation = ScaleAnimation(
             0.7f,
             1.0f,
@@ -206,14 +216,13 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         scaleAnimation.interpolator = bounceInterpolator
 
 
-        age.text = "나이 : " + PROFILE[userId]?.age
-        birth.text = "생일 : " + PROFILE[userId]?.birth
-        drinking.text = "음주여부 : " + PROFILE[userId]?.drinking
-        hobby.text = "취미 : " + PROFILE[userId]?.hobby
-        job.text = "직업 : " + PROFILE[userId]?.job
-        mbti.text = "mbti : " + PROFILE[userId]?.mbti
-        personality.text = "성격 : " + PROFILE[userId]?.personality
-        smoke.text = "흡연여부 : " + PROFILE[userId]?.smoke
+        age.text = PROFILE[userId]?.age
+        drinking.text = PROFILE[userId]?.drinking
+        hobby.text = PROFILE[userId]?.hobby
+        job.text = PROFILE[userId]?.job
+        mbti.text = PROFILE[userId]?.mbti
+        personality.text = PROFILE[userId]?.personality
+        smoke.text =PROFILE[userId]?.smoke
 
         Glide.with(this)
             .load(recommendArticleModel.imageUrl)
@@ -222,6 +231,78 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike")
         val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike")
 
+        like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
+
+            compoundButton.startAnimation(
+                scaleAnimation
+            )
+            like.setBackgroundResource(R.drawable.ic_likefull)
+
+            val receiveLikeMap = mutableMapOf<String, Any>()
+            val sendLikeMap = mutableMapOf<String, Any>()
+
+            receiveLikeMap[CURRENT_USERID] = true
+            sendLikeMap[userId] = true
+
+            receivedLikeDB.updateChildren(receiveLikeMap)
+            sendLikeDB.updateChildren(sendLikeMap)
+
+            val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
+            val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val formatted = current.format(formatter).toString()
+
+            val sendHistoryItem = History(
+                name = PROFILE[userId]?.nickname!!,
+                time = formatted!!,
+                type = SEND_TYPE
+            )
+
+            val receiveHistoryItem = History(
+                name = PROFILE[CURRENT_USERID]?.nickname!!,
+                time = formatted!!,
+                type = RECEIVE_TYPE
+            )
+
+            userHistoryDB.push().setValue(sendHistoryItem)
+            otherHistoryDB.push().setValue(receiveHistoryItem)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                //Do something
+                dialog.dismiss()
+            }, 400)
+
+
+        })
+
+        dislike.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
+            val sendLikeMap = mutableMapOf<String, Any>()
+            compoundButton.startAnimation(
+                scaleAnimation
+            )
+
+            dislike.setBackgroundResource(R.drawable.ic_dislikefull)
+
+            sendLikeMap[userId] = false
+            sendLikeDB.updateChildren(sendLikeMap)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                //Do something
+                dialog.dismiss()
+            }, 400)
+
+        })
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setView(mView)
+        dialog.create()
+        dialog.show()
+    }
+
+
+        /*
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->
             compoundButton.startAnimation(
                 scaleAnimation
@@ -277,5 +358,5 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         dialog.setView(mView)
         dialog.create()
         dialog.show()
-    }
+    }*/
 }
