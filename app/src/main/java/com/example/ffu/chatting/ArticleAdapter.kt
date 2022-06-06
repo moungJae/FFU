@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ffu.R
+import com.example.ffu.UserInformation.Companion.ANIMATION
 import com.example.ffu.databinding.ItemChattingArticleBinding
 import com.example.ffu.utils.ChattingArticle
 
@@ -18,10 +20,14 @@ class ArticleAdapter(val onItemClicked: (ChattingArticle) -> Unit) : ListAdapter
             binding.itemChattingArticleGender.text=chattingArticleModel.gender
             binding.itemChattingArticleMbti.text=chattingArticleModel.mbti
 
+            if (ANIMATION[chattingArticleModel.Id]!!.permission) {
+                Glide.with(binding.root)
+                    .load(chattingArticleModel.imageUri)
+                    .into(binding.itemChattingArticleThumbnailImageView)
+            } else {
+                binding.itemChattingArticleThumbnailImageView.setImageResource(R.drawable.profileimage)
+            }
 
-            Glide.with(binding.root)
-                .load(chattingArticleModel.imageUri)
-                .into(binding.itemChattingArticleThumbnailImageView)
             binding.root.setOnClickListener {
                 onItemClicked(chattingArticleModel)
             }

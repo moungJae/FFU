@@ -72,23 +72,35 @@
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/activity_photo.xml" value="0.2" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/background.xml" value="0.1802536231884058" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/checkpn.xml" value="0.264" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/control_distance.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/control_hobby.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/control_mbti.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/control_personality.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/control_smoking.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_chattingmenu.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_check_animation.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_datepicker.xml" value="0.264" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_hobby.xml" value="0.1157548125633232" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_mbti.xml" value="0.15534420289855072" />
-        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_personality.xml" value="0.15534420289855072" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_mbti.xml" value="0.264" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_personality.xml" value="0.264" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_profile_religion.xml" value="0.15534420289855072" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_radius_background.xml" value="0.12310030395136778" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_setting.xml" value="0.23541666666666666" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/dialog_userinformation.xml" value="0.15534420289855072" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_chatting.xml" value="0.1802536231884058" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_matching.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_profile.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/fragment_recommend.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/hobby.xml" value="0.24682971014492755" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/home.xml" value="0.264" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/item_article.xml" value="0.11574074074074074" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/item_chat_center.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/item_chat_left.xml" value="0.15534420289855072" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/item_chat_list.xml" value="0.12512664640324214" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/item_chat_right.xml" value="0.25" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/item_chatting_article.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/item_history.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/item_likeinfo_article.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/item_photo.xml" value="0.264" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/join.xml" value="0.25" />
         <entry key="..\:/Users/cmj09/AndroidStudioProjects/FFU/app/src/main/res/layout/loading.xml" value="0.11094224924012158" />

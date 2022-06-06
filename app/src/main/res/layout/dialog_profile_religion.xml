@@ -43,7 +43,7 @@
 
             <RadioButton
                 android:id="@+id/dialog_profile_non_religion"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="10dp"
@@ -55,7 +55,7 @@
                 android:textColor="@drawable/selector_text_color" />
             <RadioButton
                 android:id="@+id/dialog_profile_christianity"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_gravity="center"
@@ -67,7 +67,7 @@
                 android:text="기독교"/>
             <RadioButton
                 android:id="@+id/dialog_profile_buddhism"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_gravity="center"
@@ -80,7 +80,7 @@
 
             <RadioButton
                 android:id="@+id/dialog_profile_catholic"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_gravity="center"
@@ -110,7 +110,7 @@
 
             <RadioButton
                 android:id="@+id/dialog_profile_islam"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_gravity="center"
@@ -123,7 +123,7 @@
 
             <RadioButton
                 android:id="@+id/dialog_profile_hindu"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_gravity="center"
@@ -136,7 +136,7 @@
 
             <RadioButton
                 android:id="@+id/dialog_profile_protestantism"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_gravity="center"
@@ -149,7 +149,7 @@
 
             <RadioButton
                 android:id="@+id/dialog_profile_etc"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_gravity="center"
@@ -173,7 +173,7 @@
 
         <Button
             android:id="@+id/dialog_profile_religion_choice"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
