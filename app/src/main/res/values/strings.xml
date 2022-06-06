@@ -18,17 +18,19 @@
     <string name="save">예</string>
 
     <string name="HOME">HOME</string>
-    <string name="identity_verification">본인 인증</string>
+    <string name="identity_verification">본인 확인을 위해\n전화번호 인증이 필요합니다!</string>
+    <string name="only_private">전화번호는 절대 공개되지 않습니다.</string>
     <string name="phone_num">휴대전화번호 (예시: 01012345678)</string>
     <string name="phone_num_ex">휴대전화번호 입력</string>
-    <string name="type_phone_num">휴대폰번호를 입력해주세요</string>
-    <string name="certification_num">인증 번호 (예시: 123456)</string>
-    <string name="type_certification_num">인증번호를 입력해주세요</string>
-    <string name="send_certification_num">인증 번호 입력</string>
+    <string name="type_phone_num">휴대폰번호 입력</string>
+    <string name="certification_num">인증번호 (예시: 123456)</string>
+    <string name="send_certification_num">인증번호 6자리 입력</string>
     <string name="request_certification_num">인증 요청</string>
-    <string name="resend_verification">인증 번호 재전송</string>
+    <string name="resend_verification">인증번호 재전송</string>
     <string name="confirm">확인</string>
     <string name="INPUT_COMPLETE">입력 완료</string>
+    <string name="send_verification">인증번호가 전송되었습니다.</string>
+    <string name="timer">03분 00초</string>
 
     <string name="LOGIN">LOGIN</string>
     <string name="ID">ID</string>

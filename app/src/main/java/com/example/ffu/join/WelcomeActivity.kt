@@ -102,7 +102,6 @@ class WelcomeActivity : AppCompatActivity() {
         loadButton.text = "핸드폰 인증"
         loadButton.setOnClickListener {
             startActivity(Intent(this, PhoneVerificationActivity::class.java))
-            finish()
         }
     }
 

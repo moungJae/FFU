@@ -49,18 +49,21 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        auth = Firebase.auth
-        storage = FirebaseStorage.getInstance()
-        pathReference = storage.reference
 
-        historyRecyclerView = view.findViewById<RecyclerView>(R.id.fragment_profile_historyRecyclerView)
-
+        initializeInformation(view)
         historyListener()
         setProfile(view)
         setHistory(view)
         editProfile(view)
         settingButton(view)
         checkSetProfile(view)
+    }
+
+    private fun initializeInformation(view: View) {
+        auth = Firebase.auth
+        storage = FirebaseStorage.getInstance()
+        pathReference = storage.reference
+        historyRecyclerView = view.findViewById<RecyclerView>(R.id.fragment_profile_historyRecyclerView)
     }
 
     private fun historyListener() {
@@ -93,12 +96,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         } else {
             nickname.setText(PROFILE[CURRENT_USERID]?.nickname)
             introMe.setText(PROFILE[CURRENT_USERID]?.introMe)
-            // Toast.makeText(context, "프로필을 변경해주세요!", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
     }
 
     private fun editProfile(view: View) {
@@ -118,16 +116,10 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
 
         settingButton.setOnClickListener {
             settingDialog()
-            /*
-            activity?.let {
-                val intent = Intent(context, SettingActivity::class.java)
-                startActivity(intent)
-            }*/
         }
     }
 
     private fun setHistory(view : View){
-
         historyRecyclerView .adapter = historyAdapter
         val manager = LinearLayoutManager(requireContext())
         manager.reverseLayout=true
@@ -143,16 +135,10 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
     }
 
     private fun checkSetProfile(view : View) {
-        var profileFlag = 0
-        var animationFlag = 0
-
         userDB = Firebase.database.reference.child(DBKey.DB_ANIMATION).child(CURRENT_USERID)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                animationFlag++
-                if (animationFlag > 1) {
-                    setProfile(view)
-                }
+                setProfile(view)
             }
 
             override fun onCancelled(error: DatabaseError) {}
@@ -161,12 +147,8 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         userDB = Firebase.database.reference.child(DBKey.DB_PROFILE).child(CURRENT_USERID)
         userDB.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                profileFlag++
-                if (profileFlag > 1) {
-                    setProfile(view)
-                }
+                setProfile(view)
             }
-
             override fun onCancelled(error: DatabaseError) {}
         })
     }
