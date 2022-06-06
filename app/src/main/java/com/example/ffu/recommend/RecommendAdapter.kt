@@ -6,23 +6,21 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-
-
-import com.example.ffu.databinding.UsersArticleBinding
+import com.example.ffu.databinding.ItemLikeinfoArticleBinding
 import com.example.ffu.utils.RecommendArticle
 
 class RecommendAdapter(val onItemClicked: (RecommendArticle) -> Unit) : ListAdapter<RecommendArticle, RecommendAdapter.ViewHolder>(diffUtil) {
-    inner class ViewHolder(private val binding: UsersArticleBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemLikeinfoArticleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(recommendArticleModel: RecommendArticle) {
 
-            binding.recommendNickname.text = recommendArticleModel.nickName
-            binding.recommendAge.text = recommendArticleModel.age
-            binding.recommendMbti.text = recommendArticleModel.mbti
+            binding.itemLikeinfoArticleName.text = recommendArticleModel.nickName
+            binding.itemLikeinfoArticleAgeJob.text = recommendArticleModel.ageJob
+            binding.itemLikeinfoArticleIntroMe.text = recommendArticleModel.introMe
 
             if (recommendArticleModel.imageUrl.isNotEmpty()) {
-                Glide.with(binding.recommendUserImage)
+                Glide.with(binding.thumbnailImageView)
                     .load(recommendArticleModel.imageUrl)
-                    .into(binding.recommendUserImage)
+                    .into(binding.thumbnailImageView)
             }
             binding.root.setOnClickListener {
                 onItemClicked(recommendArticleModel)
@@ -32,7 +30,7 @@ class RecommendAdapter(val onItemClicked: (RecommendArticle) -> Unit) : ListAdap
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendAdapter.ViewHolder {
-        return ViewHolder(UsersArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(ItemLikeinfoArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: RecommendAdapter.ViewHolder, position: Int) {
