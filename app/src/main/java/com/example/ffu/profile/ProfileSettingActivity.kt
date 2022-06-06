@@ -73,7 +73,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     private lateinit var editTextArray : Array<EditText>
     private lateinit var radioButtonArray : Array<RadioButton>
     private lateinit var buttonArray : Array<Button>
-
+    val dkblue = "#303F9F"
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,7 +114,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     // 이전에 기입했던 정보들이 editText 에 남도록 설정
     private fun initializeInformation() {
-        val image = findViewById<ImageView>(R.id.profile_setting_imageAddButton)
+        val image = findViewById<ImageButton>(R.id.profile_setting_imageAddButton)
 
         auth = Firebase.auth
         storage = FirebaseStorage.getInstance()
@@ -146,6 +146,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         if (URI[CURRENT_USERID] != null) {
             Glide.with(this@ProfileSettingActivity)
                 .load(URI[CURRENT_USERID])
+                .circleCrop()
                 .into(image)
         }
     }
@@ -171,9 +172,10 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private fun setMbti() {
         val mbtiButton = findViewById<Button>(R.id.profile_setting_mbtiButton)
-        val mbtiTextView = findViewById<TextView>(R.id.mbti_textView)
 
-        mbtiTextView.setText(mbti.toString())
+        mbtiButton.setText(mbti.toString())
+        mbtiButton.setTextColor(Color.parseColor(dkblue))
+
         mbtiButton.setOnClickListener {
             val dialog = AlertDialog.Builder(this).create()
             val edialog: LayoutInflater = LayoutInflater.from(this)
@@ -238,8 +240,10 @@ class ProfileSettingActivity : AppCompatActivity() {
             choice.setOnClickListener {
                 if (prevX != -1 && prevY != -1) {
                     mbti = items[4 * prevX + prevY]
-                    mbtiTextView.setText(mbti)
+                    mbtiButton.setText(mbti)
+                    mbtiButton.setTextColor(Color.parseColor(dkblue))
                 }
+
                 dialog.dismiss()
                 dialog.cancel()
             }
@@ -279,9 +283,9 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private fun setPersonality() {
         val personalityButton = findViewById<Button>(R.id.profile_setting_personalButton)
-        val personalityTextView = findViewById<TextView>(R.id.personality_textView)
 
-        personalityTextView.setText(changeLine(personalities))
+        personalityButton.setText(changeLine(personalities))
+        personalityButton.setTextColor(Color.parseColor(dkblue))
         personalityButton.setOnClickListener {
             val items = arrayOf("적극적인", "조용한", "엉뚱한", "진지한",
                 "자유로운", "즉흥적인", "꼼꼼한", "감성적인",
@@ -352,7 +356,8 @@ class ProfileSettingActivity : AppCompatActivity() {
                         }
                     }
                 }
-                personalityTextView.setText(changeLine(personalities))
+                personalityButton.setText(changeLine(personalities))
+                personalityButton.setTextColor(Color.parseColor(dkblue))
                 dialog.dismiss()
                 dialog.cancel()
             }
@@ -368,9 +373,9 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private fun setReligion() {
         val religionButton = findViewById<Button>(R.id.profile_setting_religionButton)
-        val religionTextView = findViewById<TextView>(R.id.religion_textView)
 
-        religionTextView.setText(religion.toString())
+        religionButton.setText(religion.toString())
+        religionButton.setTextColor(Color.parseColor(dkblue))
 
         religionButton.setOnClickListener {
             val items = arrayOf("무교", "기독교", "불교", "천주교",
@@ -420,7 +425,8 @@ class ProfileSettingActivity : AppCompatActivity() {
             choice.setOnClickListener {
                 if (prevX != -1 && prevY != -1) {
                     religion =  items[4 * prevX + prevY]
-                    religionTextView.setText(religion)
+                    religionButton.setText(religion)
+                    religionButton.setTextColor(Color.parseColor(dkblue))
                 }
                 dialog.dismiss()
                 dialog.cancel()
@@ -436,9 +442,9 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private fun setHobby() {
         val hobbyButton = findViewById<Button>(R.id.profile_setting_hobbyButton)
-        val hobbyTextView = findViewById<TextView>(R.id.hobby_textView)
 
-        hobbyTextView.setText(changeLine(hobbies))
+        hobbyButton.setText(changeLine(hobbies))
+        hobbyButton.setTextColor(Color.parseColor(dkblue))
 
         hobbyButton.setOnClickListener {
             val items = arrayOf(
@@ -511,7 +517,8 @@ class ProfileSettingActivity : AppCompatActivity() {
                         }
                     }
                 }
-                hobbyTextView.setText(changeLine(hobbies))
+                hobbyButton.setText(changeLine(hobbies))
+                hobbyButton.setTextColor(Color.parseColor(dkblue))
                 dialog.dismiss()
                 dialog.cancel()
             }
@@ -559,7 +566,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     //     permission 값이 false 가 되어 의도치 않은 사진(실물 사진)이 나타나는 것을 방지
     private fun characterization() {
         val transformText = findViewById<TextView>(R.id.profile_setting_transform_text)
-        val image = findViewById<CircleImageView>(R.id.profile_setting_imageAddButton)
+        val image = findViewById<ImageButton>(R.id.profile_setting_imageAddButton)
 
         transformText.text = "사진 변환중..."
         Thread {
@@ -592,6 +599,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                 progressBar.visibility = View.INVISIBLE
                 Glide.with(this@ProfileSettingActivity)
                     .load(URI[CURRENT_USERID])
+                    .circleCrop()
                     .into(image)
                 if (ANIMATION[CURRENT_USERID]!!.person) {
                     Toast.makeText(this@ProfileSettingActivity,"애니메이션 변환 완료!",Toast.LENGTH_SHORT).show()
@@ -604,7 +612,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun setPhoto() {
-        val photoButton = findViewById<Button>(R.id.profile_setting_image_change_button)
+        val photoButton = findViewById<ImageButton>(R.id.profile_setting_imageAddButton)
         val imagesRef = storage.reference
             .child("photo/" + CURRENT_USERID + "/real.jpg")
 
@@ -763,6 +771,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         Glide.with(this)
             .load(UserInformation.URI[CURRENT_USERID])
+            .circleCrop()
             .into(image)
 
         cancel.setOnClickListener {

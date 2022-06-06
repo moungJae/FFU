@@ -9,165 +9,165 @@
         android:id="@+id/editTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="프로필 편집"
+        android:layout_marginTop="30sp"
+        android:text="프로필 수정"
         android:textColor="@color/main_text_color"
-        android:textSize="20dp"
+        android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/linearLayout"/>
+
 
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="300dp"
-        android:layout_height="550dp"
-        android:layout_marginTop="0dp"
+        android:layout_width="300sp"
+        android:layout_height="600sp"
+        android:layout_marginTop="0sp"
         android:orientation="vertical"
-        android:padding="10dp"
+        android:padding="0sp"
         app:layout_constraintBottom_toTopOf="@+id/profile_setting_saveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextView">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/profile_setting_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15sp"
-                android:text="프로필 변경: "
-                android:textColor="@color/black"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_setting_imageAddButton"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20sp"
-                android:background="@drawable/profile"
-                android:textColor="@color/main_text_color" />
-
-            <Button
-                android:id="@+id/profile_setting_image_change_button"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20sp"
-                android:background="@drawable/box_id"
-                android:text="변경"
-                android:textColor="@color/main_text_color"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/profile_setting_imageAddButton"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:layout_gravity="center"
+            android:background="@drawable/add_button"
+            android:textColor="@color/main_text_color"
             android:layout_marginTop="10sp"
-            android:orientation="horizontal">
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_marginTop="20sp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/chat_left"
+            android:backgroundTint="#EFEFEF">
 
             <TextView
                 android:id="@+id/profile_setting_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="닉네임: "
+                android:text="닉네임 "
                 android:textColor="@color/black"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/profile_setting_inputNickname"
-                android:layout_width="200dp"
+                android:layout_width="200sp"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:hint="닉네임을 입력하세요"
+                android:background="@color/transparent"
                 android:inputType="text"
                 android:textSize="13sp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_marginTop="15sp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/chat_left"
+            android:backgroundTint="#EFEFEF">
 
             <TextView
                 android:id="@+id/profile_setting_jobText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="직업:   "
+                android:text="직업   "
                 android:textColor="@color/black"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/profile_setting_inputJob"
-                android:layout_width="wrap_content"
+                android:layout_width="200sp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:hint="직업을 입력하세요"
+                android:gravity="center"
+                android:background="@color/transparent"
                 android:inputType="text"
                 android:textSize="13sp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_marginTop="15sp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/chat_left"
+            android:backgroundTint="#EFEFEF">
 
             <TextView
                 android:id="@+id/profile_setting_introduceText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="소개글: "
+                android:text="소개글 "
                 android:textColor="@color/black"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold"
 
                 />
 
             <EditText
                 android:id="@+id/profile_setting_inputIntroduce"
-                android:layout_width="250dp"
+                android:layout_width="200sp"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:hint="친구들에게 나를 소개하세요!"
+                android:background="@color/transparent"
                 android:textSize="13sp" />
-
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10sp"
+            android:background="@drawable/dotline"
+            android:layout_marginTop="15sp"
+            />
+
+
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_marginTop="10sp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/chat_left"
+            android:backgroundTint="#EFEFEF">
 
             <TextView
                 android:id="@+id/profile_setting_smokeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="흡연: "
+                android:layout_marginRight="10sp"
+                android:text="흡연 "
                 android:textColor="@color/black"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/profile_setting_smoke_radioGroup"
-                android:layout_width="wrap_content"
+                android:layout_width="200sp"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -189,24 +189,28 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="40sp"
+            android:layout_marginTop="15sp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/chat_left"
+            android:backgroundTint="#EFEFEF">
 
             <TextView
                 android:id="@+id/profile_setting_drinkText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:text="음주: "
+                android:layout_marginRight="10sp"
+                android:text="음주 "
                 android:textColor="@color/black"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/profile_setting_drink_radioGroup"
-                android:layout_width="wrap_content"
+                android:layout_width="200sp"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
@@ -229,134 +233,177 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="15sp">
 
-            <TextView
-                android:id="@+id/mbti_textView"
-                android:layout_width="200sp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="MBTI"
-                android:textSize="15dp" />
+            <LinearLayout
+                android:layout_width="140sp"
+                android:layout_height="40sp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:background="@drawable/chat_left"
+                android:backgroundTint="#EFEFEF"
+                android:layout_marginRight="20sp">
 
-            <Button
-                android:id="@+id/profile_setting_mbtiButton"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10sp"
-                android:background="@drawable/box_id"
-                android:text="MBTI "
-                android:textColor="@color/main_text_color"
-                android:textSize="15dp"
-                android:textStyle="bold" />-
+                <TextView
+                    android:id="@+id/mbti_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MBTI"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_marginLeft="10sp"
+                    />
+
+                <Button
+                    android:id="@+id/profile_setting_mbtiButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:text="선택"
+                    android:textSize = "16sp"
+                    android:background="@color/transparent"
+                    android:textColor="@color/blank"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginLeft="10sp"
+                    android:layout_gravity="center"
+                    android:gravity="right"
+                    android:layout_marginRight="15sp"
+
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="140sp"
+                android:layout_height="40sp"
+                android:orientation="horizontal"
+                android:gravity="center|right"
+                android:background="@drawable/chat_left"
+                android:backgroundTint="#EFEFEF"
+
+                >
+
+                <TextView
+                    android:id="@+id/religion_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="종교"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_marginLeft="10sp"/>
+
+                <Button
+                    android:id="@+id/profile_setting_religionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20sp"
+                    android:text="선택"
+                    android:textSize = "16sp"
+                    android:background="@color/transparent"
+                    android:textColor="@color/blank"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginLeft="10sp"
+                    android:layout_gravity="center"
+                    android:gravity="right"
+                    android:layout_marginRight="15sp"/>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/personality_textView"
-                android:layout_width="200sp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="성격"
-                android:textSize="15dp" />
-
-            <Button
-                android:id="@+id/profile_setting_personalButton"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10sp"
-                android:background="@drawable/box_id"
-                android:text="성격"
-                android:textColor="@color/main_text_color"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/religion_textView"
-                android:layout_width="200sp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="종교"
-                android:textSize="15dp" />
-
-            <Button
-                android:id="@+id/profile_setting_religionButton"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10sp"
-                android:background="@drawable/box_id"
-                android:text="종교 "
-                android:textColor="@color/main_text_color"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-
-            android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/chat_left"
+            android:backgroundTint="#EFEFEF"
+            android:layout_marginTop="15sp">
 
             <TextView
                 android:id="@+id/hobby_textView"
-                android:layout_width="200sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="취미"
-                android:textSize="15dp" />
+                android:text="취미"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_marginLeft="10sp"
+                />
 
             <Button
                 android:id="@+id/profile_setting_hobbyButton"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10sp"
-                android:background="@drawable/box_id"
-                android:text="취미"
-                android:textColor="@color/main_text_color"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:text="선택"
+                android:textSize="16sp"
+                android:background="@color/transparent"
+                android:textColor="@color/blank"
+                android:gravity="center|right"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginRight="15sp"
+
+               />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/chat_left"
+            android:backgroundTint="#EFEFEF"
+            android:layout_marginTop="15sp">
+
+            <TextView
+                android:id="@+id/personality_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="성격"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:layout_marginLeft="10sp" />
+
+            <Button
+                android:id="@+id/profile_setting_personalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="선택"
+                android:textSize="16sp"
+                android:background="@color/transparent"
+                android:textColor="@color/blank"
+                android:gravity="center|right"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginRight="15sp"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
     <Button
         android:id="@+id/profile_setting_saveButton"
-        android:layout_width="300dp"
-        android:layout_height="35dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/box_button"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:background="@color/colorPrimaryDark"
         android:text="저장"
         android:textColor="@color/white"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -390,7 +437,7 @@
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
     </LinearLayout>

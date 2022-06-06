@@ -1,5 +1,6 @@
 package com.example.ffu.join
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -7,6 +8,8 @@ import android.os.Looper
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.widget.addTextChangedListener
 import com.dx.dxloadingbutton.lib.LoadingButton
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
@@ -38,7 +41,6 @@ class PhoneVerificationActivity : AppCompatActivity() {
         initCallback()
         requestVerification()
         checkVerification()
-        completeVerification()
     }
 
     private fun initSetting() {
@@ -57,12 +59,46 @@ class PhoneVerificationActivity : AppCompatActivity() {
                 setPhoneEnable()
             }
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
+                Toast.makeText(this@PhoneVerificationActivity, "인증 요청이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 this@PhoneVerificationActivity.verificationId = verificationId
-                setVerificationEnable()
                 requestButton.loadingSuccessful()
-                setPhoneEnable()
+                setVerificationEnable()
+                setTimer()
             }
         }
+    }
+
+    private fun makeTime(minute : Int, second : Int) : String {
+        var result = ""
+
+        result += "0" + minute.toString() + "분 "
+        result += if (second < 10) {
+            "0" + second.toString() + "초"
+        } else {
+            second.toString() + "초"
+        }
+        return result
+    }
+
+    private fun setTimer() {
+        val timerText = findViewById<TextView>(R.id.main_timer_text)
+        var minute = 2
+        var second = 0
+
+        Thread {
+            while (minute != 0 || second != 0) {
+                Handler(Looper.getMainLooper()).post {
+                    timerText.text = makeTime(minute, second)
+                }
+                if (second == 0) {
+                    minute--
+                    second = 59
+                } else {
+                    second--
+                }
+                Thread.sleep(1000)
+            }
+        }.start()
     }
 
     private fun setPhoneEnable() {
@@ -84,18 +120,14 @@ class PhoneVerificationActivity : AppCompatActivity() {
 
     private fun setVerificationEnable() {
         val verificationEditText = findViewById<EditText>(R.id.main_editVerificationNum)
-        val checkVerificationButton = findViewById<LoadingButton>(R.id.main_checkVerification)
 
         verificationEditText.isEnabled = true
-        checkVerificationButton.isEnabled = true
     }
 
     private fun setVerificationDisable() {
         val verificationEditText = findViewById<EditText>(R.id.main_editVerificationNum)
-        val checkVerificationButton = findViewById<LoadingButton>(R.id.main_checkVerification)
 
         verificationEditText.isEnabled = false
-        checkVerificationButton.isEnabled = false
     }
 
     private fun requestPhone() {
@@ -107,7 +139,7 @@ class PhoneVerificationActivity : AppCompatActivity() {
         setPhoneDisable()
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNum,
-            90,
+            120,
             TimeUnit.SECONDS,
             this,
             callbacks )
@@ -126,7 +158,7 @@ class PhoneVerificationActivity : AppCompatActivity() {
                     requestPhone()
                 } else {
                     requestButton.loadingFailed()
-                    Toast.makeText(this, "이미 인증 요청을 하셨습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "이미 인증요청을 하셨습니다.", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 requestButton.loadingFailed()
@@ -135,77 +167,55 @@ class PhoneVerificationActivity : AppCompatActivity() {
         }
     }
 
-    private fun successVerification() {
-        val profile = mutableMapOf<String, Any>()
-        val joinButton = findViewById<Button>(R.id.main_joinButton)
-        val checkVerificationButton = findViewById<LoadingButton>(R.id.main_checkVerification)
-
-        setPhoneEnable()
-        setVerificationEnable()
-        joinButton.isEnabled = true
-        checkVerificationButton.loadingSuccessful()
-        Toast.makeText(this, "인증 성공! 다음 화면으로 넘어가세요.", Toast.LENGTH_SHORT).show()
-
-        userDB = Firebase.database.reference.child(DB_PROFILE).child(auth.uid.toString())
-        profile["tel"] = phoneNumber
-        userDB.updateChildren(profile)
-    }
-
-    private fun failVerification() {
-        val checkVerificationButton = findViewById<LoadingButton>(R.id.main_checkVerification)
-
-        setPhoneEnable()
-        setVerificationEnable()
-        checkVerificationButton.loadingFailed()
-        Toast.makeText(this, "인증 실패! 인증 번호를 다시 확인하세요", Toast.LENGTH_SHORT).show()
-    }
-
     private fun checkVerification() {
         val verificationEditText = findViewById<EditText>(R.id.main_editVerificationNum)
-        val checkVerificationButton = findViewById<LoadingButton>(R.id.main_checkVerification)
+        val progressBar = findViewById<DotProgressBar>(R.id.main_progressbar)
         var myVerification : String
 
-        checkVerificationButton.setOnClickListener {
-            setPhoneDisable()
-            setVerificationDisable()
-            checkVerificationButton.startLoading()
+        verificationEditText.addTextChangedListener {
             myVerification = verificationEditText.text.toString()
-            if (myVerification.length == 0) {
-                failVerification()
-            } else {
+            if (myVerification.length == 6) {
+                setVerificationDisable()
+                progressBar.visibility = View.VISIBLE
                 phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, myVerification)
-                auth.signInWithCredential(phoneAuthCredential)
-                    .addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            successVerification()
-                        } else {
-                            failVerification()
-                        }
+                Thread {
+                    Thread.sleep(1500)
+                    Handler(Looper.getMainLooper()).post {
+                        auth.signInWithCredential(phoneAuthCredential)
+                            .addOnCompleteListener(this) { task ->
+                                if (task.isSuccessful) {
+                                    successVerification()
+                                } else {
+                                    failVerification()
+                                }
+                                progressBar.visibility = View.INVISIBLE
+                            }
                     }
+                }.start()
             }
         }
     }
 
-    private fun returnActivity() {
-        startActivity(Intent(this, WelcomeActivity::class.java))
-        finish()
+    private fun successVerification() {
+        val profile = mutableMapOf<String, Any>()
+
+        userDB = Firebase.database.reference.child(DB_PROFILE).child(auth.uid.toString())
+        profile["tel"] = phoneNumber
+        userDB.updateChildren(profile)
+
+        returnActivity()
     }
 
-    private fun completeVerification() {
-        val joinButton = findViewById<Button>(R.id.main_joinButton)
-        val progressBar = findViewById<DotProgressBar>(R.id.main_progressbar)
+    private fun failVerification() {
+        val verificationEditText = findViewById<EditText>(R.id.main_editVerificationNum)
 
-        joinButton.setOnClickListener {
-            setPhoneDisable()
-            setVerificationDisable()
-            progressBar.visibility = View.VISIBLE
-            joinButton.isEnabled = false
-            Thread(Runnable {
-                Thread.sleep(2000)
-                Handler(Looper.getMainLooper()).post {
-                    returnActivity()
-                }
-            }).start()
-        }
+        verificationEditText.setText("")
+        Toast.makeText(this, "인증 실패! 인증번호를 다시 확인하세요", Toast.LENGTH_SHORT).show()
+        setVerificationEnable()
+    }
+
+    private fun returnActivity() {
+        ActivityCompat.finishAffinity(this)
+        startActivity(Intent(this,  WelcomeActivity::class.java))
     }
 }

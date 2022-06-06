@@ -3,43 +3,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    >
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="visible">
+        android:layout_height="wrap_content"
+        android:src="@drawable/friends"
+        android:id="@+id/fiends_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="350sp"
-            android:layout_height="340sp"
-            android:src="@drawable/ffu" />
+    <Button
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:id="@+id/loading_button"
+        android:background="@drawable/rect_round_ffd464_radius_8"
+        android:backgroundTint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="180sp"
+        />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/white"
-            android:id="@+id/loading_button"
-            android:background="@drawable/rect_round_ffd464_radius_8"
-            />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/loading_textview"
+        app:layout_constraintTop_toBottomOf="@id/loading_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20sp"
+        />
 
-        <ProgressBar
-            android:id="@+id/loading_progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="200sp"
-            android:layout_height="wrap_content"
-            android:indeterminate = "true"
-            android:max="100"
-            android:minWidth="200sp"
-            android:minHeight="50sp"
-            android:visibility="invisible"
-            android:layout_centerInParent="true"
-            android:progress="0" />
-
-    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/loading_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="200sp"
+        android:layout_height="wrap_content"
+        android:indeterminate = "true"
+        android:max="100"
+        android:minWidth="200sp"
+        android:minHeight="50sp"
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        android:progress="0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
