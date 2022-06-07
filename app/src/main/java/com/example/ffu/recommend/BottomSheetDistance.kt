@@ -22,7 +22,7 @@ class BottomSheetDistance(): BottomSheetDialogFragment() {
     lateinit var seekbar : SeekBar
     lateinit var distanceText : TextView
     var pos = 0
-    var distance = 500
+    var distance = 1000
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,13 +41,12 @@ class BottomSheetDistance(): BottomSheetDialogFragment() {
         seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekbar: SeekBar?, progress: Int, fromUser: Boolean) {
                 when (progress) {
-                    0 -> distanceText.text = "500m"
-                    1 -> distanceText.text = "1km"
-                    2 -> distanceText.text = "3km"
-                    3 -> distanceText.text = "5km"
-                    4 -> distanceText.text = "10km"
-                    5 -> distanceText.text = "20km"
-                    6 -> distanceText.text = "50km"
+                    0 -> distanceText.text = "1km"
+                    1 -> distanceText.text = "3km"
+                    2 -> distanceText.text = "5km"
+                    3 -> distanceText.text = "10km"
+                    4 -> distanceText.text = "20km"
+                    5 -> distanceText.text = "50km"
                     else -> distanceText.text = "100km"
                 }
                 pos = progress
@@ -62,7 +61,7 @@ class BottomSheetDistance(): BottomSheetDialogFragment() {
 
                 RecommendData.distanceButton.text = RecommendData.distanceStr
                 RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(RecommendData.curLatitude,RecommendData.curLongitude)))
-                val zoom = CameraUpdate.zoomTo((14 - pos).toDouble()).animate(CameraAnimation.Linear, 500)
+                val zoom = CameraUpdate.zoomTo((13 - (pos)).toDouble()).animate(CameraAnimation.Linear, 500)
                 RecommendData.naverMap.moveCamera(zoom)
                 dismiss()
             }
@@ -70,13 +69,12 @@ class BottomSheetDistance(): BottomSheetDialogFragment() {
     }
     fun changeDistance(pos: Int) {
         distance = when (pos) {
-            0 -> 500
-            1 -> 1000
-            2 -> 3000
-            3 -> 5000
-            4 -> 10000
-            5 -> 20000
-            6 -> 50000
+            0 -> 1000
+            1 -> 3000
+            2 -> 5000
+            3 -> 10000
+            4 -> 20000
+            5 -> 50000
             else -> 100000
         }
         var distanceStr = ""

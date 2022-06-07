@@ -148,7 +148,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             realFinal.forEach { (k, v) -> Log.d("realfinal", "${k}: ${v}") }
 
             if (realFinal.isEmpty()) {
-                Toast.makeText(requireContext(), "추천할 대상이 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "선택한 조건에 매치되는 친구가 없습니다.\n다시 선택해주세요", Toast.LENGTH_SHORT).show()
             } else {
                 val bottomSheet = RecommendList(realFinal)
                 bottomSheet.show(childFragmentManager, RecommendList.TAG)
@@ -212,7 +212,7 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 
         // 최대, 최소 줌
         RecommendData.naverMap.minZoom = 7.0
-        RecommendData.naverMap.maxZoom = 14.0
+        RecommendData.naverMap.maxZoom = 13.0
 
 //        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(RECOMMEND[CURRENT_USERID]!!.latitude, RECOMMEND[CURRENT_USERID]!!.longitude)))
         RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(37.5509, 126.9410)))

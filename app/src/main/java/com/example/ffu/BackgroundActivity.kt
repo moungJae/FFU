@@ -53,7 +53,7 @@ class BackgroundActivity : AppCompatActivity() {
         RecommendData.MBTISet.clear()
         RecommendData.hobbySet.clear()
         RecommendData.personalitySet.clear()
-        RecommendData.myRadius = 500.0
+        RecommendData.myRadius = 1000.0
         RecommendData.smokingCheck = true
         RecommendData.MBTISet = mutableSetOf(
             "ESTJ", "ESFJ", "ENFJ", "ENTJ",
