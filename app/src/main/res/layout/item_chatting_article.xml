@@ -12,13 +12,12 @@
 <!--    val imageUrl: String-->
     <ImageView
         android:id="@+id/item_chatting_article_thumbnailImageView"
-        android:layout_width="110sp"
-        android:scaleType="center"
+        android:layout_width="125sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="16sp"
-        android:layout_height="110sp"/>
+        android:layout_height="125sp"/>
     <TextView
         android:maxLines="1"
         android:textSize="16sp"

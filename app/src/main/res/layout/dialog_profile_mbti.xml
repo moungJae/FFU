@@ -283,7 +283,11 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold"
             android:background="@drawable/rect_round_purple_radius_10"
+<<<<<<< HEAD
             android:backgroundTint="@color/colorPrimaryDark"/>
+=======
+            android:backgroundTint="@color/colorPrimaryDark" />
+>>>>>>> b3530eeba6c67b1d0082aee0d06248069f54bd9b
 
     </LinearLayout>
 

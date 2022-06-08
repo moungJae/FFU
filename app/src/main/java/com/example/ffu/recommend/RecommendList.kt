@@ -50,7 +50,7 @@ import com.google.firebase.ktx.Firebase
 import de.hdodenhof.circleimageview.CircleImageView
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
+import com.example.ffu.UserInformation.Companion.ANIMATION
 
 class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDialogFragment() {
 
@@ -222,9 +222,13 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         personality.text = PROFILE[userId]?.personality
         smoke.text =PROFILE[userId]?.smoke
 
-        Glide.with(this)
-            .load(recommendArticleModel.imageUrl)
-            .into(image)
+        if (ANIMATION[recommendArticleModel.Id]!!.permission) {
+            Glide.with(this)
+                .load(recommendArticleModel.imageUrl)
+                .into(image)
+        } else {
+            image.setImageResource(R.drawable.profileimage)
+        }
 
         val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(userId).child("receivedLike")
         val sendLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike")
