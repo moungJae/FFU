@@ -81,7 +81,6 @@ class ChatRoomActivity : AppCompatActivity() {
         setupView()
         setupAdapter()
 
-
         myChatDB?.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val chatItem = snapshot.getValue(ChatItem::class.java)
@@ -91,6 +90,9 @@ class ChatRoomActivity : AppCompatActivity() {
                 adapter.submitList(chatList)
                 adapter.notifyDataSetChanged()
                 binding.chatRecyclerView.scrollToPosition(adapter.itemCount - 1)
+                if (chatItem.type == 2) {
+                    binding.messageEditText.isEnabled = false
+                }
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
@@ -203,13 +205,16 @@ class ChatRoomActivity : AppCompatActivity() {
             val sendDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID).child("sendLike").child(otherUserId)
             val chatDB = Firebase.database.reference.child("Chats").child(CURRENT_USERID).child(otherUserId)
             val otherMatchDB = Firebase.database.reference.child("likeInfo").child(otherUserId).child("match").child(CURRENT_USERID)
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val formatted = current.format(formatter)
 
             //다른 사람이랑 match되있고 true인 경우 채팅창에 나갔다고 전송
             if(MATCH_USER[otherUserId]==true){
                 val centerChatItem = ChatItem(
                     senderId = CURRENT_USERID,
                     senderName = "",
-                    sendDate = "",
+                    sendDate = formatted.toString() + "_",
                     message = PROFILE[CURRENT_USERID]?.nickname+"님이 나갔습니다.",
                     type = ChatItem.CENTER_TYPE
                 )

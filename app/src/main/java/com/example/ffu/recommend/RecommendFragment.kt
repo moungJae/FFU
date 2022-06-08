@@ -74,9 +74,9 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
     private fun getMatchedUsers() {
 
         recommendButton.setOnClickListener {
-            RecommendData.MBTISet.forEach { v -> Log.d("MBTISet", "${v}") }
-            RecommendData.hobbySet.forEach { v -> Log.d("hobbySet", "${v}") }
-            RecommendData.personalitySet.forEach { v -> Log.d("personalitySet", "${v}") }
+            //RecommendData.MBTISet.forEach { v -> Log.d("MBTISet", "${v}") }
+            //RecommendData.hobbySet.forEach { v -> Log.d("hobbySet", "${v}") }
+            //RecommendData.personalitySet.forEach { v -> Log.d("personalitySet", "${v}") }
 
             val usersUid: ArrayList<String> = UserInformation.MAP_USER
             val myRadius = RecommendData.myRadius / 1000.0
@@ -99,6 +99,9 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 if (distance < myRadius) {
                     recommendUsersUid.add(uid)
                     RecommendData.distanceUsers[uid] = distance * 1000.0
+                    hobbyMatched[uid] = 0
+                    personalityMatched[uid] = 0
+                    finalMatched[uid] = 0
                 }
             }
 
@@ -110,16 +113,16 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 for (uid in recommendUsersUid) {
                     if (PROFILE[uid]?.mbti?.contains(mbti) == true) {
                         mbtiMatched[uid] = 1
-                        hobbyMatched[uid] = 0
                     }
+                    // hobbyMatched[uid] = 0
                 }
             }
             for (hobby in RecommendData.hobbySet) {
                 for (uid in mbtiMatched.keys) {
                     if (PROFILE[uid]?.hobby?.contains(hobby) == true) {
                         hobbyMatched[uid] = hobbyMatched[uid]!! + 1
-                        personalityMatched[uid] = 0
                     }
+                    // personalityMatched[uid] = 0
                 }
             }
 
@@ -127,8 +130,8 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                 for (uid in hobbyMatched.keys) {
                     if (PROFILE[uid]?.personality?.contains(personality) == true) {
                         personalityMatched[uid] = personalityMatched[uid]!! + 1
-                        finalMatched[uid] = 0
                     }
+                    // finalMatched[uid] = 0
                 }
             }
 
@@ -148,7 +151,8 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 
             for(userId in finalMatched.keys){
                 //이미 LIKE 또는 DISLIKE를 보내거나 받은 유저이면 recommend에 뜨지 않게 한다.
-                if(UserInformation.CURRENT_USERID !=userId && !UserInformation.SEND_LIKE_USER.containsKey(userId) && !UserInformation.RECEIVED_LIKE_USER.containsKey(userId)){
+                if(UserInformation.CURRENT_USERID !=userId && !UserInformation.SEND_LIKE_USER.containsKey(userId)
+                    && !UserInformation.RECEIVED_LIKE_USER.containsKey(userId) && finalMatched[userId] != 0){
                     realMatched[userId] = finalMatched[userId]!!
                 }
             }

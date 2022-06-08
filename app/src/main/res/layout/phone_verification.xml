@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/only_private"
-        android:textColor="@color/main_text_color"
+        android:textColor="@color/gray_horizon"
         android:textSize="15sp"
         android:textStyle="bold"
         android:layout_marginLeft="10sp"

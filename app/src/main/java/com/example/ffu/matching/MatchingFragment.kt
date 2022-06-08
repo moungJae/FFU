@@ -101,9 +101,10 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
                 val imageUri = URI[likeId]?:""
                 //Log.d("name",name)
                 likeArticleList.add(LikeArticle(likeId,name,ageJob,introMe,imageUri))
-                likeArticleAdapter.submitList(likeArticleList)
             }
         }
+        likeArticleAdapter.submitList(likeArticleList)
+        likeArticleAdapter.notifyDataSetChanged()
     }
 
     override fun onResume() {
@@ -181,6 +182,16 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             myMatchMap[userId] = true
             myMatchDB.updateChildren(myMatchMap)
 
+            // 상대방에게 받은 receivedLike 를 지워야 하고, 상대방이 보낸 like 또한 지워야 함
+            val receivedLikeDB = Firebase.database.reference.child("likeInfo").child(CURRENT_USERID)
+                .child("receivedLike").child(userId)
+            val sendLikeDB = Firebase.database.reference.child("likeInfo").child(userId)
+                .child("sendLike").child(CURRENT_USERID)
+
+            receivedLikeDB.removeValue()
+            sendLikeDB.removeValue()
+            RECEIVED_LIKE_USER.remove(userId)
+
             val userHistoryDB = Firebase.database.reference.child("history").child(CURRENT_USERID)
             val otherHistoryDB = Firebase.database.reference.child("history").child(userId)
             val current = LocalDateTime.now()
@@ -203,7 +214,6 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
             userHistoryDB.push().setValue(matchUserHistoryItem)
             otherHistoryDB.push().setValue(matchOtherUserHistoryItem)
 
-            RECEIVED_LIKE_USER[userId] = false
             likeArticleList.clear()
             addReceivedLikeArticleList()
             likeArticleAdapter.notifyDataSetChanged()

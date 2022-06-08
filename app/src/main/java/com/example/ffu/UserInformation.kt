@@ -49,6 +49,10 @@ class UserInformation {
         // 현재 유저의 history 정보를 저장
         val HISTORY = ArrayList<History>()
 
+        // 현재 유저의 마지막 채팅 로그 및 날짜를 저장
+        val CHAT_LAST_LOG = mutableMapOf<String, String>()
+        val DATE_LAST_LOG = mutableMapOf<String, String>()
+
         // 기존에 등록된 리스너를 제거
         val LISTENER_INFO = ArrayList<Listener>()
     }
@@ -69,6 +73,7 @@ class UserInformation {
         addAllMatchUsers()
         addAllLikeUsers()
         addUserHistory()
+        addUsersChat()
     }
 
     // 로그인한 유저의 auth 세팅
@@ -91,6 +96,8 @@ class UserInformation {
         RECEIVED_LIKE_USER.clear()
         SEND_LIKE_USER.clear()
         HISTORY.clear()
+        CHAT_LAST_LOG.clear()
+        DATE_LAST_LOG.clear()
         LISTENER_INFO.clear()
     }
 
@@ -257,5 +264,43 @@ class UserInformation {
             override fun onCancelled(error: DatabaseError) {}
         })
         LISTENER_INFO.add(Listener(userDB, historyListener))
+    }
+
+    // 현재 유저의 채팅 목록에 배치된 유저들과의 마지막 채팅 로그 및 날짜를 추가
+    private fun addUserChatLastLog(userId : String) {
+        userDB = Firebase.database.reference.child("Chats").child(CURRENT_USERID).child(userId)
+        val chatListener = userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val lastMessage = snapshot.child("message").value.toString()
+                val lastSendDate = snapshot.child("sendDate").value.toString()
+
+                CHAT_LAST_LOG[userId] = lastMessage
+                DATE_LAST_LOG[userId] = lastSendDate
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
+        LISTENER_INFO.add(Listener(userDB, chatListener))
+    }
+
+    // 현재 유저의 채팅 목록에 배치된 유저들의 정보 탐색
+    private fun addUsersChat() {
+        userDB = Firebase.database.reference.child("Chats").child(CURRENT_USERID)
+        val chatListener = userDB.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val matchUserId = snapshot.key.toString()
+                addUserChatLastLog(matchUserId)
+            }
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val matchUserId = snapshot.key.toString()
+                CHAT_LAST_LOG.remove(matchUserId)
+            }
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
+        LISTENER_INFO.add(Listener(userDB, chatListener))
     }
 }

@@ -5,5 +5,6 @@ data class ChattingArticle (
     val Name: String?,
     val gender: String?,
     val mbti: String?,
-    val imageUri: String?
+    val imageUri: String?,
+    val sendDate: Long
 )
