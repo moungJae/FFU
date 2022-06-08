@@ -12,8 +12,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.ffu.R
 import com.example.ffu.UserInformation
+import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.example.ffu.UserInformation.Companion.PROFILE
 import com.example.ffu.UserInformation.Companion.RECOMMEND
+import com.example.ffu.utils.RecommendArticle
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -79,11 +81,11 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             val usersUid: ArrayList<String> = UserInformation.MAP_USER
             val myRadius = RecommendData.myRadius / 1000.0
             val recommendUsersUid = ArrayList<String>()
-            val matchedUsers = mutableMapOf<String, Int>()
             val mbtiMatched = mutableMapOf<String, Int>()
             val hobbyMatched = mutableMapOf<String, Int>()
             val personalityMatched = mutableMapOf<String, Int>()
             val finalMatched = mutableMapOf<String, Int>()
+            var realMatched = mutableMapOf<String, Int>()
 
             for (uid in usersUid) {
                 if (uid == auth.uid || uid == "null") continue
@@ -143,14 +145,21 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
             }
 
             finalMatched.forEach { (k, v) -> Log.d("finalMatched", "${k}, ${v}") }
-            val realFinal =
-                finalMatched.toList().sortedByDescending { it.second }.toMap().toMutableMap()
-            realFinal.forEach { (k, v) -> Log.d("realfinal", "${k}: ${v}") }
 
-            if (realFinal.isEmpty()) {
-                Toast.makeText(requireContext(), "선택한 조건에 매치되는 친구가 없습니다.\n다시 선택해주세요", Toast.LENGTH_SHORT).show()
+            for(userId in finalMatched.keys){
+                //이미 LIKE 또는 DISLIKE를 보내거나 받은 유저이면 recommend에 뜨지 않게 한다.
+                if(UserInformation.CURRENT_USERID !=userId && !UserInformation.SEND_LIKE_USER.containsKey(userId) && !UserInformation.RECEIVED_LIKE_USER.containsKey(userId)){
+                    realMatched[userId] = finalMatched[userId]!!
+                }
+            }
+
+            realMatched = realMatched.toList().sortedByDescending { it.second }.toMap().toMutableMap()
+            realMatched.forEach { (k, v) -> Log.d("realfinal", "${k}: ${v}") }
+
+            if (realMatched.isEmpty()) {
+                Toast.makeText(requireContext(), "추천할 대상이 없습니다.", Toast.LENGTH_SHORT).show()
             } else {
-                val bottomSheet = RecommendList(realFinal)
+                val bottomSheet = RecommendList(realMatched)
                 bottomSheet.show(childFragmentManager, RecommendList.TAG)
             }
 //            }
@@ -212,10 +221,10 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
 
         // 최대, 최소 줌
         RecommendData.naverMap.minZoom = 7.0
-        RecommendData.naverMap.maxZoom = 13.0
+        RecommendData.naverMap.maxZoom = 14.0
 
-//        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(RECOMMEND[CURRENT_USERID]!!.latitude, RECOMMEND[CURRENT_USERID]!!.longitude)))
-        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(37.5509, 126.9410)))
+        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(RECOMMEND[CURRENT_USERID]!!.latitude, RECOMMEND[CURRENT_USERID]!!.longitude)))
+//        RecommendData.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(37.5509, 126.9410)))
         RecommendData.naverMap.uiSettings.isLocationButtonEnabled = true
         RecommendData.naverMap.locationSource =
             FusedLocationSource(this@RecommendFragment, REQUEST_ACCESS_LOCATION_PERMISSIONS)

@@ -16,7 +16,8 @@
         android:text = "test"
         android:textSize="13dp"
         android:textColor="@color/chat_center_color"
-        android:background="@drawable/chat_center"/>
+        android:background="@drawable/chat_center"
+        android:backgroundTint="@color/home_settingtIcon_color"/>
 
 
 </LinearLayout>

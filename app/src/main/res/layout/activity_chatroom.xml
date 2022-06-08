@@ -10,11 +10,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/activity_chatroom_topbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50sp"
         android:background="#DFF1FF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+
+        >
+
 
         <ImageButton
             android:id="@+id/activity_chatroom_back"
@@ -25,6 +28,8 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_backbutton"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -38,19 +43,20 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/activity_chatroom_menu"
             app:layout_constraintStart_toEndOf="@id/activity_chatroom_back"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
         <ImageButton
             android:id="@+id/activity_chatroom_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40sp"
+            android:layout_height="match_parent"
             android:background="@color/transparent"
             android:src="@drawable/ic_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"

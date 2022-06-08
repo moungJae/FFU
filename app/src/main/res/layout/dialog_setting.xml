@@ -12,12 +12,15 @@
 
     <ImageButton
         android:id="@+id/dialog_setting_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
         android:src="@drawable/ic_back"
         android:backgroundTint="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="0sp"
+        android:scaleType="centerCrop"
+        />
 
     <Button
         android:id="@+id/dialog_setting_logout"

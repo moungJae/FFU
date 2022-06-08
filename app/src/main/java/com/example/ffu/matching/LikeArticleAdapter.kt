@@ -6,9 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ffu.R
 import com.example.ffu.databinding.ItemLikeinfoArticleBinding
 import com.example.ffu.utils.LikeArticle
-
+import com.example.ffu.UserInformation.Companion.ANIMATION
 
 class LikeArticleAdapter(val onItemClicked: (LikeArticle) -> Unit) : ListAdapter<LikeArticle, LikeArticleAdapter.ViewHolder>(diffUtil) {
     inner class ViewHolder(private val binding: ItemLikeinfoArticleBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -17,10 +18,12 @@ class LikeArticleAdapter(val onItemClicked: (LikeArticle) -> Unit) : ListAdapter
             binding.itemLikeinfoArticleAgeJob.text=likeArticleModel.ageJob
             binding.itemLikeinfoArticleIntroMe.text=likeArticleModel.introMe
 
-            if (likeArticleModel.imageUrl.isNotEmpty()) {
+            if (likeArticleModel.imageUrl.isNotEmpty() && ANIMATION[likeArticleModel.Id]!!.permission) {
                 Glide.with(binding.root)
                     .load(likeArticleModel.imageUrl)
                     .into(binding.thumbnailImageView)
+            } else {
+                binding.thumbnailImageView.setImageResource(R.drawable.profileimage)
             }
 
             binding.root.setOnClickListener {

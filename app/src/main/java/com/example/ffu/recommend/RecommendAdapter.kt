@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ffu.R
 import com.example.ffu.databinding.ItemLikeinfoArticleBinding
 import com.example.ffu.utils.RecommendArticle
+import com.example.ffu.UserInformation.Companion.ANIMATION
 
 class RecommendAdapter(val onItemClicked: (RecommendArticle) -> Unit) : ListAdapter<RecommendArticle, RecommendAdapter.ViewHolder>(diffUtil) {
     inner class ViewHolder(private val binding: ItemLikeinfoArticleBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -17,10 +19,12 @@ class RecommendAdapter(val onItemClicked: (RecommendArticle) -> Unit) : ListAdap
             binding.itemLikeinfoArticleAgeJob.text = recommendArticleModel.ageJob
             binding.itemLikeinfoArticleIntroMe.text = recommendArticleModel.introMe
 
-            if (recommendArticleModel.imageUrl.isNotEmpty()) {
+            if (recommendArticleModel.imageUrl.isNotEmpty() && ANIMATION[recommendArticleModel.Id]!!.permission) {
                 Glide.with(binding.thumbnailImageView)
                     .load(recommendArticleModel.imageUrl)
                     .into(binding.thumbnailImageView)
+            } else {
+                binding.thumbnailImageView.setImageResource(R.drawable.profileimage)
             }
             binding.root.setOnClickListener {
                 onItemClicked(recommendArticleModel)
