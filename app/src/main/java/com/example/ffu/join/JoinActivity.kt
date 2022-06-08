@@ -28,6 +28,7 @@ class JoinActivity : AppCompatActivity() {
         setContentView(R.layout.join)
 
         initialSetting()
+        checkGender()
         checkBirth()
         checkData()
     }
@@ -95,11 +96,9 @@ class JoinActivity : AppCompatActivity() {
 
     private fun checkData() {
         val nextButton = findViewById<Button>(R.id.join_joinNext)
+
         nextButton.setOnClickListener {
-            checkGender()
             birth = (myYear).toString() + "/" + (myMonth).toString() + "/" + (myDay).toString()
-            Log.d("birth", birth)
-            Log.d("gender", gender)
             if (birth.isEmpty()) {
                 Toast.makeText(this, "생일을 선택해주세요.", Toast.LENGTH_SHORT).show()
             } else if (gender.isEmpty()) {
