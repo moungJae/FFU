@@ -282,7 +282,8 @@
             android:text="@string/choice"
             android:textColor="#FFFFFF"
             android:textStyle="bold"
-            android:background="@drawable/rect_round_purple_radius_10" />
+            android:background="@drawable/rect_round_purple_radius_10"
+            android:backgroundTint="@color/colorPrimaryDark" />
 
     </LinearLayout>
 

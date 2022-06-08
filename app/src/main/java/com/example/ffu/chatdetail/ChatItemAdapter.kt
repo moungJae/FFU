@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ffu.R
+import com.example.ffu.UserInformation.Companion.ANIMATION
 import com.example.ffu.UserInformation.Companion.URI
 import com.example.ffu.databinding.ItemChatCenterBinding
 import com.example.ffu.databinding.ItemChatLeftBinding
@@ -21,9 +23,13 @@ class ChatItemAdapter : ListAdapter<ChatItem, RecyclerView.ViewHolder>(diffUtil)
             binding.itemChatLeftDate.text = chatItem.sendDate
             binding.itemChatLeftMessage.text = chatItem.message
 
-            Glide.with(binding.root)
-                .load(URI[chatItem.senderId])
-                .into(binding.itemChatLeftImage)
+            if (ANIMATION[chatItem.senderId]!!.permission) {
+                Glide.with(binding.root)
+                    .load(URI[chatItem.senderId])
+                    .into(binding.itemChatLeftImage)
+            } else {
+                binding.itemChatLeftImage.setImageResource(R.drawable.profileimage)
+            }
         }
 
     }

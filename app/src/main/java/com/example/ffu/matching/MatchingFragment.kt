@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.ffu.R
 import com.example.ffu.UserInformation
+import com.example.ffu.UserInformation.Companion.ANIMATION
 import com.example.ffu.UserInformation.Companion.CURRENT_USERID
 import com.example.ffu.UserInformation.Companion.MATCH_USER
 import com.example.ffu.UserInformation.Companion.PROFILE
@@ -151,9 +152,13 @@ class MatchingFragment: Fragment(R.layout.fragment_matching) {
         scaleAnimation.duration = 500
         scaleAnimation.interpolator = bounceInterpolator
 
-        Glide.with(this)
-            .load(likeArticleModel.imageUrl)
-            .into(image)
+        if (ANIMATION[likeArticleModel.Id]!!.permission) {
+            Glide.with(this)
+                .load(likeArticleModel.imageUrl)
+                .into(image)
+        } else {
+            image.setImageResource(R.drawable.profileimage)
+        }
 
         //  완료 버튼 클릭 시
         like.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, isChecked ->

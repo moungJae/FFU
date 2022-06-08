@@ -94,6 +94,7 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
             introMe.setText(PROFILE[CURRENT_USERID]?.introMe)
 
         } else {
+            image.setImageResource(R.drawable.profileimage)
             nickname.setText(PROFILE[CURRENT_USERID]?.nickname)
             introMe.setText(PROFILE[CURRENT_USERID]?.introMe)
         }
