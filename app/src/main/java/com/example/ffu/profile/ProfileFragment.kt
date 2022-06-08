@@ -180,7 +180,13 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
         val dialog = AlertDialog.Builder(requireActivity())
         dialog.setTitle("로그아웃")
             .setMessage("로그아웃 하시겠습니까?")
-            .setNegativeButton("예",
+            .setNegativeButton("아니오",
+                DialogInterface.OnClickListener { dialog, id ->
+                    dialog.dismiss()
+                    dialog.cancel()
+                    beforeDialog.cancel()
+                })
+            .setPositiveButton("예",
                 DialogInterface.OnClickListener{ dialog,id->
                     val act = context as Activity
                     auth.signOut()
@@ -191,11 +197,6 @@ class ProfileFragment :Fragment(R.layout.fragment_profile) {
                     dialog.cancel()
                     beforeDialog.dismiss()
                     beforeDialog.cancel()
-                })
-            .setPositiveButton("아니오",
-                DialogInterface.OnClickListener{dialog,id->
-                    dialog.dismiss()
-                    dialog.cancel()
                 })
         dialog.show()
     }
