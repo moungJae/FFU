@@ -10,7 +10,7 @@ class RecommendData {
         @SuppressLint("StaticFieldLeak")
         lateinit var distanceButton: Button
         lateinit var naverMap : NaverMap
-        var myRadius: Double = 100.0
+        var myRadius: Double = 1000.0
         var distanceStr: String = "1km"
         var curLatitude: Double = 0.0
         var curLongitude: Double = 0.0
