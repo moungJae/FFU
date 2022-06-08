@@ -8,7 +8,7 @@
         app:cnb_iconColor="@color/home"/>
     <item
         android:id="@+id/matching"
-        android:icon="@drawable/ic_like"
+        android:icon="@drawable/like"
         android:title="호 감"
         app:cnb_iconColor="@color/activity"/>
     <item

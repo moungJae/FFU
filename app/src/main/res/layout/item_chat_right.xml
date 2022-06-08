@@ -23,7 +23,7 @@
                 android:background="@drawable/chat_right"
                 android:maxLength="150"
                 android:maxLines="15"
-                android:padding="10dp"
+                android:padding="10sp"
                 android:text="메세지 내용"
                 android:textColor="#000000"
                 android:textSize="15dp" />
@@ -33,7 +33,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
-                android:text="데모 2020-03-12 12:30" />
+                android:text="데모 2020-03-12 12:30"
+                android:padding="5sp"/>
         </LinearLayout>
     </LinearLayout>
 

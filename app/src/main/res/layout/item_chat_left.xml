@@ -60,6 +60,7 @@
                 android:id="@+id/item_chat_left_date"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:padding="5sp"
                 android:text="데모 2020-03-12 12:30" />
         </LinearLayout>
 
