@@ -13,9 +13,10 @@
         >
         <ImageView
             android:id="@+id/thumbnailImageView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:scaleType="center" />
+            android:layout_width="130sp"
+            android:layout_height="130sp"
+            android:scaleType="center"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

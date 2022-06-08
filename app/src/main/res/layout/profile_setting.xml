@@ -68,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:hint="닉네임을 입력하세요"
+                android:maxLength="10"
                 android:background="@color/transparent"
                 android:inputType="text"
                 android:textSize="13sp" />
@@ -98,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:hint="직업을 입력하세요"
+                android:maxLength="10"
                 android:gravity="center"
                 android:background="@color/transparent"
                 android:inputType="text"
@@ -131,6 +133,7 @@
                 android:gravity="center"
                 android:layout_height="wrap_content"
                 android:hint="친구들에게 나를 소개하세요!"
+                android:maxLength="15"
                 android:background="@color/transparent"
                 android:textSize="13sp" />
 
