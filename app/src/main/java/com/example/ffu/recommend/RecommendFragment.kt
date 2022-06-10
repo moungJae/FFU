@@ -117,7 +117,6 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                     if (PROFILE[uid]?.hobby?.contains(hobby) == true) {
                         userMatched[uid] = userMatched[uid]!! + 1
                     }
-                    // personalityMatched[uid] = 0
                 }
             }
 
@@ -126,7 +125,6 @@ class RecommendFragment : Fragment(), OnMapReadyCallback {
                     if (PROFILE[uid]?.personality?.contains(personality) == true) {
                         userMatched[uid] = userMatched[uid]!! + 1
                     }
-                    // finalMatched[uid] = 0
                 }
             }
 
