@@ -2,243 +2,286 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_radius_background"
-    android:padding="20sp"
     android:layout_gravity="center"
-    android:layout_margin="50sp">
+    android:layout_margin="50sp"
+    android:background="@drawable/dialog_radius_background"
+    android:orientation="vertical"
+    >
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/dialog_userinformation_photo"
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/profileimage"
+        android:transitionName="imgTransition"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20sp"/>
+
+    <TextView
+        android:id="@+id/dialog_userinformation_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8sp"
+        android:text="이름"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_photo" />
+
+    <TextView
+        android:id="@+id/dialog_userinformation_introMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:paddingLeft="8sp"
+        android:paddingRight="8sp"
+        android:paddingBottom="8sp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="소개글"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_name"/>
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_horizon"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_introMe"/>
 
 
 
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/dialog_userinformation_photo"
-            android:layout_width="150sp"
-            android:layout_height="150sp"
-            android:src="@drawable/profileimage"
-            android:layout_centerHorizontal="true"
-            android:transitionName="imgTransition"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dialog_userinformation_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view"
+        android:layout_marginRight="20sp"
+        android:layout_marginLeft="20sp">
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/dialog_userinformation_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_photo"
-            >
-            <TextView
-                android:id="@+id/dialog_userinformation_agetitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text = "나이 : "
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/dialog_userinformation_age"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text=" 나이 내용 "
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/dialog_userinformation_agetitle"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/dialog_userinformation_drinkingtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text = "음주 : "
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_age"/>
-
-
-            <TextView
-                android:id="@+id/dialog_userinformation_drinking"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text="음주"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/dialog_userinformation_drinkingtitle"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_age" />
-
-            <TextView
-                android:id="@+id/dialog_userinformation_hobbytitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text = "취미 : "
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_drinking"/>
-
-            <TextView
-                android:id="@+id/dialog_userinformation_hobby"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text="취미"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/dialog_userinformation_hobbytitle"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_drinking" />
-
-            <TextView
-                android:id="@+id/dialog_userinformation_jobtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text = "직업 : "
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_hobby"/>
-
-            <TextView
-                android:id="@+id/dialog_userinformation_job"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text="직업"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/dialog_userinformation_hobbytitle"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_hobby" />
-
-            <TextView
-                android:id="@+id/dialog_userinformation_mbtititle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text = "mbti : "
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_job"/>
-
-            <TextView
-                android:id="@+id/dialog_userinformation_mbti"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text="mbti"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/dialog_userinformation_jobtitle"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_job" />
-
-            <TextView
-                android:id="@+id/dialog_userinformation_personalitytitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text = "성격 : "
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_mbti"/>
-
-            <TextView
-                android:inputType="textMultiLine"
-                android:includeFontPadding="false"
-                android:id="@+id/dialog_userinformation_personality"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text="성격"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/dialog_userinformation_personalitytitle"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_mbti" />
-
-            <TextView
-                android:id="@+id/dialog_userinformation_smokingtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text = "흡연 : "
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_personality"/>
-
-            <TextView
-                android:id="@+id/dialog_userinformation_smoke"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:text="흡연"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/dialog_userinformation_personalitytitle"
-                app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_personality" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-        <LinearLayout
-            android:id="@+id/dialog_userinformation_likeLayout"
+        <TextView
+            android:id="@+id/dialog_userinformation_agetitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_info"
+            android:layout_marginTop="10sp"
+            android:text="나이 : "
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/dialog_userinformation_dislikeLayout"
-            android:gravity="center">
-            <ToggleButton
-                android:id="@+id/dialog_userinformation_like"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:background="@drawable/ic_like"
-                android:checked="false"
-                android:text=""
-                android:textOff=""
-                android:textOn=""
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LIKE"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/dialog_userinformation_age"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text=" 나이 내용 "
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dialog_userinformation_agetitle"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/dialog_userinformation_dislikeLayout"
+        <TextView
+            android:id="@+id/dialog_userinformation_drinkingtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_info"
-            app:layout_constraintStart_toEndOf="@id/dialog_userinformation_likeLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center">
-            <ToggleButton
-                android:id="@+id/dialog_userinformation_dislike"
-                android:layout_width="50sp"
-                android:layout_height="50sp"
-                android:background="@drawable/ic_dislike"
-                android:checked="false"
-                android:text=""
-                android:textOff=""
-                android:textOn=""
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DISLIKE"/>
+            android:layout_marginTop="10sp"
+            android:text="음주 : "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_age" />
 
-        </LinearLayout>
+
+        <TextView
+            android:id="@+id/dialog_userinformation_drinking"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="음주"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dialog_userinformation_drinkingtitle"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_age" />
+
+        <TextView
+            android:id="@+id/dialog_userinformation_hobbytitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="취미 : "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_drinking" />
+
+        <TextView
+            android:id="@+id/dialog_userinformation_hobby"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="취미"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dialog_userinformation_hobbytitle"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_drinking" />
+
+        <TextView
+            android:id="@+id/dialog_userinformation_jobtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="직업 : "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_hobby" />
+
+        <TextView
+            android:id="@+id/dialog_userinformation_job"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="직업"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dialog_userinformation_hobbytitle"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_hobby" />
+
+        <TextView
+            android:id="@+id/dialog_userinformation_mbtititle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="mbti : "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_job" />
+
+        <TextView
+            android:id="@+id/dialog_userinformation_mbti"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="mbti"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dialog_userinformation_jobtitle"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_job" />
+
+        <TextView
+            android:id="@+id/dialog_userinformation_personalitytitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="성격 : "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_mbti" />
+
+        <TextView
+            android:id="@+id/dialog_userinformation_personality"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:includeFontPadding="false"
+            android:inputType="textMultiLine"
+            android:text="성격"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dialog_userinformation_personalitytitle"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_mbti" />
+
+        <TextView
+            android:id="@+id/dialog_userinformation_smokingtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="흡연 : "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_personality" />
+
+        <TextView
+            android:id="@+id/dialog_userinformation_smoke"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:text="흡연"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/dialog_userinformation_personalitytitle"
+            app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_personality" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:id="@+id/dialog_userinformation_likeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/dialog_userinformation_dislikeLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_info">
+
+        <ToggleButton
+            android:id="@+id/dialog_userinformation_like"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:background="@drawable/ic_like"
+            android:checked="false"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LIKE" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialog_userinformation_dislikeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dialog_userinformation_likeLayout"
+        app:layout_constraintTop_toBottomOf="@id/dialog_userinformation_info">
+
+        <ToggleButton
+            android:id="@+id/dialog_userinformation_dislike"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:background="@drawable/ic_dislike"
+            android:checked="false"
+            android:text=""
+            android:textOff=""
+            android:textOn="" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DISLIKE" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
