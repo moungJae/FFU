@@ -36,7 +36,6 @@ class ArticleAdapter(val onItemClicked: (ChattingArticle) -> Unit) : ListAdapter
                 if (dateLastLog.last() == '_') // 상대방이 나간 경우
                 {
                     binding.itemChattingArticleChatLog.setTextColor(R.color.heart_primary_color)
-                    Log.d("이게 된다고?", "말도 안돼")
                 }
                 binding.itemChattingArticleDate.text = getLastDate(dateLastLog)
                 binding.itemChattingArticleChatLog.text = getLastChat(chatLastLog)
@@ -66,7 +65,7 @@ class ArticleAdapter(val onItemClicked: (ChattingArticle) -> Unit) : ListAdapter
                 && curDate[2].split(" ")[0] == lastDate[2].split(" ")[0]) {
                 result = lastDateLog.split(" ")[1]
                 val hour = result.split(":")[0].toInt()
-                val minute = result.split(":")[1].toInt()
+                val minute = result.split(":")[1].substring(0, 2).toInt()
 
                 if (hour < 12) {
                     result = "오전 " + hour.toString() + ":" + minute.toString()
