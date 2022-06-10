@@ -41,10 +41,6 @@ class ArticleAdapter(val onItemClicked: (ChattingArticle) -> Unit) : ListAdapter
                 binding.itemChattingArticleChatLog.text = "채팅방이 생성되었습니다."
                 binding.itemChattingArticleDate.text = getLastDate(formatted.toString())
             } else {
-                if (dateLastLog.last() == '_') // 상대방이 나간 경우
-                {
-                    binding.itemChattingArticleChatLog.setTextColor(R.color.heart_primary_color)
-                }
                 binding.itemChattingArticleDate.text = getLastDate(dateLastLog)
                 binding.itemChattingArticleChatLog.text = getLastChat(chatLastLog)
             }
@@ -111,6 +107,7 @@ class ArticleAdapter(val onItemClicked: (ChattingArticle) -> Unit) : ListAdapter
         return ViewHolder(ItemChattingArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
