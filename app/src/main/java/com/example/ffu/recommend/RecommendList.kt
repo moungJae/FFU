@@ -51,6 +51,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.example.ffu.UserInformation.Companion.ANIMATION
+import org.w3c.dom.Text
 
 class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDialogFragment() {
 
@@ -189,6 +190,8 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         val edialog : LayoutInflater = LayoutInflater.from(requireActivity())
         val mView : View = edialog.inflate(R.layout.dialog_userinformation,null)
         val image : CircleImageView = mView.findViewById(R.id.dialog_userinformation_photo)
+        val name : TextView = mView.findViewById(R.id.dialog_userinformation_name)
+        val introMe : TextView = mView.findViewById(R.id.dialog_userinformation_introMe)
         val age : TextView = mView.findViewById(R.id.dialog_userinformation_age)
         val drinking : TextView = mView.findViewById(R.id.dialog_userinformation_drinking)
         val hobby : TextView = mView.findViewById(R.id.dialog_userinformation_hobby)
@@ -213,7 +216,8 @@ class RecommendList(recommendUsersUid: MutableMap<String, Int>) : BottomSheetDia
         scaleAnimation.duration = 500
         scaleAnimation.interpolator = bounceInterpolator
 
-
+        name.text = PROFILE[userId]?.nickname
+        introMe.text = PROFILE[userId]?.introMe
         age.text = PROFILE[userId]?.age
         drinking.text = PROFILE[userId]?.drinking
         hobby.text = PROFILE[userId]?.hobby
