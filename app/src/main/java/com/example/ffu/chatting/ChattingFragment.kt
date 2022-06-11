@@ -46,6 +46,7 @@ class ChattingFragment: Fragment(R.layout.fragment_chatting) {
         Firebase.auth
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
