@@ -55,12 +55,6 @@
 
 ------------
 
-## 애니메이션 변환
-
-<img src="https://user-images.githubusercontent.com/81675254/173142009-d86e6e8f-e221-4f06-a06e-5cd787d4229b.png" height="400px" width="800px">
-
-------------
-
 ### 3/11 
 + 프로젝트 주제 결정
 
